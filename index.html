@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Penjana Kertas Kerja Pintar</title>
+    <style>
+        :root { --primary: #2563eb; --secondary: #64748b; --success: #16a34a; --danger: #dc2626; --warning: #d97706; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* Dashboard Input */
+        .no-print { background: #f8fafc; padding: 25px; border-radius: 8px; margin-bottom: 40px; border: 1px solid #e2e8f0; }
+        h1, h2 { color: var(--primary); margin-top: 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        label { font-weight: 600; display: block; margin-top: 15px; font-size: 0.9em; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; margin-top: 5px; }
+        
+        /* Buttons */
+        .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .btn { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-secondary { background: var(--secondary); color: white; }
+        
+        /* Dynamic Rows */
+        .input-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        
+        /* Table Style */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+        th { background: #f1f5f9; }
+
+        /* Print Settings */
+        @media print {
+            .no-print { display: none; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; max-width: 100%; }
+            .page-break { page-break-before: always; }
+        }
+        
+        .signature-section { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-top: 60px; text-align: center; }
+        .sig-box { min-height: 100px; display: flex; flex-direction: column; justify-content: space-between; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="no-print">
+        <h1>🛠️ Editor Kertas Kerja</h1>
+        
+        <div class="grid">
+            <div>
+                <label>Tajuk Kertas Kerja:</label>
+                <input type="text" id="in-tajuk" oninput="updatePreview()" placeholder="Contoh: PROGRAM KECEMERLANGAN PELAJAR">
+                
+                <label>Pendahuluan:</label>
+                <textarea id="in-pendahuluan" oninput="updatePreview()" rows="3"></textarea>
+                
+                <label>Objektif:</label>
+                <textarea id="in-objektif" oninput="updatePreview()" rows="3"></textarea>
+            </div>
+            <div>
+                <label>Template & Fail:</label>
+                <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                    <input type="text" id="template-name" placeholder="Nama Template Baru">
+                    <button class="btn btn-secondary" style="width:100%; margin-top:5px;" onclick="saveTemplate()">💾 Simpan Template</button>
+                    <select id="template-list" onchange="loadTemplate(this.value)" style="margin-top:10px;"></select>
+                    <div class="btn-group">
+                        <button class="btn btn-warning" onclick="exportJSON()">📤 Eksport JSON</button>
+                        <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📥 Import JSON</button>
+                        <input type="file" id="importFile" style="display:none" onchange="importJSON(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <label>Senarai AJK:</label>
+        <div id="ajk-inputs"></div>
+        <button class="btn btn-primary" style="margin-top:5px; font-size:12px;" onclick="addAjkRow()">+ Tambah AJK</button>
+
+        <label>Anggaran Kewangan:</label>
+        <div id="items-container"></div>
+        <button class="btn btn-primary" style="margin-top:5px; font-size:12px;" onclick="addRow()">+ Tambah Item Perbelanjaan</button>
+
+        <div class="btn-group" style="justify-content: center; margin-top: 30px;">
+            <button class="btn btn-success" onclick="window.print()">🖨️ Cetak / Simpan ke PDF</button>
+            <button class="btn btn-danger" onclick="padamSemua()">🗑️ Kosongkan Semua</button>
+        </div>
+    </div>
+
+    <div id="print-area">
+        <h2 id="view-tajuk" style="text-align:center; text-decoration: underline; text-transform: uppercase;">TAJUK KERTAS KERJA</h2>
+        
+        <h4>1.0 PENDAHULUAN</h4>
+        <p id="view-pendahuluan" style="text-align: justify;">-</p>
+
+        <h4>2.0 OBJEKTIF</h4>
+        <p id="view-objektif" style="white-space: pre-line;">-</p>
+
+        <h4>3.0 JAWATANKUASA PELAKSANA</h4>
+        <table>
+            <thead><tr><th>Jawatan</th><th>Nama</th></tr></thead>
+            <tbody id="ajk-preview-body"></tbody>
+        </table>
+
+        <h4>4.0 ANGGARAN PERBELANJAAN</h4>
+        <table>
+            <thead>
+                <tr><th>Bil</th><th>Perkara</th><th>Kuantiti</th><th>Harga (RM)</th><th>Jumlah (RM)</th></tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+            <tfoot>
+                <tr><th colspan="4" style="text-align:right">JUMLAH KESELURUHAN (RM)</th><th id="total-amount">0.00</th></tr>
+            </tfoot>
+        </table>
+
+        <div class="signature-section">
+            <div class="sig-box"><p>Disediakan oleh:</p><br><br>___________________<br><strong>(Setiausaha)</strong></div>
+            <div class="sig-box"><p>Disemak oleh:</p><br><br>___________________<br><strong>(Pengerusi)</strong></div>
+            <div class="sig-box"><p>Diluluskan oleh:</p><br><br>___________________<br><strong>(Penasihat)</strong></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- LOGIK BARIS DINAMIK (AJK & KEWANGAN) ---
+    function addAjkRow(jawatan = '', nama = '') {
+        const div = document.createElement('div');
+        div.className = 'input-row';
+        div.innerHTML = `<input type="text" class="col-jawatan" placeholder="Jawatan" value="${jawatan}" oninput="updatePreview()">
+                         <input type="text" class="col-nama" placeholder="Nama" value="${nama}" oninput="updatePreview()">
+                         <button class="btn-danger" onclick="this.parentElement.remove(); updatePreview();">X</button>`;
+        document.getElementById('ajk-inputs').appendChild(div);
+        updatePreview();
+    }
+
+    function addRow(item = '', qty = 0, price = 0) {
+        const div = document.createElement('div');
+        div.className = 'input-row';
+        div.innerHTML = `<input type="text" class="col-item" placeholder="Perkara" value="${item}" oninput="updatePreview()">
+                         <input type="number" class="col-qty" placeholder="Qty" value="${qty}" oninput="updatePreview()">
+                         <input type="number" class="col-price" placeholder="RM" value="${price}" oninput="updatePreview()">
+                         <button class="btn-danger" onclick="this.parentElement.remove(); updatePreview();">X</button>`;
+        document.getElementById('items-container').appendChild(div);
+        updatePreview();
+    }
+
+    // --- KEMASKINI PAPARAN ---
+    function updatePreview() {
+        document.getElementById('view-tajuk').innerText = document.getElementById('in-tajuk').value || "TAJUK KERTAS KERJA";
+        document.getElementById('view-pendahuluan').innerText = document.getElementById('in-pendahuluan').value || "-";
+        document.getElementById('view-objektif').innerText = document.getElementById('in-objektif').value || "-";
+
+        // Update AJK Table
+        const ajkPreview = document.getElementById('ajk-preview-body');
+        ajkPreview.innerHTML = '';
+        document.querySelectorAll('#ajk-inputs .input-row').forEach(row => {
+            ajkPreview.innerHTML += `<tr><td>${row.querySelector('.col-jawatan').value}</td><td>${row.querySelector('.col-nama').value}</td></tr>`;
+        });
+
+        // Update Finance Table
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = '';
+        let grandTotal = 0;
+        document.querySelectorAll('#items-container .input-row').forEach((row, i) => {
+            const qty = parseFloat(row.querySelector('.col-qty').value) || 0;
+            const price = parseFloat(row.querySelector('.col-price').value) || 0;
+            const total = qty * price;
+            grandTotal += total;
+            tableBody.innerHTML += `<tr><td>${i+1}</td><td>${row.querySelector('.col-item').value}</td><td>${qty}</td><td>${price.toFixed(2)}</td><td>${total.toFixed(2)}</td></tr>`;
+        });
+        document.getElementById('total-amount').innerText = grandTotal.toFixed(2);
+    }
+
+    // --- TEMPLATE & JSON LOGIK ---
+    function saveTemplate() {
+        const name = document.getElementById('template-name').value || 'Tanpa Nama';
+        const data = { name, tajuk: document.getElementById('in-tajuk').value, pendahuluan: document.getElementById('in-pendahuluan').value, objektif: document.getElementById('in-objektif').value, ajk: Array.from(document.querySelectorAll('#ajk-inputs .input-row')).map(r=>({j:r.querySelector('.col-jawatan').value, n:r.querySelector('.col-nama').value})), items: Array.from(document.querySelectorAll('#items-container .input-row')).map(r=>({i:r.querySelector('.col-item').value, q:r.querySelector('.col-qty').value, p:r.querySelector('.col-price').value})) };
+        let templates = JSON.parse(localStorage.getItem('kertasKerjaTemplates')) || [];
+        templates.push(data);
+        localStorage.setItem('kertasKerjaTemplates', JSON.stringify(templates));
+        renderList();
+    }
+
+    function renderList() {
+        const list = document.getElementById('template-list');
+        const ts = JSON.parse(localStorage.getItem('kertasKerjaTemplates')) || [];
+        list.innerHTML = '<option value="">-- Pilih Template --</option>' + ts.map((t, i) => `<option value="${i}">${t.name}</option>`).join('');
+    }
+
+    function loadTemplate(idx) {
+        if (idx==="") return;
+        const d = JSON.parse(localStorage.getItem('kertasKerjaTemplates'))[idx];
+        document.getElementById('in-tajuk').value = d.tajuk;
+        document.getElementById('in-pendahuluan').value = d.pendahuluan;
+        document.getElementById('in-objektif').value = d.objektif;
+        document.getElementById('ajk-inputs').innerHTML = ''; d.ajk.forEach(a => addAjkRow(a.j, a.n));
+        document.getElementById('items-container').innerHTML = ''; d.items.forEach(i => addRow(i.i, i.q, i.p));
+        updatePreview();
+    }
+
+    function exportJSON() {
+        const blob = new Blob([JSON.stringify({tajuk: document.getElementById('in-tajuk').value, pendahuluan: document.getElementById('in-pendahuluan').value, objektif: document.getElementById('in-objektif').value, ajk: Array.from(document.querySelectorAll('#ajk-inputs .input-row')).map(r=>({j:r.querySelector('.col-jawatan').value, n:r.querySelector('.col-nama').value})), items: Array.from(document.querySelectorAll('#items-container .input-row')).map(r=>({i:r.querySelector('.col-item').value, q:r.querySelector('.col-qty').value, p:r.querySelector('.col-price').value}))})], {type: "application/json"});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "kertas_kerja.json"; a.click();
+    }
+
+    function importJSON(e) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const d = JSON.parse(e.target.result);
+            document.getElementById('in-tajuk').value = d.tajuk;
+            document.getElementById('ajk-inputs').innerHTML = ''; d.ajk.forEach(a => addAjkRow(a.j, a.n));
+            document.getElementById('items-container').innerHTML = ''; d.items.forEach(i => addRow(i.i, i.q, i.p));
+            updatePreview();
+        };
+        reader.readAsText(e.target.files[0]);
+    }
+
+    function padamSemua() { if(confirm("Padam semua input?")) location.reload(); }
+
+    window.onload = () => { renderList(); addAjkRow(); addRow(); };
+</script>
+</body>
+</html>
