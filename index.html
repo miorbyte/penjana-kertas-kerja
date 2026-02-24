@@ -5,7 +5,7 @@
     <title>Sistem Penjana Kertas Kerja Profesional</title>
     <style>
         :root { --p: #2563eb; --s: #64748b; --d: #ef4444; --g: #22c55e; }
-        body { font-family: 'Arial', sans-serif; background: #f8fafc; margin: 0; padding: 20px; line-height: 1.5; color: #1e293b; }
+        body { font-family: 'Arial', sans-serif; background: #f8fafc; margin: 0; padding: 20px; color: #1e293b; }
         .container { max-width: 950px; margin: auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
         /* Bahagian Input (Editor) */
@@ -21,7 +21,7 @@
         th { background: #f2f2f2; }
         
         /* Butang */
-        .btn { padding: 10px 18px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; margin: 5px 2px; color: white; transition: 0.3s; }
+        .btn { padding: 10px 18px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; margin: 5px 2px; color: white; }
         .btn-add { background: var(--g); font-size: 0.85em; }
         .btn-save-main { background: var(--p); width: 100%; margin-top: 30px; padding: 15px; font-size: 1.2em; }
         .btn-file { background: var(--s); font-size: 0.9em; }
@@ -32,19 +32,17 @@
         @media print {
             .no-print { display: none; }
             body { background: white; padding: 0; }
-            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 10px; }
-            h4 { border-bottom: 1px solid #000; padding-bottom: 2px; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; }
         }
         
         .signature-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-top: 60px; text-align: center; }
-        .sig-box { min-height: 120px; display: flex; flex-direction: column; justify-content: space-between; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="no-print">
-        <h1>🛠️ Editor Kertas Kerja Profesional</h1>
+        <h1>🛠️ Editor Kertas Kerja</h1>
         
         <div style="background: #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #cbd5e1;">
             <p style="margin: 0 0 10px 0; font-weight: bold;">📂 Pengurusan Fail & Projek:</p>
@@ -55,19 +53,19 @@
         </div>
 
         <label>Tajuk Kertas Kerja / Program:</label>
-        <input type="text" id="in-tajuk" oninput="kemaskini()" placeholder="Contoh: KEM KEPIMPINAN DAN MOTIVASI PELAJAR 2026">
+        <input type="text" id="in-tajuk" oninput="kemaskini()" placeholder="Contoh: PROGRAM KECEMERLANGAN AKADEMIK">
         
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
-            <div><label>Tarikh:</label><input type="text" id="in-tarikh" oninput="kemaskini()" placeholder="cth: 20 - 22 Jun 2026"></div>
-            <div><label>Masa:</label><input type="text" id="in-masa" oninput="kemaskini()" placeholder="cth: Sepanjang hari"></div>
-            <div><label>Tempat:</label><input type="text" id="in-tempat" oninput="kemaskini()" placeholder="cth: Pusat Kokurikulum"></div>
+            <div><label>Tarikh:</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
+            <div><label>Masa:</label><input type="text" id="in-masa" oninput="kemaskini()"></div>
+            <div><label>Tempat:</label><input type="text" id="in-tempat" oninput="kemaskini()"></div>
         </div>
 
         <label>1.0 Pendahuluan:</label>
-        <textarea id="in-pend" oninput="kemaskini()" rows="3" placeholder="Nyatakan latar belakang program..."></textarea>
+        <textarea id="in-pend" oninput="kemaskini()" rows="3"></textarea>
         
         <label>2.0 Objektif:</label>
-        <textarea id="in-obj" oninput="kemaskini()" rows="3" placeholder="1. Meningkatkan kemahiran...&#10;2. Memupuk kerjasama..."></textarea>
+        <textarea id="in-obj" oninput="kemaskini()" rows="3"></textarea>
 
         <div class="section-header">🕒 3.0 Tentatif Program</div>
         <div id="tentatif-inputs" style="margin-top:10px;"></div>
@@ -106,7 +104,7 @@
 
         <h4>4.0 TENTATIF PROGRAM</h4>
         <table>
-            <thead><tr><th style="width:25%">Masa</th><th>Aktiviti / Perkara</th></tr></thead>
+            <thead><tr><th style="width:25%">Masa</th><th>Aktiviti</th></tr></thead>
             <tbody id="v-tentatif"></tbody>
         </table>
 
@@ -117,39 +115,33 @@
         </table>
 
         <h4>6.0 IMPLIKASI KEWANGAN</h4>
-        
         <p><strong>6.1 SUMBER KEWANGAN</strong></p>
         <table>
-            <thead><tr><th style="width:10%">Bil</th><th>Punca Dana / Sumber</th><th>Jumlah (RM)</th></tr></thead>
+            <thead><tr><th style="width:10%">Bil</th><th>Sumber</th><th>Jumlah (RM)</th></tr></thead>
             <tbody id="v-sumber"></tbody>
             <tfoot><tr><th colspan="2" style="text-align:right">JUMLAH SUMBER (RM)</th><th id="v-total-sumber">0.00</th></tr></tfoot>
         </table>
 
         <p><strong>6.2 ANGGARAN PERBELANJAAN</strong></p>
         <table>
-            <thead><tr><th style="width:10%">Bil</th><th>Perkara</th><th>Kuantiti</th><th>Harga (RM)</th><th>Jumlah (RM)</th></tr></thead>
+            <thead><tr><th style="width:10%">Bil</th><th>Perkara</th><th>Qty</th><th>Harga (RM)</th><th>Jumlah (RM)</th></tr></thead>
             <tbody id="v-kewangan"></tbody>
             <tfoot><tr><th colspan="4" style="text-align:right">JUMLAH PERBELANJAAN (RM)</th><th id="v-total-belanja">0.00</th></tr></tfoot>
         </table>
 
-        <h4>7.0 PENUTUP</h4>
-        <p style="text-align: justify;">Diharapkan agar program yang dirancang ini dapat dilaksanakan dengan jayanya serta mencapai objektif yang telah digariskan. Segala sokongan dan kerjasama daripada semua pihak didahului dengan ucapan terima kasih.</p>
-
         <div class="signature-grid">
-            <div class="sig-box"><div>Disediakan oleh:</div><br><br>________________<br><strong>(Setiausaha)</strong></div>
-            <div class="sig-box"><div>Disemak oleh:</div><br><br>________________<br><strong>(Pengerusi)</strong></div>
-            <div class="sig-box"><div>Diluluskan oleh:</div><br><br>________________<br><strong>(Penasihat)</strong></div>
+            <div>Disediakan oleh:<br><br><br>________________<br><strong>(Setiausaha)</strong></div>
+            <div>Disemak oleh:<br><br><br>________________<br><strong>(Pengerusi)</strong></div>
+            <div>Diluluskan oleh:<br><br><br>________________<br><strong>(Penasihat)</strong></div>
         </div>
     </div>
 </div>
 
 <script>
-    // FUNGSI TAMBAH BARIS DINAMIK
     function tambahBaris(jenis, d1 = '', d2 = '', d3 = '') {
         const container = document.getElementById(jenis + '-inputs');
         const div = document.createElement('div');
         div.className = 'input-row';
-        
         if(jenis === 'tentatif') {
             div.innerHTML = `<input type="text" class="t-m" placeholder="Masa" value="${d1}" oninput="kemaskini()">
                              <input type="text" class="t-a" placeholder="Aktiviti" value="${d2}" oninput="kemaskini()">`;
@@ -161,16 +153,14 @@
                              <input type="number" class="s-a" placeholder="RM" value="${d2}" oninput="kemaskini()">`;
         } else {
             div.innerHTML = `<input type="text" class="k-i" placeholder="Item" value="${d1}" oninput="kemaskini()">
-                             <input type="number" class="k-q" placeholder="Bil" value="${d2}" oninput="kemaskini()">
-                             <input type="number" class="k-p" placeholder="RM Seunit" value="${d3}" oninput="kemaskini()">`;
+                             <input type="number" class="k-q" placeholder="Qty" value="${d2}" oninput="kemaskini()">
+                             <input type="number" class="k-p" placeholder="RM" value="${d3}" oninput="kemaskini()">`;
         }
-        
         div.innerHTML += `<button class="btn-danger" onclick="this.parentElement.remove(); kemaskini();" style="padding:5px 10px; border:none; border-radius:4px; cursor:pointer;">X</button>`;
         container.appendChild(div);
         kemaskini();
     }
 
-    // FUNGSI KEMASKINI PAPARAN (PREVIEW)
     function kemaskini() {
         document.getElementById('v-tajuk').innerText = document.getElementById('in-tajuk').value || "TAJUK PROGRAM";
         document.getElementById('v-tarikh').innerText = document.getElementById('in-tarikh').value || "-";
@@ -179,41 +169,31 @@
         document.getElementById('v-pend').innerText = document.getElementById('in-pend').value || "-";
         document.getElementById('v-obj').innerText = document.getElementById('in-obj').value || "-";
 
-        // Update Tentatif
-        const vTentatif = document.getElementById('v-tentatif'); vTentatif.innerHTML = '';
-        document.querySelectorAll('#tentatif-inputs .input-row').forEach(r => {
-            vTentatif.innerHTML += `<tr><td>${r.querySelector('.t-m').value}</td><td>${r.querySelector('.t-a').value}</td></tr>`;
-        });
+        const setTable = (inClass, targetId, rowGen) => {
+            const t = document.getElementById(targetId); t.innerHTML = '';
+            document.querySelectorAll(inClass).forEach((r, i) => t.innerHTML += rowGen(r, i));
+        };
 
-        // Update AJK
-        const vAjk = document.getElementById('v-ajk'); vAjk.innerHTML = '';
-        document.querySelectorAll('#ajk-inputs .input-row').forEach(r => {
-            vAjk.innerHTML += `<tr><td>${r.querySelector('.a-j').value}</td><td>${r.querySelector('.a-n').value}</td></tr>`;
-        });
-
-        // Update Sumber Kewangan
-        const vSumber = document.getElementById('v-sumber'); vSumber.innerHTML = '';
+        setTable('#tentatif-inputs .input-row', 'v-tentatif', r => `<tr><td>${r.querySelector('.t-m').value}</td><td>${r.querySelector('.t-a').value}</td></tr>`);
+        setTable('#ajk-inputs .input-row', 'v-ajk', r => `<tr><td>${r.querySelector('.a-j').value}</td><td>${r.querySelector('.a-n').value}</td></tr>`);
+        
         let totalS = 0;
-        document.querySelectorAll('#sumber-inputs .input-row').forEach((r, i) => {
-            const amt = parseFloat(r.querySelector('.s-a').value) || 0;
-            totalS += amt;
-            vSumber.innerHTML += `<tr><td>${i+1}</td><td>${r.querySelector('.s-i').value}</td><td>${amt.toFixed(2)}</td></tr>`;
+        setTable('#sumber-inputs .input-row', 'v-sumber', (r, i) => {
+            const a = parseFloat(r.querySelector('.s-a').value) || 0; totalS += a;
+            return `<tr><td>${i+1}</td><td>${r.querySelector('.s-i').value}</td><td>${a.toFixed(2)}</td></tr>`;
         });
         document.getElementById('v-total-sumber').innerText = totalS.toFixed(2);
 
-        // Update Perbelanjaan
-        const vKewangan = document.getElementById('v-kewangan'); vKewangan.innerHTML = '';
         let totalB = 0;
-        document.querySelectorAll('#kewangan-inputs .input-row').forEach((r, i) => {
+        setTable('#kewangan-inputs .input-row', 'v-kewangan', (r, i) => {
             const q = parseFloat(r.querySelector('.k-q').value) || 0;
             const p = parseFloat(r.querySelector('.k-p').value) || 0;
             const t = q * p; totalB += t;
-            vKewangan.innerHTML += `<tr><td>${i+1}</td><td>${r.querySelector('.k-i').value}</td><td>${q}</td><td>${p.toFixed(2)}</td><td>${t.toFixed(2)}</td></tr>`;
+            return `<tr><td>${i+1}</td><td>${r.querySelector('.k-i').value}</td><td>${q}</td><td>${p.toFixed(2)}</td><td>${t.toFixed(2)}</td></tr>`;
         });
         document.getElementById('v-total-belanja').innerText = totalB.toFixed(2);
     }
 
-    // FUNGSI FAIL (SAVE/EXPORT/IMPORT)
     function getData() {
         return {
             t: document.getElementById('in-tajuk').value, d: document.getElementById('in-tarikh').value,
@@ -226,25 +206,17 @@
         };
     }
 
-    function saveLokal() {
-        localStorage.setItem('kk_pro_v3', JSON.stringify(getData()));
-        alert('Draf berjaya disimpan dalam browser!');
-    }
+    function saveLokal() { localStorage.setItem('kk_vFinal', JSON.stringify(getData())); alert('Draf disimpan!'); }
 
     function exportJSON() {
-        const d = getData();
-        const blob = new Blob([JSON.stringify(d, null, 2)], {type: "application/json"});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        const d = getData(); const b = new Blob([JSON.stringify(d, null, 2)], {type: "application/json"});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(b);
         a.download = "Projek_" + (d.t || "KertasKerja") + ".json"; a.click();
     }
 
     function importJSON(e) {
         const reader = new FileReader();
-        reader.onload = (event) => {
-            const d = JSON.parse(event.target.result);
-            isiBorang(d);
-            kemaskini();
-        };
+        reader.onload = (ev) => { const d = JSON.parse(ev.target.result); isiBorang(d); kemaskini(); };
         reader.readAsText(e.target.files[0]);
     }
 
@@ -264,7 +236,7 @@
     function padamData() { if(confirm("Kosongkan borang?")) location.reload(); }
 
     window.onload = () => {
-        const s = localStorage.getItem('kk_pro_v3');
+        const s = localStorage.getItem('kk_vFinal');
         if(s) { isiBorang(JSON.parse(s)); kemaskini(); }
         else { tambahBaris('tentatif'); tambahBaris('ajk'); tambahBaris('sumber'); tambahBaris('kewangan'); }
     };
