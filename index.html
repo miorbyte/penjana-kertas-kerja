@@ -2,39 +2,242 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Penjana Kertas Kerja Pintar</title>
     <style>
-        :root { --primary: #2563eb; --secondary: #64748b; --success: #16a34a; --danger: #dc2626; --warning: #d97706; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; color: #1e293b; }
-        .container { max-width: 1000px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        :root { --p: #2563eb; --s: #64748b; --d: #ef4444; --g: #22c55e; }
+        body { font-family: 'Arial', sans-serif; background: #f8fafc; margin: 0; padding: 20px; line-height: 1.5; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
-        /* Dashboard Input */
-        .no-print { background: #f8fafc; padding: 25px; border-radius: 8px; margin-bottom: 40px; border: 1px solid #e2e8f0; }
-        h1, h2 { color: var(--primary); margin-top: 0; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        label { font-weight: 600; display: block; margin-top: 15px; font-size: 0.9em; }
-        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; margin-top: 5px; }
+        /* Bahagian Input (Editor) */
+        .no-print { background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #cbd5e1; }
+        .section-header { background: var(--p); color: white; padding: 8px 15px; border-radius: 4px; margin-top: 25px; display: flex; justify-content: space-between; align-items: center; }
         
-        /* Buttons */
-        .btn-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-        .btn { padding: 10px 18px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-success { background: var(--success); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-warning { background: var(--warning); color: white; }
-        .btn-secondary { background: var(--secondary); color: white; }
+        label { font-weight: bold; display: block; margin-top: 10px; font-size: 0.9em; }
+        input, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         
-        /* Dynamic Rows */
-        .input-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-        
-        /* Table Style */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        /* Jadual */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #000; padding: 8px; text-align: left; }
-        th { background: #f1f5f9; }
+        th { background: #f2f2f2; }
+        
+        /* Butang */
+        .btn { padding: 8px 15px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; margin: 5px 2px; color: white; transition: 0.3s; }
+        .btn-add { background: var(--g); font-size: 0.8em; }
+        .btn-save-main { background: var(--p); width: 100%; margin-top: 20px; padding: 15px; font-size: 1.1em; }
+        .btn-file { background: var(--s); font-size: 0.9em; }
+        .btn-danger { background: var(--d); }
 
-        /* Print Settings */
+        .input-row { display: flex; gap: 5px; margin-bottom: 5px; }
+
         @media print {
+            .no-print { display: none; }
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
+        }
+        .signature-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 50px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="no-print">
+        <h1>📑 Editor Kertas Kerja</h1>
+        
+        <div style="background: #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="margin: 0 0 10px 0; font-weight: bold;">💾 Pengurusan Fail Projek:</p>
+            <button class="btn btn-file" onclick="exportJSON()">📤 Simpan Fail Ke Komputer</button>
+            <button class="btn btn-file" onclick="document.getElementById('importFile').click()">📥 Buka Fail Dari Komputer</button>
+            <input type="file" id="importFile" style="display:none" onchange="importJSON(event)">
+            <button class="btn btn-danger" style="float: right;" onclick="padamData()">🗑️ Kosongkan Semua</button>
+        </div>
+
+        <label>Tajuk Program:</label>
+        <input type="text" id="in-tajuk" oninput="kemaskini()" placeholder="Contoh: PROGRAM KECEMERLANGAN AKADEMIK 2026">
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+            <div><label>Tarikh:</label><input type="text" id="in-tarikh" oninput="kemaskini()" placeholder="cth: 15 Mei 2026"></div>
+            <div><label>Masa:</label><input type="text" id="in-masa" oninput="kemaskini()" placeholder="cth: 8.00 Pagi - 2.00 Petang"></div>
+            <div><label>Tempat:</label><input type="text" id="in-tempat" oninput="kemaskini()" placeholder="cth: Aula Perdana"></div>
+        </div>
+
+        <label>Pendahuluan:</label>
+        <textarea id="in-pend" oninput="kemaskini()" rows="2"></textarea>
+        
+        <label>Objektif:</label>
+        <textarea id="in-obj" oninput="kemaskini()" rows="2"></textarea>
+
+        <div class="section-header"><span>🕒 Tentatif Program</span></div>
+        <div id="tentatif-inputs" style="margin-top:10px;"></div>
+        <button class="btn btn-add" onclick="tambahBaris('tentatif')">+ Tambah Slot Masa</button>
+
+        <div class="section-header"><span>👥 Senarai AJK</span></div>
+        <div id="ajk-inputs" style="margin-top:10px;"></div>
+        <button class="btn btn-add" onclick="tambahBaris('ajk')">+ Tambah Nama AJK</button>
+
+        <div class="section-header"><span>💰 Anggaran Kewangan</span></div>
+        <div id="kewangan-inputs" style="margin-top:10px;"></div>
+        <button class="btn btn-add" onclick="tambahBaris('kewangan')">+ Tambah Item Perbelanjaan</button>
+
+        <button class="btn btn-save-main" onclick="saveLokal()">✅ SIMPAN DRAF (DALAM BROWSER)</button>
+        <p style="text-align:center; font-size:12px; color:#666; margin-top:10px;">Selepas simpan, tekan <b>Ctrl + P</b> untuk cetak atau simpan sebagai PDF.</p>
+    </div>
+
+    <div id="preview-area">
+        <h2 id="v-tajuk" style="text-align:center; text-transform:uppercase; text-decoration:underline;">TAJUK PROGRAM</h2>
+        
+        <h4>1.0 PENDAHULUAN</h4>
+        <p id="v-pend" style="text-align: justify;">-</p>
+
+        <h4>2.0 OBJEKTIF</h4>
+        <p id="v-obj" style="white-space: pre-line;">-</p>
+
+        <h4>3.0 BUTIRAN PROGRAM</h4>
+        <table style="border:none;">
+            <tr style="border:none;"><td style="border:none; width:120px;"><strong>TARIKH</strong></td><td style="border:none;">: <span id="v-tarikh">-</span></td></tr>
+            <tr style="border:none;"><td style="border:none;"><strong>MASA</strong></td><td style="border:none;">: <span id="v-masa">-</span></td></tr>
+            <tr style="border:none;"><td style="border:none;"><strong>TEMPAT</strong></td><td style="border:none;">: <span id="v-tempat">-</span></td></tr>
+        </table>
+
+        <h4>4.0 TENTATIF PROGRAM</h4>
+        <table>
+            <thead><tr><th style="width:25%">Masa</th><th>Aktiviti / Perkara</th></tr></thead>
+            <tbody id="v-tentatif"></tbody>
+        </table>
+
+        <h4>5.0 JAWATANKUASA PELAKSANA</h4>
+        <table>
+            <thead><tr><th>Jawatan</th><th>Nama Kakitangan / Pelajar</th></tr></thead>
+            <tbody id="v-ajk"></tbody>
+        </table>
+
+        <h4>6.0 ANGGARAN KEWANGAN</h4>
+        <table>
+            <thead><tr><th>Bil</th><th>Perkara</th><th>Kuantiti</th><th>Harga (RM)</th><th>Jumlah (RM)</th></tr></thead>
+            <tbody id="v-kewangan"></tbody>
+            <tfoot><tr><th colspan="4" style="text-align:right">JUMLAH BESAR (RM)</th><th id="v-total">0.00</th></tr></tfoot>
+        </table>
+
+        <div class="signature-grid">
+            <div>Disediakan oleh:<br><br><br>________________<br><strong>(Setiausaha)</strong></div>
+            <div>Disemak oleh:<br><br><br>________________<br><strong>(Pengerusi)</strong></div>
+            <div>Diluluskan oleh:<br><br><br>________________<br><strong>(Penasihat)</strong></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // FUNGSI TAMBAH BARIS DINAMIK
+    function tambahBaris(jenis, d1 = '', d2 = '', d3 = '') {
+        const container = document.getElementById(jenis + '-inputs');
+        const div = document.createElement('div');
+        div.className = 'input-row';
+        
+        if(jenis === 'tentatif') {
+            div.innerHTML = `<input type="text" class="t-m" placeholder="Masa" value="${d1}" oninput="kemaskini()">
+                             <input type="text" class="t-a" placeholder="Aktiviti" value="${d2}" oninput="kemaskini()">`;
+        } else if(jenis === 'ajk') {
+            div.innerHTML = `<input type="text" class="a-j" placeholder="Jawatan" value="${d1}" oninput="kemaskini()">
+                             <input type="text" class="a-n" placeholder="Nama" value="${d2}" oninput="kemaskini()">`;
+        } else {
+            div.innerHTML = `<input type="text" class="k-i" placeholder="Item" value="${d1}" oninput="kemaskini()">
+                             <input type="number" class="k-q" placeholder="Bil" value="${d2}" oninput="kemaskini()">
+                             <input type="number" class="k-p" placeholder="RM" value="${d3}" oninput="kemaskini()">`;
+        }
+        
+        div.innerHTML += `<button onclick="this.parentElement.remove(); kemaskini();" style="background:red; color:white; border:none; border-radius:4px; cursor:pointer; padding:0 8px;">X</button>`;
+        container.appendChild(div);
+        kemaskini();
+    }
+
+    // FUNGSI UPDATE PRATINJAU
+    function kemaskini() {
+        document.getElementById('v-tajuk').innerText = document.getElementById('in-tajuk').value || "TAJUK PROGRAM";
+        document.getElementById('v-tarikh').innerText = document.getElementById('in-tarikh').value || "-";
+        document.getElementById('v-masa').innerText = document.getElementById('in-masa').value || "-";
+        document.getElementById('v-tempat').innerText = document.getElementById('in-tempat').value || "-";
+        document.getElementById('v-pend').innerText = document.getElementById('in-pend').value || "-";
+        document.getElementById('v-obj').innerText = document.getElementById('in-obj').value || "-";
+
+        // Update Jadual-Jadual
+        const updateTable = (inputClass, targetId, htmlGenerator) => {
+            const target = document.getElementById(targetId); target.innerHTML = '';
+            document.querySelectorAll(inputClass).forEach((row, i) => { target.innerHTML += htmlGenerator(row, i); });
+        };
+
+        updateTable('#tentatif-inputs .input-row', 'v-tentatif', r => `<tr><td>${r.querySelector('.t-m').value}</td><td>${r.querySelector('.t-a').value}</td></tr>`);
+        updateTable('#ajk-inputs .input-row', 'v-ajk', r => `<tr><td>${r.querySelector('.a-j').value}</td><td>${r.querySelector('.a-n').value}</td></tr>`);
+        
+        let total = 0;
+        updateTable('#kewangan-inputs .input-row', 'v-kewangan', (r, i) => {
+            const q = parseFloat(r.querySelector('.k-q').value) || 0;
+            const p = parseFloat(r.querySelector('.k-p').value) || 0;
+            const t = q * p; total += t;
+            return `<tr><td>${i+1}</td><td>${r.querySelector('.k-i').value}</td><td>${q}</td><td>${p.toFixed(2)}</td><td>${t.toFixed(2)}</td></tr>`;
+        });
+        document.getElementById('v-total').innerText = total.toFixed(2);
+    }
+
+    // FUNGSI SIMPAN & BUKA
+    function saveLokal() {
+        const data = getDataObj();
+        localStorage.setItem('kertasKerjaSimpanan', JSON.stringify(data));
+        alert('Draf berjaya disimpan dalam pelayar ini!');
+    }
+
+    function exportJSON() {
+        const data = getDataObj();
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = "Projek_" + (data.t || 'KertasKerja') + ".json";
+        a.click();
+    }
+
+    function importJSON(e) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const d = JSON.parse(event.target.result);
+            isiBorang(d);
+            kemaskini();
+            alert('Fail Projek Berjaya Dimuatkan!');
+        };
+        reader.readAsText(e.target.files[0]);
+    }
+
+    function getDataObj() {
+        return {
+            t: document.getElementById('in-tajuk').value, d: document.getElementById('in-tarikh').value,
+            m: document.getElementById('in-masa').value, l: document.getElementById('in-tempat').value,
+            p: document.getElementById('in-pend').value, o: document.getElementById('in-obj').value,
+            tentatif: Array.from(document.querySelectorAll('#tentatif-inputs .input-row')).map(r => ({m:r.querySelector('.t-m').value, a:r.querySelector('.t-a').value})),
+            ajk: Array.from(document.querySelectorAll('#ajk-inputs .input-row')).map(r => ({j:r.querySelector('.a-j').value, n:r.querySelector('.a-n').value})),
+            kew: Array.from(document.querySelectorAll('#kewangan-inputs .input-row')).map(r => ({i:r.querySelector('.k-i').value, q:r.querySelector('.k-q').value, p:r.querySelector('.k-p').value}))
+        };
+    }
+
+    function isiBorang(d) {
+        document.getElementById('in-tajuk').value = d.t || '';
+        document.getElementById('in-tarikh').value = d.d || '';
+        document.getElementById('in-masa').value = d.m || '';
+        document.getElementById('in-tempat').value = d.l || '';
+        document.getElementById('in-pend').value = d.p || '';
+        document.getElementById('in-obj').value = d.o || '';
+        document.getElementById('tentatif-inputs').innerHTML = ''; d.tentatif?.forEach(x => tambahBaris('tentatif', x.m, x.a));
+        document.getElementById('ajk-inputs').innerHTML = ''; d.ajk?.forEach(x => tambahBaris('ajk', x.j, x.n));
+        document.getElementById('kewangan-inputs').innerHTML = ''; d.kew?.forEach(x => tambahBaris('kewangan', x.i, x.q, x.p));
+    }
+
+    function padamData() { if(confirm("Amaran: Ini akan memadam semua input. Teruskan?")) location.reload(); }
+
+    window.onload = () => {
+        const saved = localStorage.getItem('kertasKerjaSimpanan');
+        if(saved) isiBorang(JSON.parse(saved));
+        else { tambahBaris('tentatif'); tambahBaris('ajk'); tambahBaris('kewangan'); }
+        kemaskini();
+    };
+</script>
+</body>
+</html>
+@media print {
             .no-print { display: none; }
             body { background: white; padding: 0; }
             .container { box-shadow: none; border: none; max-width: 100%; }
