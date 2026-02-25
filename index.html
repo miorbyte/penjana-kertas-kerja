@@ -2,9 +2,9 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Executive Document Builder V15.9</title>
+    <title>Executive Document Builder V16.0</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
         :root { --editor-bg: #f1f5f9; --accent: #0f172a; }
 
@@ -16,25 +16,25 @@
         /* EDITOR SIDE */
         .no-print {
             width: 45%; height: 100vh; background: var(--editor-bg);
-            padding: 25px; overflow-y: auto; border-right: 1px solid #94a3b8; box-sizing: border-box;
+            padding: 20px; overflow-y: auto; border-right: 1px solid #94a3b8; box-sizing: border-box;
         }
 
-        /* HEADER & BUTTONS */
-        .editor-header {
+        /* TOOLBAR TETAP DI ATAS */
+        .toolbar {
+            position: sticky; top: 0; z-index: 100;
             background: white; padding: 15px; border-radius: 10px;
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; border: 1px solid #e2e8f0;
+            margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .btn-tool {
-            padding: 8px 14px; border-radius: 6px; background: var(--accent); color: white;
-            border: none; cursor: pointer; font-size: 11px; font-weight: 700; transition: 0.2s;
+            padding: 8px 16px; border-radius: 6px; background: var(--accent); color: white;
+            border: none; cursor: pointer; font-size: 11px; font-weight: 700;
         }
-        .btn-tool:hover { opacity: 0.8; }
 
         .section-card {
             background: white; border-radius: 12px; padding: 20px;
-            margin-bottom: 25px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px; border: 1px solid #e2e8f0;
         }
 
         .section-h { 
@@ -43,13 +43,11 @@
         }
         .section-h::before { content: ""; width: 4px; height: 14px; background: var(--accent); margin-right: 8px; border-radius: 2px; }
 
-        /* GRID SYSTEM FIX */
-        .input-group { display: grid; grid-template-columns: 1.2fr 2.5fr 35px; gap: 10px; margin-bottom: 8px; align-items: end; }
+        /* GRID UNTUK TENTATIF, AJK & KEWANGAN */
+        .grid-layout { display: grid; grid-template-columns: 1.2fr 2.5fr 40px; gap: 10px; margin-bottom: 8px; align-items: end; }
         
         .sub-label { font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; }
-        
-        /* GERAKKAN LABEL 2 AKSARA KE KANAN */
-        .shift-right { padding-left: 1.5ch; } 
+        .shift-right { padding-left: 2ch; } /* Ganjak 2 aksara ke kanan */
 
         label { font-size: 11px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-transform: uppercase; }
 
@@ -63,7 +61,7 @@
             border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; color: #64748b; margin-top: 5px;
         }
 
-        .btn-del { background: #fee2e2; color: #ef4444; border: none; width: 35px; height: 38px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-del { background: #fee2e2; color: #ef4444; border: none; width: 40px; height: 38px; border-radius: 6px; cursor: pointer; font-weight: bold; }
 
         /* PREVIEW SIDE */
         #preview-container { width: 55%; height: 100vh; overflow-y: auto; display: flex; justify-content: center; padding: 40px 0; background: #475569; }
@@ -86,23 +84,28 @@
 <body>
 
 <div class="no-print">
-    <div class="editor-header">
-        <span style="font-weight: 800; color: var(--accent); font-size: 12px;">DOC ENGINE V15.9</span>
+    <div class="toolbar">
+        <span style="font-weight: 800; color: var(--accent);">DOC ENGINE V16.0</span>
         <div style="display:flex; gap:8px;">
-            <button class="btn-tool" onclick="exportJSON()">💾 SIMPAN FAIL</button>
-            <button class="btn-tool" style="background:#64748b;" onclick="document.getElementById('importFile').click()">📂 BUKA FAIL</button>
-            <input type="file" id="importFile" style="display:none" onchange="importJSON(event)">
+            <button class="btn-tool" onclick="exportData()">💾 SIMPAN</button>
+            <button class="btn-tool" style="background:#64748b;" onclick="document.getElementById('fileInput').click()">📂 BUKA</button>
+            <input type="file" id="fileInput" style="display:none" onchange="importData(event)">
         </div>
     </div>
 
     <div class="section-card">
-        <div class="section-h">1.0 Maklumat Utama</div>
-        <label>Tajuk Penuh</label>
+        <div class="section-h">1.0 Maklumat Asas</div>
+        <label>Tajuk Program</label>
         <textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
-        <div style="display:flex; gap:10px;">
-            <div style="flex:1;"><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
-            <div style="flex:1;"><label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()"></div>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
+            <div><label>Masa (Program)</label><input type="text" id="in-masa-asas" oninput="kemaskini()" placeholder="Cth: 8:00 Pagi"></div>
         </div>
+        
+        <label>Tempat</label>
+        <input type="text" id="in-tempat" oninput="kemaskini()">
+        
         <label>Penglibatan</label>
         <input type="text" id="in-penglibatan" oninput="kemaskini()">
     </div>
@@ -115,7 +118,7 @@
 
     <div class="section-card">
         <div class="section-h">3.0 Tentatif</div>
-        <div class="input-group" style="margin-bottom:0;">
+        <div class="grid-layout" style="margin-bottom:0;">
             <div class="sub-label">Masa</div>
             <div class="sub-label shift-right">Aktiviti / Pengisian</div>
         </div>
@@ -125,7 +128,7 @@
 
     <div class="section-card">
         <div class="section-h">4.0 Jawatankuasa</div>
-        <div class="input-group" style="margin-bottom:0;">
+        <div class="grid-layout" style="margin-bottom:0;">
             <div class="sub-label">Jawatan</div>
             <div class="sub-label shift-right">Nama Pegawai</div>
         </div>
@@ -136,7 +139,7 @@
     <div class="section-card">
         <div class="section-h">5.0 Kewangan</div>
         <label>Sumber Dana</label>
-        <div class="input-group" style="margin-bottom:0;">
+        <div class="grid-layout" style="margin-bottom:0;">
             <div class="sub-label">Punca</div>
             <div class="sub-label shift-right">Jumlah (RM)</div>
         </div>
@@ -144,12 +147,12 @@
         <button class="btn-add" onclick="tambah('sumber')">+ Tambah Sumber</button>
 
         <label style="margin-top:15px;">Anggaran Belanja</label>
-        <div class="input-group" style="margin-bottom:0;">
+        <div class="grid-layout" style="margin-bottom:0;">
             <div class="sub-label">Perkara</div>
             <div class="sub-label shift-right">Kos (RM)</div>
         </div>
         <div id="inputs-belanja"></div>
-        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Kos</button>
+        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Belanja</button>
     </div>
 
     <div class="section-card">
@@ -167,12 +170,13 @@
 
 <div id="preview-container">
     <div id="preview">
-        <div id="v-tajuk">KERTAS KERJA PROGRAM</div>
-        <h4>1.0 PENDAHULUAN</h4><p>Kertas kerja ini dikemukakan untuk memohon kelulusan bagi pelaksanaan program.</p>
+        <div id="v-tajuk">KERTAS KERJA</div>
+        <h4>1.0 PENDAHULUAN</h4><p>Kertas kerja ini dikemukakan untuk memohon pertimbangan bagi pelaksanaan program.</p>
         <h4>2.0 OBJEKTIF</h4><ol id="v-objektif"></ol>
         <h4>3.0 BUTIRAN PROGRAM</h4>
         <table style="border:none">
             <tr style="border:none"><td style="border:none; width:150px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
+            <tr style="border:none"><td style="border:none">MASA</td><td style="border:none">: <span id="v-masa-asas">-</span></td></tr>
             <tr style="border:none"><td style="border:none">TEMPAT</td><td style="border:none">: <span id="v-tempat">-</span></td></tr>
             <tr style="border:none"><td style="border:none">PENGLIBATAN</td><td style="border:none">: <span id="v-penglibatan">-</span></td></tr>
         </table>
@@ -197,10 +201,10 @@
 function tambah(jenis, v1='', v2='') {
     const container = document.getElementById('inputs-' + jenis);
     const div = document.createElement('div');
-    div.className = 'input-group';
+    div.className = 'grid-layout';
     
     if(jenis === 'objektif') {
-        div.style.gridTemplateColumns = "1fr 35px";
+        div.style.gridTemplateColumns = "1fr 40px";
         div.innerHTML = `<input type="text" placeholder="Masukkan objektif..." value="${v1}" oninput="kemaskini()">`;
     } else {
         div.innerHTML = `<input type="text" placeholder="..." value="${v1}" oninput="kemaskini()">
@@ -212,17 +216,22 @@ function tambah(jenis, v1='', v2='') {
 }
 
 function kemaskini() {
-    ['tajuk','tarikh','tempat','penglibatan'].forEach(f => { document.getElementById('v-'+f).innerText = (document.getElementById('in-'+f).value) || "-"; });
+    ['tajuk','tarikh','masa-asas','tempat','penglibatan'].forEach(f => { 
+        document.getElementById('v-'+f).innerText = (document.getElementById('in-'+f).value) || "-"; 
+    });
+
     const vObj = document.getElementById('v-objektif'); vObj.innerHTML = '';
     document.querySelectorAll('#inputs-objektif input').forEach(i => {
         if(i.value.trim()) { const li = document.createElement('li'); li.innerText = i.value; vObj.appendChild(li); }
     });
+
     for(let i=1; i<=3; i++) {
         document.getElementById(`v-s${i}n`).innerText = document.getElementById(`s${i}-n`).value.toUpperCase();
         document.getElementById(`v-s${i}j`).innerText = document.getElementById(`s${i}-j`).value;
     }
+
     const fillTable = (parentId, targetId, isFinance = false) => {
-        const rows = document.querySelectorAll(`#${parentId} .input-group`);
+        const rows = document.querySelectorAll(`#${parentId} .grid-layout`);
         const target = document.getElementById(targetId); target.innerHTML = '';
         rows.forEach((r, i) => {
             const ins = r.querySelectorAll('input');
@@ -237,10 +246,10 @@ function kemaskini() {
     fillTable('inputs-belanja', 'v-belanja', true);
 }
 
-function exportJSON() {
-    const getRows = (id) => Array.from(document.querySelectorAll(`#${id} .input-group`)).map(r => Array.from(r.querySelectorAll('input')).map(i => i.value));
+function exportData() {
+    const getRows = (id) => Array.from(document.querySelectorAll(`#${id} .grid-layout`)).map(r => Array.from(r.querySelectorAll('input')).map(i => i.value));
     const data = {
-        main: { tajuk: document.getElementById('in-tajuk').value, tarikh: document.getElementById('in-tarikh').value, tempat: document.getElementById('in-tempat').value, penglibatan: document.getElementById('in-penglibatan').value },
+        main: { tajuk: document.getElementById('in-tajuk').value, tarikh: document.getElementById('in-tarikh').value, masa_asas: document.getElementById('in-masa-asas').value, tempat: document.getElementById('in-tempat').value, penglibatan: document.getElementById('in-penglibatan').value },
         sigs: [1,2,3].map(i => [document.getElementById(`s${i}-n`).value, document.getElementById(`s${i}-j`).value]),
         obj: getRows('inputs-objektif'), tent: getRows('inputs-tentatif'), ajk: getRows('inputs-ajk'), sumb: getRows('inputs-sumber'), bel: getRows('inputs-belanja')
     };
@@ -248,11 +257,15 @@ function exportJSON() {
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Doc_Save.json'; a.click();
 }
 
-function importJSON(e) {
+function importData(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
         const d = JSON.parse(ev.target.result);
-        Object.keys(d.main).forEach(k => document.getElementById('in-'+k).value = d.main[k]);
+        document.getElementById('in-tajuk').value = d.main.tajuk;
+        document.getElementById('in-tarikh').value = d.main.tarikh;
+        document.getElementById('in-masa-asas').value = d.main.masa_asas;
+        document.getElementById('in-tempat').value = d.main.tempat;
+        document.getElementById('in-penglibatan').value = d.main.penglibatan;
         d.sigs.forEach((s, i) => { document.getElementById(`s${i+1}-n`).value = s[0]; document.getElementById(`s${i+1}-j`).value = s[1]; });
         const map = { obj: 'objektif', tent: 'tentatif', ajk: 'ajk', sumb: 'sumber', bel: 'belanja' };
         Object.keys(map).forEach(k => { document.getElementById('inputs-'+map[k]).innerHTML = ''; d[k].forEach(r => tambah(map[k], r[0], r[1])); });
