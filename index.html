@@ -2,7 +2,7 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Executive Proposal Builder V15.1</title>
+    <title>Executive Document Builder V15.2</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
@@ -47,7 +47,7 @@
         }
         .section-h::before { content: ""; width: 4px; height: 14px; background: var(--accent); margin-right: 8px; border-radius: 2px; }
 
-        label { font-size: 12px; font-weight: 600; color: #1e293b; display: block; margin-top: 10px; }
+        label { font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 12px; text-transform: uppercase; }
 
         input, textarea {
             width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1;
@@ -56,9 +56,8 @@
         }
         input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1); }
 
-        /* Custom heights for textareas */
-        #in-tajuk { height: 100px; font-weight: bold; } /* Panjangkan kotak tajuk */
-        #in-pend { height: 70px; } /* Kecilkan kotak pendahuluan */
+        #in-tajuk { height: 90px; font-weight: 600; line-height: 1.4; }
+        #in-pend { height: 60px; }
 
         .input-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
         .f-1 { flex: 1; } .f-2 { flex: 2.5; }
@@ -75,7 +74,7 @@
             width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
 
-        /* RIGHT PANEL: THE A4 PREVIEW */
+        /* RIGHT PANEL: PREVIEW */
         #preview-container {
             width: 55%; height: 100vh; overflow-y: auto;
             display: flex; justify-content: center; padding: 40px 0;
@@ -98,19 +97,19 @@
         
         h4 { font-size: 11pt; font-weight: bold; margin: 25px 0 10px 0; text-transform: uppercase; }
         p { line-height: 1.5; text-align: justify; margin: 0; }
-        ul { margin: 0; padding-left: 20px; }
+        ul { margin: 5px 0; padding-left: 25px; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #000; padding: 8px; vertical-align: top; }
-        th { background: #f2f2f2 !important; }
+        th { background: #f2f2f2 !important; font-weight: bold; }
 
-        .sig-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 60px; text-align: center; }
+        .sig-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 70px; text-align: center; }
         .sig-line { border-bottom: 1px solid #000; height: 50px; margin-bottom: 8px; }
 
         @media print {
             .no-print { display: none !important; }
             #preview-container { background: white; padding: 0; width: 100%; height: auto; overflow: visible; }
-            #preview { box-shadow: none; width: 100%; padding: 0; }
+            #preview { box-shadow: none; width: 100%; padding: 10mm; }
             body { overflow: visible; }
         }
     </style>
@@ -119,76 +118,77 @@
 
 <div class="no-print">
     <div class="editor-header">
-        <h2 style="margin:0; font-size:16px; color:var(--accent)">DOCUMENT BUILDER V15.1</h2>
+        <h2 style="margin:0; font-size:15px; color:var(--accent)">DOCUMENT ENGINE V15.2</h2>
         <div style="display:flex; gap:8px;">
-            <button onclick="exportJSON()" style="padding:6px 12px; border-radius:6px; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">💾 SIMPAN</button>
-            <button onclick="document.getElementById('importFile').click()" style="padding:6px 12px; border-radius:6px; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">📂 BUKA</button>
+            <button onclick="exportJSON()" style="padding:6px 12px; border-radius:6px; background:white; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">💾 SIMPAN</button>
+            <button onclick="document.getElementById('importFile').click()" style="padding:6px 12px; border-radius:6px; background:white; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">📂 BUKA</button>
             <input type="file" id="importFile" style="display:none" onchange="importJSON(event)">
         </div>
     </div>
 
     <div class="section-card">
         <div class="section-h">1.0 Maklumat Asas</div>
-        <label>Tajuk Kertas Kerja (Penuh)</label>
-        <textarea id="in-tajuk" oninput="kemaskini()" placeholder="Taip tajuk penuh di sini..."></textarea>
+        <label>Tajuk Penuh Program</label>
+        <textarea id="in-tajuk" oninput="kemaskini()" placeholder="Masukkan tajuk rasmi kertas kerja..."></textarea>
         
-        <div class="input-row" style="margin-top:10px">
-            <div class="f-1"><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
-            <div class="f-1"><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()"></div>
-            <div class="f-1"><label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()"></div>
+        <div class="input-row">
+            <div class="f-1"><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()" placeholder="Cth: 25 Mac 2024"></div>
+            <div class="f-1"><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()" placeholder="Cth: 8.00 Pagi"></div>
         </div>
-
-        <label style="margin-top:15px">Penglibatan / Kumpulan Sasar</label>
-        <input type="text" id="in-penglibatan" oninput="kemaskini()" placeholder="Contoh: 40 orang pelajar, 5 orang guru">
+        <div class="input-row">
+            <div class="f-1"><label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()" placeholder="Lokasi program..."></div>
+            <div class="f-1"><label>Penglibatan</label><input type="text" id="in-penglibatan" oninput="kemaskini()" placeholder="Cth: 100 Peserta"></div>
+        </div>
     </div>
 
     <div class="section-card">
         <div class="section-h">2.0 Kandungan Program</div>
-        <label>Pendahuluan (Ringkas)</label>
-        <textarea id="in-pend" oninput="kemaskini()" placeholder="Tujuan utama program..."></textarea>
+        <label>Pendahuluan</label>
+        <textarea id="in-pend" oninput="kemaskini()" placeholder="Tujuan ringkas program..."></textarea>
         
-        <label style="margin-top:15px">Objektif (Satu per satu)</label>
+        <label>Objektif Program</label>
         <div id="inputs-objektif"></div>
-        <button class="btn-add" onclick="tambah('objektif')">+ Tambah Objektif</button>
+        <button class="btn-add" onclick="tambah('objektif')">+ Tambah Item Objektif</button>
     </div>
 
     <div class="section-card">
-        <div class="section-h">3.0 Pelaksanaan</div>
+        <div class="section-h">3.0 Jadual & Pelaksana</div>
         <label>Tentatif Program</label>
         <div id="inputs-tentatif"></div>
-        <button class="btn-add" onclick="tambah('tentatif')">+ Tambah Slot Masa</button>
+        <button class="btn-add" onclick="tambah('tentatif')">+ Tambah Baris Tentatif</button>
 
-        <label style="margin-top:15px">Jawatankuasa</label>
+        <label style="margin-top:20px">Jawatankuasa Pelaksana</label>
         <div id="inputs-ajk"></div>
-        <button class="btn-add" onclick="tambah('ajk')">+ Tambah AJK</button>
+        <button class="btn-add" onclick="tambah('ajk')">+ Tambah Baris AJK</button>
     </div>
 
     <div class="section-card">
         <div class="section-h">4.0 Kewangan</div>
         <label>Sumber Dana</label>
         <div id="inputs-sumber"></div>
-        <button class="btn-add" onclick="tambah('sumber')">+ Tambah Sumber</button>
+        <button class="btn-add" onclick="tambah('sumber')">+ Tambah Baris Sumber</button>
 
-        <label style="margin-top:15px">Anggaran Perbelanjaan</label>
+        <label style="margin-top:20px">Anggaran Perbelanjaan</label>
         <div id="inputs-belanja"></div>
-        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Kos</button>
+        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Baris Kos</button>
     </div>
 
     <div class="section-card">
-        <div class="section-h">5.0 Pengesahan</div>
+        <div class="section-h">5.0 Tandatangan</div>
+        <label>Nama & Jawatan (Penyedia / Penyemak / Pelulus)</label>
         <div class="input-row">
-            <input type="text" id="s1-n" placeholder="Nama Penyedia" oninput="kemaskini()">
-            <input type="text" id="s2-n" placeholder="Nama Penyemak" oninput="kemaskini()">
-            <input type="text" id="s3-n" placeholder="Nama Pelulus" oninput="kemaskini()">
+            <input type="text" id="s1-n" placeholder="Nama 1" oninput="kemaskini()">
+            <input type="text" id="s2-n" placeholder="Nama 2" oninput="kemaskini()">
+            <input type="text" id="s3-n" placeholder="Nama 3" oninput="kemaskini()">
         </div>
         <div class="input-row">
-            <input type="text" id="s1-j" placeholder="Jawatan" oninput="kemaskini()">
-            <input type="text" id="s2-j" placeholder="Jawatan" oninput="kemaskini()">
-            <input type="text" id="s3-j" placeholder="Jawatan" oninput="kemaskini()">
+            <input type="text" id="s1-j" placeholder="Jawatan 1" oninput="kemaskini()">
+            <input type="text" id="s2-j" placeholder="Jawatan 2" oninput="kemaskini()">
+            <input type="text" id="s3-j" placeholder="Jawatan 3" oninput="kemaskini()">
         </div>
     </div>
 
-    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-bottom:50px;">📥 CETAK PDF RASMI</button>
+    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-bottom:50px; font-size:14px;">🖨️ CETAK KE PDF (Arial 11pt)</button>
 </div>
 
 <div id="preview-container">
@@ -201,9 +201,9 @@
         <h4>2.0 OBJEKTIF</h4>
         <ul id="v-objektif"></ul>
 
-        <h4>3.0 MAKLUMAT PROGRAM</h4>
+        <h4>3.0 BUTIRAN PROGRAM</h4>
         <table style="border:none">
-            <tr style="border:none"><td style="border:none; width:150px; padding:2px">TARIKH</td><td style="border:none; padding:2px">: <span id="v-tarikh">-</span></td></tr>
+            <tr style="border:none"><td style="border:none; width:140px; padding:2px">TARIKH</td><td style="border:none; padding:2px">: <span id="v-tarikh">-</span></td></tr>
             <tr style="border:none"><td style="border:none; padding:2px">MASA</td><td style="border:none; padding:2px">: <span id="v-masa">-</span></td></tr>
             <tr style="border:none"><td style="border:none; padding:2px">TEMPAT</td><td style="border:none; padding:2px">: <span id="v-tempat">-</span></td></tr>
             <tr style="border:none"><td style="border:none; padding:2px">PENGLIBATAN</td><td style="border:none; padding:2px">: <span id="v-penglibatan">-</span></td></tr>
@@ -211,7 +211,7 @@
 
         <h4>4.0 TENTATIF PROGRAM</h4>
         <table>
-            <thead><tr><th width="150">MASA</th><th>AKTIVITI</th></tr></thead>
+            <thead><tr><th width="150">MASA</th><th>AKTIVITI / PENGISIAN</th></tr></thead>
             <tbody id="v-tentatif"></tbody>
         </table>
 
@@ -224,13 +224,13 @@
         <h4>6.0 IMPLIKASI KEWANGAN</h4>
         <p style="font-weight:bold">6.1 SUMBER KEWANGAN</p>
         <table>
-            <thead><tr><th width="40">BIL</th><th>PERINCIAN</th><th width="120">JUMLAH (RM)</th></tr></thead>
+            <thead><tr><th width="40">BIL</th><th>PERINCIAN SUMBER</th><th width="120">JUMLAH (RM)</th></tr></thead>
             <tbody id="v-sumber"></tbody>
         </table>
 
         <p style="font-weight:bold; margin-top:15px">6.2 ANGGARAN PERBELANJAAN</p>
         <table>
-            <thead><tr><th width="40">BIL</th><th>ITEM / PERKARA</th><th width="120">KOS (RM)</th></tr></thead>
+            <thead><tr><th width="40">BIL</th><th>ITEM PERBELANJAAN</th><th width="120">KOS (RM)</th></tr></thead>
             <tbody id="v-belanja"></tbody>
         </table>
 
@@ -249,10 +249,16 @@ function tambah(jenis, v1='', v2='') {
     div.className = 'input-row';
     
     if(jenis === 'objektif') {
-        div.innerHTML = `<input type="text" style="flex:1" placeholder="Isi objektif..." value="${v1}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" style="flex:1" placeholder="Masukkan objektif program..." value="${v1}" oninput="kemaskini()">`;
+    } else if (jenis === 'tentatif') {
+        div.innerHTML = `<input type="text" class="f-1" placeholder="Masa" value="${v1}" oninput="kemaskini()">
+                         <input type="text" class="f-2" placeholder="Aktiviti" value="${v2}" oninput="kemaskini()">`;
+    } else if (jenis === 'ajk') {
+        div.innerHTML = `<input type="text" class="f-1" placeholder="Jawatan" value="${v1}" oninput="kemaskini()">
+                         <input type="text" class="f-2" placeholder="Nama Pegawai" value="${v2}" oninput="kemaskini()">`;
     } else {
-        div.innerHTML = `<input type="text" class="f-1" placeholder="..." value="${v1}" oninput="kemaskini()">
-                         <input type="text" class="f-2" placeholder="..." value="${v2}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" class="f-1" placeholder="Perkara" value="${v1}" oninput="kemaskini()">
+                         <input type="text" class="f-2" placeholder="RM" value="${v2}" oninput="kemaskini()">`;
     }
 
     div.innerHTML += `<button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
@@ -265,7 +271,6 @@ function kemaskini() {
         document.getElementById('v-'+f).innerText = document.getElementById('in-'+f).value || "-";
     });
 
-    // Objektif Bullet Points
     const vObj = document.getElementById('v-objektif'); vObj.innerHTML = '';
     document.querySelectorAll('#inputs-objektif input').forEach(i => {
         if(i.value) vObj.innerHTML += `<li>${i.value}</li>`;
@@ -318,21 +323,16 @@ function exportJSON() {
         belanja: getRows('inputs-belanja')
     };
     const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); 
-    a.download = 'Doc_KertasKerja.json'; a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Doc_KertasKerja.json'; a.click();
 }
 
 function importJSON(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
         const d = JSON.parse(ev.target.result);
-        Object.keys(d.main).forEach(k => {
-            const el = document.getElementById('in-'+k);
-            if(el) el.value = d.main[k];
-        });
+        Object.keys(d.main).forEach(k => { if(document.getElementById('in-'+k)) document.getElementById('in-'+k).value = d.main[k]; });
         const sigFields = ['s1-n','s1-j','s2-n','s2-j','s3-n','s3-j'];
         sigFields.forEach((f, i) => document.getElementById(f).value = d.sig[i]);
-        
         ['objektif','tentatif','ajk','sumber','belanja'].forEach(type => {
             document.getElementById('inputs-'+type).innerHTML = '';
             d[type].forEach(row => tambah(type, row[0], row[1]));
