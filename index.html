@@ -2,163 +2,163 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doc Engine V17.8 - Mobile Ready</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Doc Engine V17.9 - Phone Expert</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         
-        * { box-sizing: border-box; }
-        body { background: #1e293b; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: #0f172a; font-family: 'Inter', sans-serif; margin: 0; padding: 0; color: #1e293b; }
 
-        /* HEADER / TOOLBAR */
-        .top-bar { 
-            position: sticky; top: 0; left: 0; right: 0; 
-            background: #0f172a; padding: 10px; display: flex; 
-            gap: 8px; z-index: 2000; flex-wrap: wrap;
-            justify-content: center; border-bottom: 2px solid #3b82f6;
+        /* MENU ATAS - MELEKAT (STICKY) */
+        .top-nav { 
+            position: sticky; top: 0; background: #1e293b; padding: 10px; 
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; 
+            z-index: 9999; border-bottom: 3px solid #3b82f6;
         }
-        .btn-action { 
-            flex: 1; min-width: 100px; padding: 10px; border: none; 
-            border-radius: 6px; cursor: pointer; font-weight: bold; 
-            font-size: 11px; color: white; text-transform: uppercase;
+        .btn-nav { padding: 12px 5px; border: none; border-radius: 8px; color: white; font-weight: 800; font-size: 11px; cursor: pointer; text-transform: uppercase; }
+
+        /* CONTAINER UTAMA */
+        .container { width: 100%; display: block; }
+
+        /* BAHAGIAN EDITOR (KIRI) */
+        .editor-section { 
+            width: 45%; float: left; background: #f1f5f9; 
+            padding: 20px; height: calc(100vh - 65px); overflow-y: auto; 
         }
 
-        /* MAIN LAYOUT */
-        .main-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px); }
+        /* BAHAGIAN PREVIEW (KANAN) */
+        .preview-section { 
+            width: 55%; float: right; background: #334155; 
+            padding: 40px 20px; height: calc(100vh - 65px); overflow-y: auto;
+        }
 
-        /* EDITOR SIDE (KIRI) */
-        .editor-side { width: 45%; height: 100%; overflow-y: auto; padding: 20px; background: #f1f5f9; }
-        
-        /* PREVIEW SIDE (KANAN) */
-        .preview-side { width: 55%; height: 100%; overflow-y: auto; padding: 40px 10px; background: #334155; display: flex; flex-direction: column; align-items: center; }
-
-        /* RESPONSIVE FIX (UNTUK PHONE) */
-        @media (max-width: 800px) {
-            .main-wrapper { flex-direction: column; height: auto; overflow: visible; }
-            .editor-side { width: 100%; height: auto; overflow: visible; }
-            .preview-side { width: 100%; height: auto; overflow: visible; padding: 20px 5px; }
+        /* KHAS UNTUK TELEFON (MOBILE ONLY) */
+        @media screen and (max-width: 800px) {
+            .editor-section, .preview-section { 
+                width: 100% !important; 
+                float: none !important; 
+                height: auto !important; 
+                overflow-y: visible !important;
+            }
+            .preview-section { padding: 20px 10px; }
             #preview { 
                 width: 100% !important; 
-                min-width: unset !important; 
-                padding: 10mm 5mm !important; 
-                transform: scale(1); 
-                box-shadow: none;
+                padding: 15mm 8mm !important; 
+                font-size: 9pt !important;
             }
+            input, textarea { font-size: 16px !important; } /* Elak iPhone auto-zoom */
         }
 
-        /* INPUT STYLES */
-        .section-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        .section-title { font-size: 12px; font-weight: 800; color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase; }
-        label { font-size: 10px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-transform: uppercase; }
-        input, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; margin-top: 4px; }
-        .grid-row { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 8px; margin-bottom: 8px; }
-        .grid-belanja { display: grid; grid-template-columns: 1.5fr 0.6fr 1fr 40px; gap: 5px; margin-bottom: 8px; }
-        .btn-add { width: 100%; padding: 12px; background: #e2e8f0; border: 1px dashed #64748b; border-radius: 6px; font-weight: 700; margin-top: 5px; cursor: pointer; }
-        .btn-del { background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        /* KAD INPUT */
+        .card { background: white; border-radius: 12px; padding: 18px; margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .card-h { font-size: 13px; font-weight: 800; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; margin-bottom: 15px; color: #0f172a; }
+        
+        label { font-size: 11px; font-weight: 700; color: #64748b; display: block; margin-top: 12px; text-transform: uppercase; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 5px; background: #f8fafc; }
+        
+        .row { display: grid; grid-template-columns: 1fr 1fr 45px; gap: 8px; margin-bottom: 8px; }
+        .btn-add { width: 100%; padding: 14px; background: #e2e8f0; border: 2px dashed #94a3b8; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .btn-del { background: #fee2e2; color: #ef4444; border: none; border-radius: 8px; font-weight: bold; font-size: 18px; }
 
-        /* PREVIEW A4 STYLES */
+        /* KERTAS A4 PREVIEW */
         #preview { 
-            width: 210mm; min-height: 297mm; background: white; padding: 20mm; 
-            font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: black;
+            width: 210mm; min-height: 297mm; background: white; margin: 0 auto;
+            padding: 25mm 20mm; color: black; font-family: Arial, sans-serif;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); line-height: 1.6;
         }
-        #v-tajuk { text-align: center; font-size: 13pt; font-weight: bold; text-decoration: underline; margin-bottom: 20px; text-transform: uppercase; }
-        h4 { border-left: 5px solid #000; padding-left: 8px; margin: 20px 0 10px 0; text-transform: uppercase; font-size: 11pt; }
-        table { width: 100%; border-collapse: collapse; font-size: 10pt; }
-        th, td { border: 1px solid black; padding: 6px; }
-        th { background: #f2f2f2 !important; }
+        #v-tajuk { text-align: center; font-weight: bold; font-size: 14pt; text-decoration: underline; margin-bottom: 25px; }
+        h4 { border-left: 5px solid black; padding-left: 10px; margin-top: 25px; text-transform: uppercase; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background: #f1f5f9 !important; }
 
-        /* SIGNATURES */
-        .sign-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 40px; text-align: center; font-size: 9pt; }
-        .sign-space { border-top: 1px solid black; margin-top: 50px; padding-top: 5px; font-weight: bold; }
+        /* TANDATANGAN */
+        .sign-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 60px; text-align: center; }
+        .sign-line { border-top: 1px solid black; margin-top: 60px; padding-top: 5px; font-weight: bold; text-transform: uppercase; font-size: 10pt; }
 
-        @media print { 
-            .top-bar, .editor-side { display: none !important; }
-            .preview-side { background: white; padding: 0; display: block; }
-            #preview { box-shadow: none; width: 100%; padding: 10mm; margin: 0; }
-        }
+        .clearfix::after { content: ""; clear: both; display: table; }
     </style>
 </head>
 <body>
 
-<div class="top-bar">
-    <button class="btn-action" style="background: #2563eb;" onclick="exportData()">💾 SIMPAN</button>
-    <button class="btn-action" style="background: #475569;" onclick="document.getElementById('fileInput').click()">📂 BUKA</button>
-    <input type="file" id="fileInput" style="display:none" onchange="importData(event)">
-    <button class="btn-action" style="background: #059669;" onclick="window.print()">🖨️ CETAK PDF</button>
+<div class="top-nav">
+    <button class="btn-nav" style="background: #2563eb;" onclick="exportData()">💾 Simpan</button>
+    <button class="btn-nav" style="background: #4b5563;" onclick="document.getElementById('fileIn').click()">📂 Buka</button>
+    <button class="btn-nav" style="background: #059669;" onclick="window.print()">🖨️ Cetak</button>
+    <input type="file" id="fileIn" style="display:none" onchange="importData(event)">
 </div>
 
-<div class="main-wrapper">
-    <div class="editor-side">
-        <div class="section-card">
-            <div class="section-title">1.0 Info Program</div>
-            <label>Tajuk</label><textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
+<div class="container clearfix">
+    <div class="editor-section">
+        <div class="card">
+            <div class="card-h">1.0 MAKLUMAT ASAS</div>
+            <label>Tajuk Program</label>
+            <textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <div><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
-                <div><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()"></div>
+                <div><label>Tarikh</label><input id="in-tarikh" oninput="kemaskini()"></div>
+                <div><label>Masa</label><input id="in-masa" oninput="kemaskini()"></div>
             </div>
-            <label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()">
-            <label>Penglibatan (Sasaran)</label><input type="text" id="in-penglibatan" oninput="kemaskini()">
+            <label>Tempat</label><input id="in-tempat" oninput="kemaskini()">
+            <label>Penglibatan (Sasaran)</label><input id="in-penglibatan" oninput="kemaskini()">
         </div>
 
-        <div class="section-card">
-            <div class="section-title">2.0 Kandungan</div>
-            <label>Pendahuluan</label><textarea id="in-pendahuluan" oninput="kemaskini()" rows="3"></textarea>
+        <div class="card">
+            <div class="card-h">2.0 PENDAHULUAN & OBJEKTIF</div>
+            <label>Pendahuluan</label>
+            <textarea id="in-pendahuluan" oninput="kemaskini()" rows="4"></textarea>
             <label>Objektif</label>
             <div id="inputs-obj"></div>
             <button class="btn-add" onclick="tambahObj()">+ Tambah Objektif</button>
         </div>
 
-        <div class="section-card">
-            <div class="section-title">3.0 Tentatif & AJK</div>
-            <label>Tentatif</label>
+        <div class="card">
+            <div class="card-h">3.0 TENTATIF & AJK</div>
+            <label>Tentatif Masa/Aktiviti</label>
             <div id="inputs-tentatif"></div>
-            <button class="btn-add" onclick="tambahDua('tentatif', 'Masa', 'Aktiviti')">+ Tambah Slot</button>
-            <label style="margin-top:15px">AJK</label>
+            <button class="btn-add" onclick="tambahDua('tentatif')">+ Tambah Slot</button>
+            
+            <label style="margin-top:20px;">AJK Pelaksana</label>
             <div id="inputs-ajk"></div>
-            <button class="btn-add" onclick="tambahDua('ajk', 'Jawatan', 'Nama')">+ Tambah AJK</button>
+            <button class="btn-add" onclick="tambahDua('ajk')">+ Tambah AJK</button>
         </div>
 
-        <div class="section-card">
-            <div class="section-title">4.0 Kewangan</div>
-            <label>Sumber</label>
-            <div id="inputs-sumber"></div>
-            <button class="btn-add" onclick="tambahDua('sumber', 'Punca', 'RM')">+ Tambah Sumber</button>
-            <label style="margin-top:15px">Belanja</label>
-            <div id="inputs-belanja"></div>
-            <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item</button>
-        </div>
-
-        <div class="section-card" style="margin-bottom: 50px;">
-            <div class="section-title">5.0 Pengesahan</div>
-            <label>Penyedia</label><input id="in-nama-1" oninput="kemaskini()" placeholder="Nama"><input id="in-jaw-1" oninput="kemaskini()" placeholder="Jawatan">
-            <label>Penyemak</label><input id="in-nama-2" oninput="kemaskini()" placeholder="Nama"><input id="in-jaw-2" oninput="kemaskini()" placeholder="Jawatan">
-            <label>Pengesah</label><input id="in-nama-3" oninput="kemaskini()" placeholder="Nama"><input id="in-jaw-3" oninput="kemaskini()" placeholder="Jawatan">
+        <div class="card" style="margin-bottom:80px;">
+            <div class="card-h">4.0 PENGESAHAN</div>
+            <label>Penyedia</label><input id="in-n1" oninput="kemaskini()" placeholder="Nama"><input id="in-j1" oninput="kemaskini()" placeholder="Jawatan">
+            <label>Penyemak</label><input id="in-n2" oninput="kemaskini()" placeholder="Nama"><input id="in-j2" oninput="kemaskini()" placeholder="Jawatan">
+            <label>Pengesah</label><input id="in-n3" oninput="kemaskini()" placeholder="Nama"><input id="in-j3" oninput="kemaskini()" placeholder="Jawatan">
         </div>
     </div>
 
-    <div class="preview-side">
+    <div class="preview-section">
         <div id="preview">
             <div id="v-tajuk">KERTAS KERJA PROGRAM</div>
-            <h4>1.0 PENDAHULUAN</h4><p id="v-pendahuluan" style="white-space:pre-wrap;">-</p>
-            <h4>2.0 OBJEKTIF</h4><ol id="v-obj" style="padding-left:15px;"></ol>
-            <h4>3.0 MAKLUMAT PROGRAM</h4>
+            
+            <h4>1.0 PENDAHULUAN</h4>
+            <p id="v-pendahuluan" style="white-space: pre-wrap;">-</p>
+
+            <h4>2.0 OBJEKTIF</h4>
+            <ul id="v-obj" style="padding-left:20px;"></ul>
+
+            <h4>3.0 BUTIRAN PROGRAM</h4>
             <table style="border:none">
-                <tr style="border:none"><td style="border:none;width:120px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
+                <tr style="border:none"><td style="border:none; width:120px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
                 <tr style="border:none"><td style="border:none">MASA</td><td style="border:none">: <span id="v-masa">-</span></td></tr>
                 <tr style="border:none"><td style="border:none">TEMPAT</td><td style="border:none">: <span id="v-tempat">-</span></td></tr>
                 <tr style="border:none"><td style="border:none">PENGLIBATAN</td><td style="border:none">: <span id="v-penglibatan">-</span></td></tr>
             </table>
-            <h4>4.0 TENTATIF</h4><table><thead><tr><th width="100">MASA</th><th>AKTIVITI</th></tr></thead><tbody id="v-tentatif"></tbody></table>
-            <h4>5.0 JAWATANKUASA</h4><table><thead><tr><th width="150">JAWATAN</th><th>NAMA</th></tr></thead><tbody id="v-ajk"></tbody></table>
-            <h4>6.0 KEWANGAN</h4>
-            <p><b>6.1 SUMBER</b></p>
-            <table><thead><tr><th>PERINCIAN</th><th width="100">RM</th></tr></thead><tbody id="v-sumber"></tbody></table>
-            <p><b>6.2 PERBELANJAAN</b></p>
-            <table><thead><tr><th>ITEM</th><th width="40">QTY</th><th width="80">JUMLAH</th></tr></thead><tbody id="v-belanja"></tbody></table>
-            <div class="sign-container">
-                <div>Disediakan:<div class="sign-space"><span id="v-nama-1">-</span><br><small id="v-jaw-1">-</small></div></div>
-                <div>Disemak:<div class="sign-space"><span id="v-nama-2">-</span><br><small id="v-jaw-2">-</small></div></div>
-                <div>Disahkan:<div class="sign-space"><span id="v-nama-3">-</span><br><small id="v-jaw-3">-</small></div></div>
+
+            <h4>4.0 TENTATIF PROGRAM</h4>
+            <table><thead><tr><th width="120">MASA</th><th>AKTIVITI</th></tr></thead><tbody id="v-tentatif"></tbody></table>
+
+            <h4>5.0 JAWATANKUASA PELAKSANA</h4>
+            <table><thead><tr><th width="150">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead><tbody id="v-ajk"></tbody></table>
+
+            <div class="sign-grid">
+                <div>Disediakan:<div class="sign-line"><span id="v-n1">-</span><br><small id="v-j1" style="font-weight:normal">-</small></div></div>
+                <div>Disemak:<div class="sign-line"><span id="v-n2">-</span><br><small id="v-j2" style="font-weight:normal">-</small></div></div>
+                <div>Disahkan:<div class="sign-line"><span id="v-n3">-</span><br><small id="v-j3" style="font-weight:normal">-</small></div></div>
             </div>
         </div>
     </div>
@@ -166,56 +166,47 @@
 
 <script>
 function tambahObj(v='') {
-    const d = document.createElement('div'); d.className = 'grid-row';
+    const d = document.createElement('div'); d.className = 'row';
     d.innerHTML = `<input value="${v}" oninput="kemaskini()" placeholder="Objektif..."><div style="display:none"></div><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
     document.getElementById('inputs-obj').appendChild(d);
 }
-function tambahDua(id, l1, l2) {
-    const d = document.createElement('div'); d.className = 'grid-row';
-    d.innerHTML = `<input oninput="kemaskini()" placeholder="${l1}"><input oninput="kemaskini()" placeholder="${l2}"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
+function tambahDua(id) {
+    const d = document.createElement('div'); d.className = 'row';
+    d.innerHTML = `<input oninput="kemaskini()"><input oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
     document.getElementById('inputs-'+id).appendChild(d);
 }
-function tambahBelanja() {
-    const d = document.createElement('div'); d.className = 'grid-belanja';
-    d.innerHTML = `<input oninput="kemaskini()" placeholder="Item"><input type="number" value="1" oninput="kemaskini()"><input type="number" value="0" step="0.01" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-belanja').appendChild(d);
-}
 function kemaskini() {
-    const ids = ['in-tajuk','in-tarikh','in-masa','in-tempat','in-penglibatan','in-pendahuluan'];
-    const vids = ['v-tajuk','v-tarikh','v-masa','v-tempat','v-penglibatan','v-pendahuluan'];
-    ids.forEach((id, i) => document.getElementById(vids[i]).innerText = document.getElementById(id).value || "-");
-    
+    const maps = { 'in-tajuk':'v-tajuk','in-tarikh':'v-tarikh','in-masa':'v-masa','in-tempat':'v-tempat','in-penglibatan':'v-penglibatan','in-pendahuluan':'v-pendahuluan','in-n1':'v-n1','in-j1':'v-j1','in-n2':'v-n2','in-j2':'v-j2','in-n3':'v-n3','in-j3':'v-j3' };
+    for(let i in maps) document.getElementById(maps[i]).innerText = document.getElementById(i).value || "-";
+
     document.getElementById('v-obj').innerHTML = '';
     document.querySelectorAll('#inputs-obj input').forEach(i => { if(i.value) document.getElementById('v-obj').innerHTML += `<li>${i.value}</li>` });
 
     const fillT = (id, target) => {
         document.getElementById(target).innerHTML = '';
-        document.querySelectorAll(`#inputs-${id} .grid-row`).forEach(r => {
-            const ins = r.querySelectorAll('input'); document.getElementById(target).innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td></tr>`;
+        document.querySelectorAll(`#inputs-${id} .row`).forEach(r => {
+            const ins = r.querySelectorAll('input'); 
+            if(ins[0].value || ins[1].value) document.getElementById(target).innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td></tr>`;
         });
     }
-    fillT('tentatif', 'v-tentatif'); fillT('ajk', 'v-ajk'); fillT('sumber', 'v-sumber');
-    
-    document.getElementById('v-belanja').innerHTML = '';
-    document.querySelectorAll('#inputs-belanja .grid-belanja').forEach(r => {
-        const ins = r.querySelectorAll('input');
-        const total = (parseFloat(ins[1].value) * parseFloat(ins[2].value)).toFixed(2);
-        document.getElementById('v-belanja').innerHTML += `<tr><td>${ins[0].value}</td><td align="center">${ins[1].value}</td><td align="right">${total}</td></tr>`;
-    });
-
-    for(let i=1; i<=3; i++) {
-        document.getElementById('v-nama-'+i).innerText = document.getElementById('in-nama-'+i).value || "..........";
-        document.getElementById('v-jaw-'+i).innerText = document.getElementById('in-jaw-'+i).value || "-";
-    }
+    fillT('tentatif', 'v-tentatif'); fillT('ajk', 'v-ajk');
 }
 function exportData() {
-    const data = {
-        meta: Array.from(document.querySelectorAll('input[type="text"], textarea')).map(i => i.value)
-    };
-    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Doc.json'; a.click();
+    const d = Array.from(document.querySelectorAll('input, textarea')).map(i => i.value);
+    const b = new Blob([JSON.stringify(d)], {type:'application/json'});
+    const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='Data.json'; a.click();
 }
-window.onload = () => { tambahObj(); tambahDua('tentatif','Masa','Perkara'); tambahDua('ajk','Jawatan','Nama'); tambahDua('sumber','Punca','RM'); tambahBelanja(); kemaskini(); }
+function importData(e) {
+    const r = new FileReader();
+    r.onload = (x) => {
+        const d = JSON.parse(x.target.result);
+        const ins = document.querySelectorAll('input, textarea');
+        d.forEach((v, i) => { if(ins[i]) ins[i].value = v; });
+        kemaskini();
+    };
+    r.readAsText(e.target.files[0]);
+}
+window.onload = () => { tambahObj(); tambahDua('tentatif'); tambahDua('ajk'); kemaskini(); }
 </script>
 </body>
 </html>
