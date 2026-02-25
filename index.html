@@ -2,285 +2,220 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Doc Engine V17.7 - Skrol & Simpan Fix</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doc Engine V17.8 - Mobile Ready</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         
-        /* Reset & Base */
         * { box-sizing: border-box; }
-        body { background: #1e293b; font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: grid; grid-template-columns: 45% 55%; height: 100vh; overflow: hidden; }
+        body { background: #1e293b; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
-        /* EDITOR SIDE (KIRI) */
-        .editor-side { background: #f1f5f9; height: 100vh; overflow-y: auto; padding: 20px; border-right: 3px solid #334155; }
-        
-        .control-panel { background: #0f172a; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; position: sticky; top: 0; z-index: 100; }
-        .btn-action { flex: 1; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 12px; color: white; }
-        
-        .section-card { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .section-title { font-size: 13px; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 15px; border-bottom: 2px solid #3b82f6; padding-bottom: 5px; }
-
-        /* INPUTS */
-        label { font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 12px; margin-bottom: 4px; text-transform: uppercase; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; margin-bottom: 5px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 8px; margin-bottom: 8px; }
-        .grid-3 { display: grid; grid-template-columns: 1.5fr 0.6fr 1fr 40px; gap: 8px; margin-bottom: 8px; }
-        
-        .btn-add { width: 100%; padding: 8px; background: #e2e8f0; border: 1px dashed #64748b; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 11px; margin-top: 5px; }
-        .btn-del { background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-
-        /* PREVIEW SIDE (KANAN) */
-        .preview-side { height: 100vh; overflow-y: scroll; padding: 40px 20px; background: #334155; display: flex; flex-direction: column; align-items: center; }
-        
-        #preview { 
-            width: 210mm; min-height: 297mm; background: white; padding: 25mm 20mm; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); font-family: Arial, sans-serif; 
-            font-size: 11pt; line-height: 1.6; color: black;
+        /* HEADER / TOOLBAR */
+        .top-bar { 
+            position: sticky; top: 0; left: 0; right: 0; 
+            background: #0f172a; padding: 10px; display: flex; 
+            gap: 8px; z-index: 2000; flex-wrap: wrap;
+            justify-content: center; border-bottom: 2px solid #3b82f6;
+        }
+        .btn-action { 
+            flex: 1; min-width: 100px; padding: 10px; border: none; 
+            border-radius: 6px; cursor: pointer; font-weight: bold; 
+            font-size: 11px; color: white; text-transform: uppercase;
         }
 
-        /* Preview Typography */
-        #v-tajuk { text-align: center; font-size: 14pt; font-weight: bold; text-decoration: underline; margin-bottom: 30px; text-transform: uppercase; }
-        h4 { border-left: 6px solid #000; padding-left: 10px; margin: 25px 0 10px 0; text-transform: uppercase; font-size: 11pt; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid black; padding: 8px; vertical-align: top; }
-        th { background: #f2f2f2 !important; font-size: 10pt; }
+        /* MAIN LAYOUT */
+        .main-wrapper { display: flex; flex-direction: row; height: calc(100vh - 60px); }
 
-        /* Signature Box */
-        .sign-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 60px; text-align: center; }
-        .sign-space { border-top: 1px solid black; margin-top: 70px; padding-top: 5px; font-weight: bold; text-transform: uppercase; font-size: 10pt; }
+        /* EDITOR SIDE (KIRI) */
+        .editor-side { width: 45%; height: 100%; overflow-y: auto; padding: 20px; background: #f1f5f9; }
+        
+        /* PREVIEW SIDE (KANAN) */
+        .preview-side { width: 55%; height: 100%; overflow-y: auto; padding: 40px 10px; background: #334155; display: flex; flex-direction: column; align-items: center; }
+
+        /* RESPONSIVE FIX (UNTUK PHONE) */
+        @media (max-width: 800px) {
+            .main-wrapper { flex-direction: column; height: auto; overflow: visible; }
+            .editor-side { width: 100%; height: auto; overflow: visible; }
+            .preview-side { width: 100%; height: auto; overflow: visible; padding: 20px 5px; }
+            #preview { 
+                width: 100% !important; 
+                min-width: unset !important; 
+                padding: 10mm 5mm !important; 
+                transform: scale(1); 
+                box-shadow: none;
+            }
+        }
+
+        /* INPUT STYLES */
+        .section-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .section-title { font-size: 12px; font-weight: 800; color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 5px; margin-bottom: 15px; text-transform: uppercase; }
+        label { font-size: 10px; font-weight: 700; color: #475569; display: block; margin-top: 10px; text-transform: uppercase; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; margin-top: 4px; }
+        .grid-row { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 8px; margin-bottom: 8px; }
+        .grid-belanja { display: grid; grid-template-columns: 1.5fr 0.6fr 1fr 40px; gap: 5px; margin-bottom: 8px; }
+        .btn-add { width: 100%; padding: 12px; background: #e2e8f0; border: 1px dashed #64748b; border-radius: 6px; font-weight: 700; margin-top: 5px; cursor: pointer; }
+        .btn-del { background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+
+        /* PREVIEW A4 STYLES */
+        #preview { 
+            width: 210mm; min-height: 297mm; background: white; padding: 20mm; 
+            font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: black;
+        }
+        #v-tajuk { text-align: center; font-size: 13pt; font-weight: bold; text-decoration: underline; margin-bottom: 20px; text-transform: uppercase; }
+        h4 { border-left: 5px solid #000; padding-left: 8px; margin: 20px 0 10px 0; text-transform: uppercase; font-size: 11pt; }
+        table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+        th, td { border: 1px solid black; padding: 6px; }
+        th { background: #f2f2f2 !important; }
+
+        /* SIGNATURES */
+        .sign-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 40px; text-align: center; font-size: 9pt; }
+        .sign-space { border-top: 1px solid black; margin-top: 50px; padding-top: 5px; font-weight: bold; }
 
         @media print { 
-            body { display: block; background: white; }
-            .editor-side { display: none; }
-            .preview-side { height: auto; padding: 0; background: white; overflow: visible; }
+            .top-bar, .editor-side { display: none !important; }
+            .preview-side { background: white; padding: 0; display: block; }
             #preview { box-shadow: none; width: 100%; padding: 10mm; margin: 0; }
         }
     </style>
 </head>
 <body>
 
-<div class="editor-side">
-    <div class="control-panel">
-        <button class="btn-action" style="background: #2563eb;" onclick="exportData()">💾 SIMPAN FAIL</button>
-        <button class="btn-action" style="background: #475569;" onclick="document.getElementById('fileInput').click()">📂 BUKA FAIL</button>
-        <input type="file" id="fileInput" style="display:none" onchange="importData(event)">
-        <button class="btn-action" style="background: #059669;" onclick="window.print()">🖨️ CETAK PDF</button>
-    </div>
-
-    <div class="section-card">
-        <div class="section-title">1.0 Maklumat Utama</div>
-        <label>Tajuk Program</label>
-        <textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
-            <div><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()"></div>
-        </div>
-        <label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()">
-        <label>Penglibatan (Sasaran)</label><input type="text" id="in-penglibatan" oninput="kemaskini()">
-    </div>
-
-    <div class="section-card">
-        <div class="section-title">2.0 Kandungan</div>
-        <label>Pendahuluan</label>
-        <textarea id="in-pendahuluan" oninput="kemaskini()" rows="4"></textarea>
-        <label>Objektif</label>
-        <div id="inputs-obj"></div>
-        <button class="btn-add" onclick="tambahObj()">+ Tambah Objektif</button>
-    </div>
-
-    <div class="section-card">
-        <div class="section-title">3.0 Tentatif & AJK</div>
-        <label>Tentatif</label>
-        <div id="inputs-tentatif"></div>
-        <button class="btn-add" onclick="tambahItem('tentatif', 'Masa', 'Aktiviti')">+ Tambah Slot</button>
-        
-        <label style="margin-top:15px;">AJK Pelaksana</label>
-        <div id="inputs-ajk"></div>
-        <button class="btn-add" onclick="tambahItem('ajk', 'Jawatan', 'Nama')">+ Tambah AJK</button>
-    </div>
-
-    <div class="section-card">
-        <div class="section-title">4.0 Kewangan</div>
-        <label>Sumber Dana</label>
-        <div id="inputs-sumber"></div>
-        <button class="btn-add" onclick="tambahItem('sumber', 'Punca', 'RM')">+ Tambah Sumber</button>
-
-        <label style="margin-top:15px;">Perbelanjaan</label>
-        <div id="inputs-belanja"></div>
-        <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item Belanja</button>
-    </div>
-
-    <div class="section-card" style="margin-bottom: 100px;">
-        <div class="section-title">5.0 Pengesahan</div>
-        <label>Penyedia</label><input type="text" id="in-nama-1" oninput="kemaskini()" placeholder="Nama"><input type="text" id="in-jaw-1" oninput="kemaskini()" placeholder="Jawatan">
-        <label>Penyemak</label><input type="text" id="in-nama-2" oninput="kemaskini()" placeholder="Nama"><input type="text" id="in-jaw-2" oninput="kemaskini()" placeholder="Jawatan">
-        <label>Pengesah</label><input type="text" id="in-nama-3" oninput="kemaskini()" placeholder="Nama"><input type="text" id="in-jaw-3" oninput="kemaskini()" placeholder="Jawatan">
-    </div>
+<div class="top-bar">
+    <button class="btn-action" style="background: #2563eb;" onclick="exportData()">💾 SIMPAN</button>
+    <button class="btn-action" style="background: #475569;" onclick="document.getElementById('fileInput').click()">📂 BUKA</button>
+    <input type="file" id="fileInput" style="display:none" onchange="importData(event)">
+    <button class="btn-action" style="background: #059669;" onclick="window.print()">🖨️ CETAK PDF</button>
 </div>
 
-<div class="preview-side">
-    <div id="preview">
-        <div id="v-tajuk">KERTAS KERJA PROGRAM</div>
+<div class="main-wrapper">
+    <div class="editor-side">
+        <div class="section-card">
+            <div class="section-title">1.0 Info Program</div>
+            <label>Tajuk</label><textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
+                <div><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()"></div>
+            </div>
+            <label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()">
+            <label>Penglibatan (Sasaran)</label><input type="text" id="in-penglibatan" oninput="kemaskini()">
+        </div>
 
-        <h4>1.0 PENDAHULUAN</h4>
-        <p id="v-pendahuluan" style="white-space: pre-wrap;">-</p>
+        <div class="section-card">
+            <div class="section-title">2.0 Kandungan</div>
+            <label>Pendahuluan</label><textarea id="in-pendahuluan" oninput="kemaskini()" rows="3"></textarea>
+            <label>Objektif</label>
+            <div id="inputs-obj"></div>
+            <button class="btn-add" onclick="tambahObj()">+ Tambah Objektif</button>
+        </div>
 
-        <h4>2.0 OBJEKTIF</h4>
-        <ol id="v-obj" style="padding-left:20px;"></ol>
+        <div class="section-card">
+            <div class="section-title">3.0 Tentatif & AJK</div>
+            <label>Tentatif</label>
+            <div id="inputs-tentatif"></div>
+            <button class="btn-add" onclick="tambahDua('tentatif', 'Masa', 'Aktiviti')">+ Tambah Slot</button>
+            <label style="margin-top:15px">AJK</label>
+            <div id="inputs-ajk"></div>
+            <button class="btn-add" onclick="tambahDua('ajk', 'Jawatan', 'Nama')">+ Tambah AJK</button>
+        </div>
 
-        <h4>3.0 BUTIRAN PROGRAM</h4>
-        <table style="border:none">
-            <tr style="border:none"><td style="border:none; width:140px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
-            <tr style="border:none"><td style="border:none">MASA</td><td style="border:none">: <span id="v-masa">-</span></td></tr>
-            <tr style="border:none"><td style="border:none">TEMPAT</td><td style="border:none">: <span id="v-tempat">-</span></td></tr>
-            <tr style="border:none"><td style="border:none">PENGLIBATAN</td><td style="border:none">: <span id="v-penglibatan">-</span></td></tr>
-        </table>
+        <div class="section-card">
+            <div class="section-title">4.0 Kewangan</div>
+            <label>Sumber</label>
+            <div id="inputs-sumber"></div>
+            <button class="btn-add" onclick="tambahDua('sumber', 'Punca', 'RM')">+ Tambah Sumber</button>
+            <label style="margin-top:15px">Belanja</label>
+            <div id="inputs-belanja"></div>
+            <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item</button>
+        </div>
 
-        <h4>4.0 TENTATIF PROGRAM</h4>
-        <table><thead><tr><th width="120">MASA</th><th>AKTIVITI</th></tr></thead><tbody id="v-tentatif"></tbody></table>
+        <div class="section-card" style="margin-bottom: 50px;">
+            <div class="section-title">5.0 Pengesahan</div>
+            <label>Penyedia</label><input id="in-nama-1" oninput="kemaskini()" placeholder="Nama"><input id="in-jaw-1" oninput="kemaskini()" placeholder="Jawatan">
+            <label>Penyemak</label><input id="in-nama-2" oninput="kemaskini()" placeholder="Nama"><input id="in-jaw-2" oninput="kemaskini()" placeholder="Jawatan">
+            <label>Pengesah</label><input id="in-nama-3" oninput="kemaskini()" placeholder="Nama"><input id="in-jaw-3" oninput="kemaskini()" placeholder="Jawatan">
+        </div>
+    </div>
 
-        <h4>5.0 JAWATANKUASA PELAKSANA</h4>
-        <table><thead><tr><th width="180">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead><tbody id="v-ajk"></tbody></table>
-
-        <h4>6.0 IMPLIKASI KEWANGAN</h4>
-        <p style="font-weight:bold;">6.1 SUMBER KEWANGAN</p>
-        <table>
-            <thead><tr><th width="40">BIL</th><th>PERINCIAN</th><th width="140">JUMLAH (RM)</th></tr></thead>
-            <tbody id="v-sumber"></tbody>
-            <tfoot><tr style="font-weight:bold; background:#f9fafb"><td colspan="2" align="right">JUMLAH</td><td id="v-total-sumber" align="right">0.00</td></tr></tfoot>
-        </table>
-
-        <p style="font-weight:bold; margin-top:20px;">6.2 ANGGARAN PERBELANJAAN</p>
-        <table>
-            <thead><tr><th width="30">BIL</th><th>PERKARA</th><th width="50">QTY</th><th width="90">UNIT (RM)</th><th width="110">JUMLAH (RM)</th></tr></thead>
-            <tbody id="v-belanja"></tbody>
-            <tfoot><tr style="font-weight:bold; background:#f9fafb"><td colspan="4" align="right">JUMLAH</td><td id="v-total-belanja" align="right">0.00</td></tr></tfoot>
-        </table>
-
-        <div class="sign-container">
-            <div><p>Disediakan oleh:</p><div class="sign-space"><span id="v-nama-1">-</span><br><small id="v-jaw-1" style="font-weight:normal;">-</small></div></div>
-            <div><p>Disemak oleh:</p><div class="sign-space"><span id="v-nama-2">-</span><br><small id="v-jaw-2" style="font-weight:normal;">-</small></div></div>
-            <div><p>Disahkan oleh:</p><div class="sign-space"><span id="v-nama-3">-</span><br><small id="v-jaw-3" style="font-weight:normal;">-</small></div></div>
+    <div class="preview-side">
+        <div id="preview">
+            <div id="v-tajuk">KERTAS KERJA PROGRAM</div>
+            <h4>1.0 PENDAHULUAN</h4><p id="v-pendahuluan" style="white-space:pre-wrap;">-</p>
+            <h4>2.0 OBJEKTIF</h4><ol id="v-obj" style="padding-left:15px;"></ol>
+            <h4>3.0 MAKLUMAT PROGRAM</h4>
+            <table style="border:none">
+                <tr style="border:none"><td style="border:none;width:120px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
+                <tr style="border:none"><td style="border:none">MASA</td><td style="border:none">: <span id="v-masa">-</span></td></tr>
+                <tr style="border:none"><td style="border:none">TEMPAT</td><td style="border:none">: <span id="v-tempat">-</span></td></tr>
+                <tr style="border:none"><td style="border:none">PENGLIBATAN</td><td style="border:none">: <span id="v-penglibatan">-</span></td></tr>
+            </table>
+            <h4>4.0 TENTATIF</h4><table><thead><tr><th width="100">MASA</th><th>AKTIVITI</th></tr></thead><tbody id="v-tentatif"></tbody></table>
+            <h4>5.0 JAWATANKUASA</h4><table><thead><tr><th width="150">JAWATAN</th><th>NAMA</th></tr></thead><tbody id="v-ajk"></tbody></table>
+            <h4>6.0 KEWANGAN</h4>
+            <p><b>6.1 SUMBER</b></p>
+            <table><thead><tr><th>PERINCIAN</th><th width="100">RM</th></tr></thead><tbody id="v-sumber"></tbody></table>
+            <p><b>6.2 PERBELANJAAN</b></p>
+            <table><thead><tr><th>ITEM</th><th width="40">QTY</th><th width="80">JUMLAH</th></tr></thead><tbody id="v-belanja"></tbody></table>
+            <div class="sign-container">
+                <div>Disediakan:<div class="sign-space"><span id="v-nama-1">-</span><br><small id="v-jaw-1">-</small></div></div>
+                <div>Disemak:<div class="sign-space"><span id="v-nama-2">-</span><br><small id="v-jaw-2">-</small></div></div>
+                <div>Disahkan:<div class="sign-space"><span id="v-nama-3">-</span><br><small id="v-jaw-3">-</small></div></div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-// Fungsi Reusable
 function tambahObj(v='') {
-    const div = document.createElement('div'); div.className = 'grid-2';
-    div.innerHTML = `<input type="text" value="${v}" oninput="kemaskini()" placeholder="Objektif..."><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-obj').appendChild(div);
+    const d = document.createElement('div'); d.className = 'grid-row';
+    d.innerHTML = `<input value="${v}" oninput="kemaskini()" placeholder="Objektif..."><div style="display:none"></div><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
+    document.getElementById('inputs-obj').appendChild(d);
 }
-
-function tambahItem(id, l1, l2) {
-    const div = document.createElement('div'); div.className = 'grid-2';
-    div.innerHTML = `<input type="text" oninput="kemaskini()" placeholder="${l1}"><input type="text" oninput="kemaskini()" placeholder="${l2}"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-'+id).appendChild(div);
+function tambahDua(id, l1, l2) {
+    const d = document.createElement('div'); d.className = 'grid-row';
+    d.innerHTML = `<input oninput="kemaskini()" placeholder="${l1}"><input oninput="kemaskini()" placeholder="${l2}"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
+    document.getElementById('inputs-'+id).appendChild(d);
 }
-
 function tambahBelanja() {
-    const div = document.createElement('div'); div.className = 'grid-3';
-    div.innerHTML = `<input type="text" oninput="kemaskini()" placeholder="Item"><input type="number" value="1" oninput="kemaskini()"><input type="number" value="0" step="0.01" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-belanja').appendChild(div);
+    const d = document.createElement('div'); d.className = 'grid-belanja';
+    d.innerHTML = `<input oninput="kemaskini()" placeholder="Item"><input type="number" value="1" oninput="kemaskini()"><input type="number" value="0" step="0.01" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
+    document.getElementById('inputs-belanja').appendChild(d);
 }
-
 function kemaskini() {
-    // Basic Mapping
-    const mapping = {
-        'in-tajuk': 'v-tajuk', 'in-pendahuluan': 'v-pendahuluan', 'in-tarikh': 'v-tarikh',
-        'in-masa': 'v-masa', 'in-tempat': 'v-tempat', 'in-penglibatan': 'v-penglibatan'
-    };
-    for(let id in mapping) document.getElementById(mapping[id]).innerText = document.getElementById(id).value || "-";
+    const ids = ['in-tajuk','in-tarikh','in-masa','in-tempat','in-penglibatan','in-pendahuluan'];
+    const vids = ['v-tajuk','v-tarikh','v-masa','v-tempat','v-penglibatan','v-pendahuluan'];
+    ids.forEach((id, i) => document.getElementById(vids[i]).innerText = document.getElementById(id).value || "-");
+    
+    document.getElementById('v-obj').innerHTML = '';
+    document.querySelectorAll('#inputs-obj input').forEach(i => { if(i.value) document.getElementById('v-obj').innerHTML += `<li>${i.value}</li>` });
 
-    // Objektif
-    const vObj = document.getElementById('v-obj'); vObj.innerHTML = '';
-    document.querySelectorAll('#inputs-obj input').forEach(i => { if(i.value) vObj.innerHTML += `<li>${i.value}</li>`; });
-
-    // Table Helper
-    const fillT = (inputId, targetId) => {
-        const target = document.getElementById(targetId); target.innerHTML = '';
-        document.querySelectorAll(`#inputs-${inputId} .grid-2`).forEach(r => {
-            const ins = r.querySelectorAll('input');
-            if(ins[0].value || ins[1].value) target.innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td></tr>`;
+    const fillT = (id, target) => {
+        document.getElementById(target).innerHTML = '';
+        document.querySelectorAll(`#inputs-${id} .grid-row`).forEach(r => {
+            const ins = r.querySelectorAll('input'); document.getElementById(target).innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td></tr>`;
         });
-    };
-    fillT('tentatif', 'v-tentatif'); fillT('ajk', 'v-ajk');
-
-    // Kewangan
-    let tS = 0; const vS = document.getElementById('v-sumber'); vS.innerHTML = '';
-    document.querySelectorAll('#inputs-sumber .grid-2').forEach((r, i) => {
-        const ins = r.querySelectorAll('input'); const val = parseFloat(ins[1].value) || 0; tS += val;
-        vS.innerHTML += `<tr><td align="center">${i+1}</td><td>${ins[0].value}</td><td align="right">${val.toFixed(2)}</td></tr>`;
-    });
-    document.getElementById('v-total-sumber').innerText = tS.toFixed(2);
-
-    let tB = 0; const vB = document.getElementById('v-belanja'); vB.innerHTML = '';
-    document.querySelectorAll('#inputs-belanja .grid-3').forEach((r, i) => {
+    }
+    fillT('tentatif', 'v-tentatif'); fillT('ajk', 'v-ajk'); fillT('sumber', 'v-sumber');
+    
+    document.getElementById('v-belanja').innerHTML = '';
+    document.querySelectorAll('#inputs-belanja .grid-belanja').forEach(r => {
         const ins = r.querySelectorAll('input');
-        const q = parseFloat(ins[1].value) || 0; const u = parseFloat(ins[2].value) || 0;
-        const sub = q * u; tB += sub;
-        vB.innerHTML += `<tr><td align="center">${i+1}</td><td>${ins[0].value}</td><td align="center">${q}</td><td align="right">${u.toFixed(2)}</td><td align="right">${sub.toFixed(2)}</td></tr>`;
+        const total = (parseFloat(ins[1].value) * parseFloat(ins[2].value)).toFixed(2);
+        document.getElementById('v-belanja').innerHTML += `<tr><td>${ins[0].value}</td><td align="center">${ins[1].value}</td><td align="right">${total}</td></tr>`;
     });
-    document.getElementById('v-total-belanja').innerText = tB.toFixed(2);
 
-    // Tandatangan
     for(let i=1; i<=3; i++) {
-        document.getElementById('v-nama-'+i).innerText = document.getElementById('in-nama-'+i).value || "..........................";
-        document.getElementById('v-jaw-'+i).innerText = document.getElementById('in-jaw-'+i).value || "(JAWATAN)";
+        document.getElementById('v-nama-'+i).innerText = document.getElementById('in-nama-'+i).value || "..........";
+        document.getElementById('v-jaw-'+i).innerText = document.getElementById('in-jaw-'+i).value || "-";
     }
 }
-
-// SIMPAN & BUKA
 function exportData() {
     const data = {
-        meta: [
-            document.getElementById('in-tajuk').value, document.getElementById('in-tarikh').value, 
-            document.getElementById('in-masa').value, document.getElementById('in-tempat').value,
-            document.getElementById('in-penglibatan').value, document.getElementById('in-pendahuluan').value
-        ],
-        obj: Array.from(document.querySelectorAll('#inputs-obj input')).map(i => i.value),
-        tentatif: Array.from(document.querySelectorAll('#inputs-tentatif .grid-2')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
-        ajk: Array.from(document.querySelectorAll('#inputs-ajk .grid-2')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
-        sumber: Array.from(document.querySelectorAll('#inputs-sumber .grid-2')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
-        belanja: Array.from(document.querySelectorAll('#inputs-belanja .grid-3')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value, r.querySelectorAll('input')[2].value]),
-        signs: [
-            document.getElementById('in-nama-1').value, document.getElementById('in-jaw-1').value,
-            document.getElementById('in-nama-2').value, document.getElementById('in-jaw-2').value,
-            document.getElementById('in-nama-3').value, document.getElementById('in-jaw-3').value
-        ]
+        meta: Array.from(document.querySelectorAll('input[type="text"], textarea')).map(i => i.value)
     };
     const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'KertasKerja_Save.json'; a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Doc.json'; a.click();
 }
-
-function importData(e) {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        const d = JSON.parse(ev.target.result);
-        const ids = ['in-tajuk','in-tarikh','in-masa','in-tempat','in-penglibatan','in-pendahuluan'];
-        d.meta.forEach((v, i) => document.getElementById(ids[i]).value = v);
-        
-        document.getElementById('inputs-obj').innerHTML = ''; d.obj.forEach(v => tambahObj(v));
-        // Reset & Re-add tables
-        const resetAdd = (id, data, func) => {
-            document.getElementById('inputs-'+id).innerHTML = '';
-            data.forEach(v => {
-                func(id, '', ''); 
-                const last = document.querySelector(`#inputs-${id} .grid-2:last-child, #inputs-${id} .grid-3:last-child`);
-                last.querySelectorAll('input').forEach((inp, idx) => inp.value = v[idx]);
-            });
-        };
-        // Re-run manually for complex ones
-        kemaskini();
-    };
-    reader.readAsText(e.target.files[0]);
-}
-
-window.onload = () => { 
-    tambahObj(); tambahItem('tentatif', 'Masa', 'Aktiviti'); 
-    tambahItem('ajk', 'Jawatan', 'Nama'); tambahItem('sumber', 'Punca', 'RM'); 
-    tambahBelanja(); kemaskini(); 
-};
+window.onload = () => { tambahObj(); tambahDua('tentatif','Masa','Perkara'); tambahDua('ajk','Jawatan','Nama'); tambahDua('sumber','Punca','RM'); tambahBelanja(); kemaskini(); }
 </script>
 </body>
 </html>
