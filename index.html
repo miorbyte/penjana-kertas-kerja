@@ -2,7 +2,7 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Executive Document Builder V15.2</title>
+    <title>Executive Document Builder V15.3</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
@@ -46,6 +46,13 @@
             display: flex; align-items: center;
         }
         .section-h::before { content: ""; width: 4px; height: 14px; background: var(--accent); margin-right: 8px; border-radius: 2px; }
+
+        .sub-label-row {
+            display: flex; gap: 8px; margin-top: 10px; margin-bottom: 5px;
+        }
+        .sub-label {
+            font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase;
+        }
 
         label { font-size: 11px; font-weight: 700; color: #475569; display: block; margin-top: 12px; text-transform: uppercase; }
 
@@ -118,7 +125,7 @@
 
 <div class="no-print">
     <div class="editor-header">
-        <h2 style="margin:0; font-size:15px; color:var(--accent)">DOCUMENT ENGINE V15.2</h2>
+        <h2 style="margin:0; font-size:15px; color:var(--accent)">DOCUMENT ENGINE V15.3</h2>
         <div style="display:flex; gap:8px;">
             <button onclick="exportJSON()" style="padding:6px 12px; border-radius:6px; background:white; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">💾 SIMPAN</button>
             <button onclick="document.getElementById('importFile').click()" style="padding:6px 12px; border-radius:6px; background:white; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">📂 BUKA</button>
@@ -129,66 +136,72 @@
     <div class="section-card">
         <div class="section-h">1.0 Maklumat Asas</div>
         <label>Tajuk Penuh Program</label>
-        <textarea id="in-tajuk" oninput="kemaskini()" placeholder="Masukkan tajuk rasmi kertas kerja..."></textarea>
+        <textarea id="in-tajuk" oninput="kemaskini()" placeholder="Masukkan tajuk rasmi..."></textarea>
         
         <div class="input-row">
-            <div class="f-1"><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()" placeholder="Cth: 25 Mac 2024"></div>
-            <div class="f-1"><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()" placeholder="Cth: 8.00 Pagi"></div>
+            <div class="f-1"><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()" placeholder="Cth: 20/02/2026"></div>
+            <div class="f-1"><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()" placeholder="Cth: 8.00 AM"></div>
         </div>
         <div class="input-row">
-            <div class="f-1"><label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()" placeholder="Lokasi program..."></div>
-            <div class="f-1"><label>Penglibatan</label><input type="text" id="in-penglibatan" oninput="kemaskini()" placeholder="Cth: 100 Peserta"></div>
+            <div class="f-1"><label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()" placeholder="Lokasi..."></div>
+            <div class="f-1"><label>Penglibatan</label><input type="text" id="in-penglibatan" oninput="kemaskini()" placeholder="Peserta..."></div>
         </div>
     </div>
 
     <div class="section-card">
-        <div class="section-h">2.0 Kandungan Program</div>
+        <div class="section-h">2.0 Kandungan</div>
         <label>Pendahuluan</label>
-        <textarea id="in-pend" oninput="kemaskini()" placeholder="Tujuan ringkas program..."></textarea>
+        <textarea id="in-pend" oninput="kemaskini()"></textarea>
         
         <label>Objektif Program</label>
         <div id="inputs-objektif"></div>
-        <button class="btn-add" onclick="tambah('objektif')">+ Tambah Item Objektif</button>
+        <button class="btn-add" onclick="tambah('objektif')">+ Tambah Objektif</button>
     </div>
 
     <div class="section-card">
         <div class="section-h">3.0 Jadual & Pelaksana</div>
+        
         <label>Tentatif Program</label>
+        <div class="sub-label-row"><div class="sub-label f-1">Masa</div><div class="sub-label f-2">Aktiviti / Pengisian</div><div style="width:28px"></div></div>
         <div id="inputs-tentatif"></div>
         <button class="btn-add" onclick="tambah('tentatif')">+ Tambah Baris Tentatif</button>
 
         <label style="margin-top:20px">Jawatankuasa Pelaksana</label>
+        <div class="sub-label-row"><div class="sub-label f-1">Jawatan</div><div class="sub-label f-2">Nama Pegawai</div><div style="width:28px"></div></div>
         <div id="inputs-ajk"></div>
         <button class="btn-add" onclick="tambah('ajk')">+ Tambah Baris AJK</button>
     </div>
 
     <div class="section-card">
         <div class="section-h">4.0 Kewangan</div>
+        
         <label>Sumber Dana</label>
+        <div class="sub-label-row"><div class="sub-label f-1">Perkara / Punca</div><div class="sub-label f-2">Jumlah (RM)</div><div style="width:28px"></div></div>
         <div id="inputs-sumber"></div>
         <button class="btn-add" onclick="tambah('sumber')">+ Tambah Baris Sumber</button>
 
         <label style="margin-top:20px">Anggaran Perbelanjaan</label>
+        <div class="sub-label-row"><div class="sub-label f-1">Item Perbelanjaan</div><div class="sub-label f-2">Kos (RM)</div><div style="width:28px"></div></div>
         <div id="inputs-belanja"></div>
         <button class="btn-add" onclick="tambah('belanja')">+ Tambah Baris Kos</button>
     </div>
 
     <div class="section-card">
         <div class="section-h">5.0 Tandatangan</div>
-        <label>Nama & Jawatan (Penyedia / Penyemak / Pelulus)</label>
+        <div class="sub-label-row"><div class="sub-label f-1">Penyedia</div><div class="sub-label f-1">Penyemak</div><div class="sub-label f-1">Pelulus</div></div>
         <div class="input-row">
-            <input type="text" id="s1-n" placeholder="Nama 1" oninput="kemaskini()">
-            <input type="text" id="s2-n" placeholder="Nama 2" oninput="kemaskini()">
-            <input type="text" id="s3-n" placeholder="Nama 3" oninput="kemaskini()">
+            <input type="text" id="s1-n" placeholder="Nama" oninput="kemaskini()">
+            <input type="text" id="s2-n" placeholder="Nama" oninput="kemaskini()">
+            <input type="text" id="s3-n" placeholder="Nama" oninput="kemaskini()">
         </div>
         <div class="input-row">
-            <input type="text" id="s1-j" placeholder="Jawatan 1" oninput="kemaskini()">
-            <input type="text" id="s2-j" placeholder="Jawatan 2" oninput="kemaskini()">
-            <input type="text" id="s3-j" placeholder="Jawatan 3" oninput="kemaskini()">
+            <input type="text" id="s1-j" placeholder="Jawatan" oninput="kemaskini()">
+            <input type="text" id="s2-j" placeholder="Jawatan" oninput="kemaskini()">
+            <input type="text" id="s3-j" placeholder="Jawatan" oninput="kemaskini()">
         </div>
     </div>
 
-    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-bottom:50px; font-size:14px;">🖨️ CETAK KE PDF (Arial 11pt)</button>
+    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-bottom:50px;">🖨️ CETAK KE PDF (Arial 11pt)</button>
 </div>
 
 <div id="preview-container">
@@ -249,16 +262,10 @@ function tambah(jenis, v1='', v2='') {
     div.className = 'input-row';
     
     if(jenis === 'objektif') {
-        div.innerHTML = `<input type="text" style="flex:1" placeholder="Masukkan objektif program..." value="${v1}" oninput="kemaskini()">`;
-    } else if (jenis === 'tentatif') {
-        div.innerHTML = `<input type="text" class="f-1" placeholder="Masa" value="${v1}" oninput="kemaskini()">
-                         <input type="text" class="f-2" placeholder="Aktiviti" value="${v2}" oninput="kemaskini()">`;
-    } else if (jenis === 'ajk') {
-        div.innerHTML = `<input type="text" class="f-1" placeholder="Jawatan" value="${v1}" oninput="kemaskini()">
-                         <input type="text" class="f-2" placeholder="Nama Pegawai" value="${v2}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" style="flex:1" placeholder="Masukkan objektif..." value="${v1}" oninput="kemaskini()">`;
     } else {
-        div.innerHTML = `<input type="text" class="f-1" placeholder="Perkara" value="${v1}" oninput="kemaskini()">
-                         <input type="text" class="f-2" placeholder="RM" value="${v2}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" class="f-1" value="${v1}" oninput="kemaskini()">
+                         <input type="text" class="f-2" value="${v2}" oninput="kemaskini()">`;
     }
 
     div.innerHTML += `<button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
