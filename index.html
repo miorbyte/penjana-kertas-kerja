@@ -3,42 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Doc Engine V18.3 - Mobile Stable</title>
+    <title>EZI Paperwork Generator BPP</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         
         * { box-sizing: border-box; }
         body { background: #0f172a; font-family: 'Inter', sans-serif; margin: 0; padding: 0; color: #1e293b; }
 
-        /* TOOLBAR ATAS - STICKY */
+        /* TOOLBAR ATAS */
         .top-nav { 
             position: sticky; top: 0; background: #1e293b; padding: 10px; 
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; 
             z-index: 9999; border-bottom: 3px solid #3b82f6;
         }
-        .btn-nav { padding: 12px 5px; border: none; border-radius: 8px; color: white; font-weight: 800; font-size: 11px; cursor: pointer; text-transform: uppercase; }
+        .nav-title { color: #3b82f6; font-weight: 800; text-align: center; font-size: 16px; margin-bottom: 10px; letter-spacing: 1px; }
+        .nav-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .btn-nav { padding: 10px; border: none; border-radius: 8px; color: white; font-weight: 800; font-size: 11px; cursor: pointer; text-transform: uppercase; }
 
-        /* MAIN STRUCTURE - RESPONSIVE GRID */
-        .main-container {
-            display: grid;
-            grid-template-columns: 45% 55%;
-            height: calc(100vh - 65px);
-        }
-
+        /* MAIN STRUCTURE */
+        .main-container { display: grid; grid-template-columns: 45% 55%; height: calc(100vh - 95px); }
         .editor-side { background: #f1f5f9; padding: 20px; overflow-y: auto; border-right: 2px solid #cbd5e1; }
         .preview-side { background: #334155; padding: 30px 10px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
 
-        /* TABLET & PHONE FIX */
+        /* MOBILE FIX */
         @media screen and (max-width: 900px) {
             .main-container { grid-template-columns: 1fr; height: auto; }
-            .editor-side { height: auto; overflow: visible; padding: 15px; }
-            .preview-side { height: auto; overflow: visible; padding: 20px 5px; }
+            .editor-side, .preview-side { height: auto; overflow: visible; }
             #preview { width: 100% !important; padding: 10mm 5mm !important; box-shadow: none; font-size: 10pt !important; }
-            input, textarea { font-size: 16px !important; } /* Elak iPhone auto-zoom */
+            input, textarea { font-size: 16px !important; }
         }
 
         /* INPUT CARDS */
-        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
         .card-h { font-size: 13px; font-weight: 800; border-bottom: 2px solid #3b82f6; padding-bottom: 6px; margin-bottom: 12px; color: #0f172a; text-transform: uppercase; }
         label { font-size: 10px; font-weight: 700; color: #64748b; display: block; margin-top: 10px; text-transform: uppercase; }
         input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 4px; background: #f8fafc; }
@@ -70,16 +65,19 @@
             .top-nav, .editor-side { display: none; }
             .main-container { display: block; }
             .preview-side { padding: 0; background: white; }
-            #preview { box-shadow: none; border: none; width: 100%; }
+            #preview { box-shadow: none; border: none; width: 100%; padding: 10mm; }
         }
     </style>
 </head>
 <body>
 
 <div class="top-nav">
-    <button class="btn-nav" style="background: #2563eb;" onclick="exportData()">💾 Simpan</button>
-    <button class="btn-nav" style="background: #4b5563;" onclick="document.getElementById('fileIn').click()">📂 Buka</button>
-    <button class="btn-nav" style="background: #059669;" onclick="window.print()">🖨️ Cetak</button>
+    <div class="nav-title">EZI PAPERWORK GENERATOR BPP</div>
+    <div class="nav-buttons">
+        <button class="btn-nav" style="background: #2563eb;" onclick="exportData()">💾 Simpan</button>
+        <button class="btn-nav" style="background: #4b5563;" onclick="document.getElementById('fileIn').click()">📂 Buka</button>
+        <button class="btn-nav" style="background: #059669;" onclick="window.print()">🖨️ Cetak</button>
+    </div>
     <input type="file" id="fileIn" style="display:none" onchange="importData(event)">
 </div>
 
@@ -88,7 +86,7 @@
         <div class="card">
             <div class="card-h">1.0 Info Program</div>
             <label>Tajuk Kertas Kerja</label>
-            <textarea id="in-tajuk" oninput="kemaskini()" rows="2" placeholder="Contoh: PROGRAM KHIDMAT MASYARAKAT"></textarea>
+            <textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
                 <div><label>Tarikh</label><input id="in-tarikh" oninput="kemaskini()"></div>
                 <div><label>Masa</label><input id="in-masa" oninput="kemaskini()"></div>
@@ -195,7 +193,10 @@ function kemaskini() {
     document.querySelectorAll('.v-auto-name').forEach(el => el.innerText = tajuk);
 
     const map = {'in-tarikh':'v-tarikh','in-masa':'v-masa','in-tempat':'v-tempat','in-penglibatan':'v-penglibatan','in-n1':'v-n1','in-j1':'v-j1','in-n2':'v-n2','in-j2':'v-j2','in-n3':'v-n3','in-j3':'v-j3'};
-    for(let i in map) document.getElementById(map[i]).innerText = document.getElementById(i).value || "-";
+    for(let i in map) {
+        let el = document.getElementById(map[i]);
+        if(el) el.innerText = document.getElementById(i).value || "-";
+    }
 
     document.getElementById('v-obj').innerHTML = '';
     document.querySelectorAll('#inputs-obj input').forEach(i => { if(i.value) document.getElementById('v-obj').innerHTML += `<li>${i.value}</li>` });
@@ -218,7 +219,7 @@ function kemaskini() {
 function exportData() {
     const d = Array.from(document.querySelectorAll('input, textarea')).map(i => i.value);
     const b = new Blob([JSON.stringify(d)], {type:'application/json'});
-    const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='KKerja.json'; a.click();
+    const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='KertasKerja_BPP.json'; a.click();
 }
 function importData(e) {
     const r = new FileReader(); r.onload = (x) => {
