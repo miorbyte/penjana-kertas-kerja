@@ -2,48 +2,47 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Executive Document Builder V16.7</title>
+    <title>Executive Document Builder V16.8</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         :root { --editor-bg: #f1f5f9; --accent: #0f172a; }
         body { background: #cbd5e1; font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
         .no-print { width: 45%; height: 100vh; background: var(--editor-bg); padding: 20px; overflow-y: auto; border-right: 1px solid #94a3b8; box-sizing: border-box; }
-        .toolbar { position: sticky; top: 0; z-index: 1000; background: white; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .toolbar { position: sticky; top: 0; z-index: 1000; background: white; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border: 1px solid #e2e8f0; }
         .btn-tool { padding: 8px 16px; border-radius: 6px; background: var(--accent); color: white; border: none; cursor: pointer; font-size: 11px; font-weight: 700; }
         
         .section-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
         .section-h { font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; }
         .section-h::before { content: ""; width: 4px; height: 14px; background: var(--accent); margin-right: 8px; border-radius: 2px; }
 
-        /* GRID UNTUK SUMBER */
-        .grid-sumber { display: grid; grid-template-columns: 2fr 1.2fr 40px; gap: 10px; margin-bottom: 10px; }
-        /* GRID UNTUK BELANJA */
-        .grid-belanja { display: grid; grid-template-columns: 1.5fr 0.7fr 1fr 40px; gap: 8px; margin-bottom: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
+        .grid-3 { display: grid; grid-template-columns: 1.5fr 0.7fr 1fr 40px; gap: 8px; margin-bottom: 10px; }
         
         .sub-label { font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px; }
-        label { font-size: 11px; font-weight: 700; color: #1e293b; display: block; margin-top: 15px; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px; }
+        label { font-size: 11px; font-weight: 700; color: #1e293b; display: block; margin-top: 12px; text-transform: uppercase; }
         
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; box-sizing: border-box; background: #fff; }
-        .btn-add { width: 100%; padding: 10px; background: #f8fafc; border: 1px dashed #94a3b8; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; color: #475569; margin-top: 5px; }
-        .btn-del { background: #fee2e2; color: #ef4444; border: none; width: 40px; height: 38px; border-radius: 6px; cursor: pointer; font-weight: bold; align-self: end; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; box-sizing: border-box; }
+        .btn-add { width: 100%; padding: 10px; background: #f8fafc; border: 1px dashed #94a3b8; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; margin-top: 5px; }
+        .btn-del { background: #fee2e2; color: #ef4444; border: none; width: 40px; height: 38px; border-radius: 6px; cursor: pointer; align-self: end; }
 
         #preview-container { width: 55%; height: 100vh; overflow-y: auto; display: flex; justify-content: center; padding: 40px 0; background: #475569; }
-        #preview { width: 210mm; min-height: 297mm; background: white; padding: 25mm 20mm; box-shadow: 0 0 50px rgba(0,0,0,0.5); font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; box-sizing: border-box; }
+        #preview { width: 210mm; min-height: 297mm; background: white; padding: 25mm 20mm; font-family: Arial, sans-serif; font-size: 11pt; color: #000; box-sizing: border-box; }
         
+        h4 { font-size: 11pt; font-weight: bold; margin: 20px 0 10px 0; text-transform: uppercase; border-left: 4px solid #000; padding-left: 10px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #000; padding: 7px; vertical-align: top; }
-        th { background: #f2f2f2 !important; font-size: 10pt; text-align: center; }
+        th, td { border: 1px solid #000; padding: 8px; vertical-align: top; }
+        th { background: #f2f2f2 !important; }
         .total-row { background: #f9fafb; font-weight: bold; }
 
-        @media print { .no-print { display: none !important; } #preview-container { background: white; padding: 0; } #preview { box-shadow: none; width: 100%; padding: 10mm; } }
+        @media print { .no-print { display: none !important; } #preview-container { background: white; padding: 0; } #preview { width: 100%; padding: 10mm; } }
     </style>
 </head>
 <body>
 
 <div class="no-print">
     <div class="toolbar">
-        <span style="font-weight: 800; color: var(--accent);">DOC ENGINE V16.7</span>
+        <span style="font-weight: 800;">DOC ENGINE V16.8</span>
         <div style="display:flex; gap:8px;">
             <button class="btn-tool" onclick="exportData()">💾 SIMPAN</button>
             <button class="btn-tool" style="background:#64748b;" onclick="document.getElementById('fileInput').click()">📂 BUKA</button>
@@ -52,78 +51,114 @@
     </div>
 
     <div class="section-card">
-        <div class="section-h">1.0 Maklumat</div>
-        <input type="text" id="in-tajuk" placeholder="TAJUK PROGRAM" oninput="kemaskini()" style="font-weight:bold; margin-bottom:10px;">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <input type="text" id="in-tarikh" placeholder="Tarikh" oninput="kemaskini()">
-            <input type="text" id="in-masa-asas" placeholder="Masa" oninput="kemaskini()">
+        <div class="section-h">1.0 Maklumat Asas</div>
+        <label>Tajuk Program</label>
+        <textarea id="in-tajuk" oninput="kemaskini()" rows="2" placeholder="Masukkan Tajuk..."></textarea>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+            <div><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
+            <div><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()"></div>
         </div>
-        <input type="text" id="in-tempat" placeholder="Tempat" oninput="kemaskini()" style="margin-top:10px;">
+        <label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()">
     </div>
 
     <div class="section-card">
-        <div class="section-h">2.0 Bahagian Kewangan</div>
-        
-        <label>2.1 Sumber Dana</label>
-        <div id="inputs-sumber"></div>
-        <button class="btn-add" onclick="tambahSumber()">+ Tambah Sumber Dana</button>
+        <div class="section-h">2.0 Objektif</div>
+        <div id="inputs-obj"></div>
+        <button class="btn-add" onclick="tambahItem('obj')">+ Tambah Objektif</button>
+    </div>
 
-        <label>2.2 Anggaran Perbelanjaan</label>
+    <div class="section-card">
+        <div class="section-h">3.0 Jadual & AJK</div>
+        <label>Tentatif</label>
+        <div id="inputs-tentatif"></div>
+        <button class="btn-add" onclick="tambahDua('tentatif', 'Masa', 'Aktiviti')">+ Tambah Slot</button>
+        
+        <label style="margin-top:15px">AJK</label>
+        <div id="inputs-ajk"></div>
+        <button class="btn-add" onclick="tambahDua('ajk', 'Jawatan', 'Nama')">+ Tambah AJK</button>
+    </div>
+
+    <div class="section-card">
+        <div class="section-h">4.0 Kewangan</div>
+        <label>4.1 Sumber Dana</label>
+        <div id="inputs-sumber"></div>
+        <button class="btn-add" onclick="tambahDua('sumber', 'Punca', 'RM')">+ Tambah Sumber</button>
+
+        <label style="margin-top:20px">4.2 Perbelanjaan</label>
         <div id="inputs-belanja"></div>
         <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item Belanja</button>
     </div>
 
-    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:800; cursor:pointer; margin-top:20px;">🖨️ CETAK SEKARANG</button>
+    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:800; cursor:pointer;">🖨️ CETAK PDF</button>
 </div>
 
 <div id="preview-container">
     <div id="preview">
         <center><h3 id="v-tajuk" style="text-decoration:underline; text-transform:uppercase;">-</h3></center>
         
-        <table style="border:none; margin-bottom:20px;">
-            <tr style="border:none"><td style="border:none; width:100px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
-            <tr style="border:none"><td style="border:none">MASA</td><td style="border:none">: <span id="v-masa-asas">-</span></td></tr>
+        <h4>1.0 PENDAHULUAN</h4>
+        <p>Kertas kerja ini disediakan untuk memohon kelulusan bagi program tersebut.</p>
+
+        <h4>2.0 BUTIRAN PROGRAM</h4>
+        <table style="border:none">
+            <tr style="border:none"><td style="border:none; width:120px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
+            <tr style="border:none"><td style="border:none">MASA</td><td style="border:none">: <span id="v-masa">-</span></td></tr>
             <tr style="border:none"><td style="border:none">TEMPAT</td><td style="border:none">: <span id="v-tempat">-</span></td></tr>
         </table>
 
-        <h4 style="margin-bottom:5px;">SUMBER KEWANGAN</h4>
+        <h4>3.0 OBJEKTIF</h4>
+        <ol id="v-obj" style="margin-left:20px;"></ol>
+
+        <h4>4.0 TENTATIF PROGRAM</h4>
+        <table><thead><tr><th width="120">MASA</th><th>PENGISIAN</th></tr></thead><tbody id="v-tentatif"></tbody></table>
+
+        <h4>5.0 JAWATANKUASA PELAKSANA</h4>
+        <table><thead><tr><th width="180">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead><tbody id="v-ajk"></tbody></table>
+
+        <h4>6.0 IMPLIKASI KEWANGAN</h4>
+        <p style="font-weight:bold; margin-bottom:5px;">6.1 SUMBER KEWANGAN</p>
         <table>
-            <thead><tr><th width="40">BIL</th><th>PERINCIAN SUMBER</th><th width="150">JUMLAH (RM)</th></tr></thead>
+            <thead><tr><th width="40">BIL</th><th>PERINCIAN</th><th width="150">JUMLAH (RM)</th></tr></thead>
             <tbody id="v-sumber"></tbody>
-            <tfoot><tr class="total-row"><td colspan="2" style="text-align:right">JUMLAH BESAR SUMBER</td><td id="v-total-sumber">0.00</td></tr></tfoot>
+            <tfoot><tr class="total-row"><td colspan="2" style="text-align:right">JUMLAH</td><td id="v-total-sumber">0.00</td></tr></tfoot>
         </table>
 
-        <h4 style="margin-top:25px; margin-bottom:5px;">ANGGARAN PERBELANJAAN</h4>
+        <p style="font-weight:bold; margin-top:15px; margin-bottom:5px;">6.2 ANGGARAN PERBELANJAAN</p>
         <table>
             <thead><tr><th width="30">BIL</th><th>PERKARA</th><th width="60">QTY</th><th width="100">UNIT (RM)</th><th width="120">JUMLAH (RM)</th></tr></thead>
             <tbody id="v-belanja"></tbody>
-            <tfoot><tr class="total-row"><td colspan="4" style="text-align:right">JUMLAH BESAR PERBELANJAAN</td><td id="v-total-belanja">0.00</td></tr></tfoot>
+            <tfoot><tr class="total-row"><td colspan="4" style="text-align:right">JUMLAH</td><td id="v-total-belanja">0.00</td></tr></tfoot>
         </table>
     </div>
 </div>
 
 <script>
-function tambahSumber(v1='', v2='') {
+function tambahItem(id, val='') {
     const div = document.createElement('div');
-    div.className = 'grid-sumber';
+    div.className = 'grid-2'; div.style.gridTemplateColumns = "1fr 40px";
+    div.innerHTML = `<input type="text" value="${val}" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
+    document.getElementById('inputs-'+id).appendChild(div);
+}
+
+function tambahDua(id, l1, l2, v1='', v2='') {
+    const div = document.createElement('div');
+    div.className = 'grid-2';
     div.innerHTML = `
-        <div><div class="sub-label">Punca Dana</div><input type="text" value="${v1}" placeholder="Cth: Peruntukan" oninput="kemaskini()"></div>
-        <div><div class="sub-label">Jumlah (RM)</div><input type="number" value="${v2}" placeholder="0.00" oninput="kemaskini()"></div>
-        <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>
-    `;
-    document.getElementById('inputs-sumber').appendChild(div);
+        <div><div class="sub-label">${l1}</div><input type="text" value="${v1}" oninput="kemaskini()"></div>
+        <div><div class="sub-label">${l2}</div><input type="text" value="${v2}" oninput="kemaskini()"></div>
+        <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
+    document.getElementById('inputs-'+id).appendChild(div);
     kemaskini();
 }
 
 function tambahBelanja(p='', q='1', u='0') {
     const div = document.createElement('div');
-    div.className = 'grid-belanja';
+    div.className = 'grid-3';
     div.innerHTML = `
-        <div><div class="sub-label">Perkara</div><input type="text" value="${p}" placeholder="Cth: Makan" oninput="kemaskini()"></div>
+        <div><div class="sub-label">Perkara</div><input type="text" value="${p}" oninput="kemaskini()"></div>
         <div><div class="sub-label">Qty</div><input type="number" value="${q}" oninput="kemaskini()"></div>
-        <div><div class="sub-label">Harga (RM)</div><input type="number" step="0.01" value="${u}" oninput="kemaskini()"></div>
-        <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>
-    `;
+        <div><div class="sub-label">Unit RM</div><input type="number" step="0.01" value="${u}" oninput="kemaskini()"></div>
+        <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
     document.getElementById('inputs-belanja').appendChild(div);
     kemaskini();
 }
@@ -131,41 +166,57 @@ function tambahBelanja(p='', q='1', u='0') {
 function kemaskini() {
     document.getElementById('v-tajuk').innerText = document.getElementById('in-tajuk').value || "TAJUK PROGRAM";
     document.getElementById('v-tarikh').innerText = document.getElementById('in-tarikh').value || "-";
-    document.getElementById('v-masa-asas').innerText = document.getElementById('in-masa-asas').value || "-";
+    document.getElementById('v-masa').innerText = document.getElementById('in-masa').value || "-";
     document.getElementById('v-tempat').innerText = document.getElementById('in-tempat').value || "-";
 
-    // Update Sumber
-    let totalS = 0;
-    const vS = document.getElementById('v-sumber'); vS.innerHTML = '';
-    document.querySelectorAll('#inputs-sumber .grid-sumber').forEach((r, i) => {
-        const ins = r.querySelectorAll('input');
-        const amt = parseFloat(ins[1].value) || 0;
-        totalS += amt;
-        vS.innerHTML += `<tr><td align="center">${i+1}</td><td>${ins[0].value}</td><td align="right">${amt.toFixed(2)}</td></tr>`;
-    });
-    document.getElementById('v-total-sumber').innerText = totalS.toFixed(2);
+    const fillList = (id) => {
+        const v = document.getElementById('v-'+id); v.innerHTML = '';
+        document.querySelectorAll(`#inputs-${id} input`).forEach(i => { if(i.value) v.innerHTML += `<li>${i.value}</li>`; });
+    };
+    fillList('obj');
 
-    // Update Belanja
-    let totalB = 0;
+    const fillTable = (id, target) => {
+        const t = document.getElementById('v-'+target); t.innerHTML = '';
+        document.querySelectorAll(`#inputs-${id} .grid-2`).forEach(r => {
+            const ins = r.querySelectorAll('input');
+            if(ins.length >= 2) t.innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td></tr>`;
+        });
+    };
+    fillTable('tentatif', 'tentatif');
+    fillTable('ajk', 'ajk');
+
+    let tS = 0;
+    const vS = document.getElementById('v-sumber'); vS.innerHTML = '';
+    document.querySelectorAll('#inputs-sumber .grid-2').forEach((r, i) => {
+        const ins = r.querySelectorAll('input');
+        const val = parseFloat(ins[1].value) || 0; tS += val;
+        vS.innerHTML += `<tr><td align="center">${i+1}</td><td>${ins[0].value}</td><td align="right">${val.toFixed(2)}</td></tr>`;
+    });
+    document.getElementById('v-total-sumber').innerText = tS.toFixed(2);
+
+    let tB = 0;
     const vB = document.getElementById('v-belanja'); vB.innerHTML = '';
-    document.querySelectorAll('#inputs-belanja .grid-belanja').forEach((r, i) => {
+    document.querySelectorAll('#inputs-belanja .grid-3').forEach((r, i) => {
         const ins = r.querySelectorAll('input');
         const q = parseFloat(ins[1].value) || 0;
         const u = parseFloat(ins[2].value) || 0;
-        const sub = q * u; totalB += sub;
+        const sub = q * u; tB += sub;
         vB.innerHTML += `<tr><td align="center">${i+1}</td><td>${ins[0].value}</td><td align="center">${q}</td><td align="right">${u.toFixed(2)}</td><td align="right">${sub.toFixed(2)}</td></tr>`;
     });
-    document.getElementById('v-total-belanja').innerText = totalB.toFixed(2);
+    document.getElementById('v-total-belanja').innerText = tB.toFixed(2);
 }
 
 function exportData() {
     const data = {
-        main: [document.getElementById('in-tajuk').value, document.getElementById('in-tarikh').value, document.getElementById('in-masa-asas').value, document.getElementById('in-tempat').value],
-        sumber: Array.from(document.querySelectorAll('#inputs-sumber .grid-sumber')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
-        belanja: Array.from(document.querySelectorAll('#inputs-belanja .grid-belanja')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value, r.querySelectorAll('input')[2].value])
+        main: [document.getElementById('in-tajuk').value, document.getElementById('in-tarikh').value, document.getElementById('in-masa').value, document.getElementById('in-tempat').value],
+        obj: Array.from(document.querySelectorAll('#inputs-obj input')).map(i => i.value),
+        tentatif: Array.from(document.querySelectorAll('#inputs-tentatif .grid-2')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
+        ajk: Array.from(document.querySelectorAll('#inputs-ajk .grid-2')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
+        sumber: Array.from(document.querySelectorAll('#inputs-sumber .grid-2')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
+        belanja: Array.from(document.querySelectorAll('#inputs-belanja .grid-3')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value, r.querySelectorAll('input')[2].value])
     };
     const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Data_Kewangan.json'; a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'KertasKerja_V16.json'; a.click();
 }
 
 function importData(e) {
@@ -173,15 +224,18 @@ function importData(e) {
     reader.onload = (ev) => {
         const d = JSON.parse(ev.target.result);
         document.getElementById('in-tajuk').value = d.main[0]; document.getElementById('in-tarikh').value = d.main[1];
-        document.getElementById('in-masa-asas').value = d.main[2]; document.getElementById('in-tempat').value = d.main[3];
-        document.getElementById('inputs-sumber').innerHTML = ''; d.sumber.forEach(v => tambahSumber(v[0], v[1]));
+        document.getElementById('in-masa').value = d.main[2]; document.getElementById('in-tempat').value = d.main[3];
+        document.getElementById('inputs-obj').innerHTML = ''; d.obj.forEach(v => tambahItem('obj', v));
+        document.getElementById('inputs-tentatif').innerHTML = ''; d.tentatif.forEach(v => tambahDua('tentatif', 'Masa', 'Aktiviti', v[0], v[1]));
+        document.getElementById('inputs-ajk').innerHTML = ''; d.ajk.forEach(v => tambahDua('ajk', 'Jawatan', 'Nama', v[0], v[1]));
+        document.getElementById('inputs-sumber').innerHTML = ''; d.sumber.forEach(v => tambahDua('sumber', 'Punca', 'RM', v[0], v[1]));
         document.getElementById('inputs-belanja').innerHTML = ''; d.belanja.forEach(v => tambahBelanja(v[0], v[1], v[2]));
         kemaskini();
     };
     reader.readAsText(e.target.files[0]);
 }
 
-window.onload = () => { tambahSumber(); tambahBelanja(); };
+window.onload = () => { tambahItem('obj'); tambahDua('tentatif', 'Masa', 'Aktiviti'); tambahDua('ajk', 'Jawatan', 'Nama'); tambahDua('sumber', 'Punca', 'RM'); tambahBelanja(); };
 </script>
 </body>
 </html>
