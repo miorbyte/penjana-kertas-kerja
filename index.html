@@ -2,61 +2,76 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doc Engine V18.2 - Financial Restore</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Doc Engine V18.3 - Mobile Stable</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        
         * { box-sizing: border-box; }
-        body { background: #0f172a; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        body { background: #0f172a; font-family: 'Inter', sans-serif; margin: 0; padding: 0; color: #1e293b; }
 
-        /* NAV ATAS */
+        /* TOOLBAR ATAS - STICKY */
         .top-nav { 
-            position: sticky; top: 0; background: #1e293b; padding: 12px; 
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; 
+            position: sticky; top: 0; background: #1e293b; padding: 10px; 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; 
             z-index: 9999; border-bottom: 3px solid #3b82f6;
         }
-        .btn-nav { padding: 12px; border: none; border-radius: 8px; color: white; font-weight: 800; font-size: 11px; cursor: pointer; text-transform: uppercase; }
+        .btn-nav { padding: 12px 5px; border: none; border-radius: 8px; color: white; font-weight: 800; font-size: 11px; cursor: pointer; text-transform: uppercase; }
 
-        /* LAYOUT */
-        .main-wrapper { display: block; width: 100%; }
-        .editor-side { width: 45%; float: left; background: #f1f5f9; padding: 20px; height: calc(100vh - 70px); overflow-y: auto; }
-        .preview-side { width: 55%; float: right; background: #334155; padding: 40px 20px; height: calc(100vh - 70px); overflow-y: auto; }
+        /* MAIN STRUCTURE - RESPONSIVE GRID */
+        .main-container {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            height: calc(100vh - 65px);
+        }
 
+        .editor-side { background: #f1f5f9; padding: 20px; overflow-y: auto; border-right: 2px solid #cbd5e1; }
+        .preview-side { background: #334155; padding: 30px 10px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+
+        /* TABLET & PHONE FIX */
         @media screen and (max-width: 900px) {
-            .editor-side, .preview-side { width: 100%; float: none; height: auto; }
-            #preview { width: 100% !important; padding: 10mm !important; }
+            .main-container { grid-template-columns: 1fr; height: auto; }
+            .editor-side { height: auto; overflow: visible; padding: 15px; }
+            .preview-side { height: auto; overflow: visible; padding: 20px 5px; }
+            #preview { width: 100% !important; padding: 10mm 5mm !important; box-shadow: none; font-size: 10pt !important; }
+            input, textarea { font-size: 16px !important; } /* Elak iPhone auto-zoom */
         }
 
         /* INPUT CARDS */
-        .card { background: white; border-radius: 12px; padding: 18px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        .card-h { font-size: 13px; font-weight: 800; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; margin-bottom: 15px; color: #0f172a; }
-        label { font-size: 11px; font-weight: 700; color: #64748b; display: block; margin-top: 10px; text-transform: uppercase; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 5px; background: #f8fafc; font-size: 14px; }
+        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card-h { font-size: 13px; font-weight: 800; border-bottom: 2px solid #3b82f6; padding-bottom: 6px; margin-bottom: 12px; color: #0f172a; text-transform: uppercase; }
+        label { font-size: 10px; font-weight: 700; color: #64748b; display: block; margin-top: 10px; text-transform: uppercase; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 4px; background: #f8fafc; }
         
-        /* GRID STYLES */
-        .row-obj { display: grid; grid-template-columns: 1fr 35px; gap: 8px; margin-bottom: 8px; }
-        .row-2 { display: grid; grid-template-columns: 1fr 1fr 35px; gap: 8px; margin-bottom: 8px; }
-        .row-4 { display: grid; grid-template-columns: 1.5fr 0.5fr 0.8fr 35px; gap: 5px; margin-bottom: 8px; }
+        /* GRID FOR INPUTS */
+        .row-obj { display: grid; grid-template-columns: 1fr 40px; gap: 5px; margin-bottom: 5px; }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 5px; margin-bottom: 5px; }
+        .row-belanja { display: grid; grid-template-columns: 1.2fr 0.5fr 0.8fr 40px; gap: 5px; margin-bottom: 5px; }
         
-        .btn-add { width: 100%; padding: 10px; background: #e2e8f0; border: 2px dashed #94a3b8; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 12px; }
-        .btn-del { background: #fee2e2; color: #ef4444; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; height: 38px; width: 35px; display: flex; align-items: center; justify-content: center; margin-top: 5px; }
+        .btn-add { width: 100%; padding: 10px; background: #e2e8f0; border: 1px dashed #64748b; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 8px; font-size: 11px; }
+        .btn-del { background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; height: 38px; }
 
         /* PREVIEW A4 */
         #preview { 
-            width: 210mm; min-height: 297mm; background: white; margin: 0 auto;
-            padding: 25mm 20mm; color: black; font-family: Arial, sans-serif;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); line-height: 1.5; font-size: 11pt;
+            width: 210mm; min-height: 297mm; background: white; 
+            padding: 20mm; color: black; font-family: Arial, sans-serif;
+            line-height: 1.5; font-size: 11pt;
         }
-        #v-title-header { text-align: center; font-weight: bold; font-size: 13pt; text-decoration: underline; margin-bottom: 25px; text-transform: uppercase; }
-        h4 { border-left: 5px solid black; padding-left: 10px; margin: 20px 0 10px 0; text-transform: uppercase; font-size: 11pt; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 10pt; }
-        th, td { border: 1px solid black; padding: 6px; text-align: left; vertical-align: top; }
+        #v-title { text-align: center; font-weight: bold; font-size: 13pt; text-decoration: underline; margin-bottom: 20px; text-transform: uppercase; }
+        h4 { border-left: 5px solid black; padding-left: 10px; margin: 18px 0 8px 0; text-transform: uppercase; font-size: 11pt; background: #f8fafc; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 10pt; }
+        th, td { border: 1px solid black; padding: 6px; text-align: left; }
         th { background: #f1f5f9 !important; }
 
-        .sign-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 50px; text-align: center; }
-        .sign-line { border-top: 1px solid black; margin-top: 60px; padding-top: 5px; font-weight: bold; text-transform: uppercase; font-size: 9pt; }
-        
-        .clearfix::after { content: ""; clear: both; display: table; }
+        .sign-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 40px; text-align: center; font-size: 9pt; }
+        .sign-line { border-top: 1px solid black; margin-top: 50px; padding-top: 5px; font-weight: bold; text-transform: uppercase; }
+
+        @media print { 
+            .top-nav, .editor-side { display: none; }
+            .main-container { display: block; }
+            .preview-side { padding: 0; background: white; }
+            #preview { box-shadow: none; border: none; width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -68,13 +83,13 @@
     <input type="file" id="fileIn" style="display:none" onchange="importData(event)">
 </div>
 
-<div class="main-wrapper clearfix">
+<div class="main-container">
     <div class="editor-side">
         <div class="card">
-            <div class="card-h">1.0 Maklumat Program</div>
-            <label>Tajuk Program</label>
-            <textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div class="card-h">1.0 Info Program</div>
+            <label>Tajuk Kertas Kerja</label>
+            <textarea id="in-tajuk" oninput="kemaskini()" rows="2" placeholder="Contoh: PROGRAM KHIDMAT MASYARAKAT"></textarea>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
                 <div><label>Tarikh</label><input id="in-tarikh" oninput="kemaskini()"></div>
                 <div><label>Masa</label><input id="in-masa" oninput="kemaskini()"></div>
             </div>
@@ -102,13 +117,13 @@
             <div class="card-h">4.0 Kewangan</div>
             <label>Sumber Dana</label>
             <div id="inputs-sumber"></div>
-            <button class="btn-add" onclick="tambahDua('sumber', 'Punca', 'Jumlah (RM)')">+ Tambah Sumber</button>
-            <label style="margin-top:15px">Perbelanjaan (Kuantiti & Harga)</label>
+            <button class="btn-add" onclick="tambahDua('sumber', 'Punca', 'RM')">+ Tambah Sumber</button>
+            <label style="margin-top:15px">Perbelanjaan (Item | Unit | Harga)</label>
             <div id="inputs-belanja"></div>
-            <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item Belanja</button>
+            <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item</button>
         </div>
 
-        <div class="card" style="margin-bottom:100px;">
+        <div class="card" style="margin-bottom:50px;">
             <div class="card-h">5.0 Pengesahan</div>
             <label>Penyedia</label><input id="in-n1" oninput="kemaskini()" placeholder="Nama"><input id="in-j1" oninput="kemaskini()" placeholder="Jawatan">
             <label>Penyemak</label><input id="in-n2" oninput="kemaskini()" placeholder="Nama"><input id="in-j2" oninput="kemaskini()" placeholder="Jawatan">
@@ -118,14 +133,14 @@
 
     <div class="preview-side">
         <div id="preview">
-            <div id="v-title-header">KERTAS KERJA PROGRAM</div>
-            
+            <div id="v-title">KERTAS KERJA PROGRAM</div>
+
             <h4>1.0 PENDAHULUAN</h4>
-            <p>Kertas kerja ini disediakan bertujuan untuk memohon pertimbangan serta kelulusan bagi melaksanakan <strong><span class="v-prog-name">[TAJUK PROGRAM]</span></strong>. Program ini dirancang untuk memastikan objektif organisasi dapat dicapai dengan cemerlang.</p>
+            <p>Kertas kerja ini disediakan bertujuan untuk memohon pertimbangan dan kelulusan bagi melaksanakan <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong>. Program ini dirancang bagi memastikan segala matlamat yang ditetapkan dapat dicapai dengan jayanya.</p>
 
             <h4>2.0 MAKLUMAT PROGRAM</h4>
             <table>
-                <tr><td width="150">TARIKH</td><td>: <span id="v-tarikh">-</span></td></tr>
+                <tr><td width="140">TARIKH</td><td>: <span id="v-tarikh">-</span></td></tr>
                 <tr><td>MASA</td><td>: <span id="v-masa">-</span></td></tr>
                 <tr><td>TEMPAT</td><td>: <span id="v-tempat">-</span></td></tr>
                 <tr><td>SASARAN</td><td>: <span id="v-penglibatan">-</span></td></tr>
@@ -141,13 +156,13 @@
             <table><thead><tr><th width="150">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead><tbody id="v-ajk"></tbody></table>
 
             <h4>6.0 IMPLIKASI KEWANGAN</h4>
-            <p><strong>6.1 Sumber Dana</strong></p>
-            <table><thead><tr><th>PERINCIAN</th><th width="120">JUMLAH (RM)</th></tr></thead><tbody id="v-sumber"></tbody></table>
-            <p><strong>6.2 Anggaran Perbelanjaan</strong></p>
-            <table><thead><tr><th>ITEM</th><th width="60">UNIT</th><th width="100">HARGA (RM)</th><th width="100">TOTAL (RM)</th></tr></thead><tbody id="v-belanja"></tbody></table>
+            <p><strong>6.1 Sumber Kewangan</strong></p>
+            <table><thead><tr><th>PERINCIAN</th><th width="100">RM</th></tr></thead><tbody id="v-sumber"></tbody></table>
+            <p style="margin-top:10px;"><strong>6.2 Anggaran Perbelanjaan</strong></p>
+            <table><thead><tr><th>PERKARA</th><th width="50">UNIT</th><th width="80">HARGA</th><th width="80">JUMLAH</th></tr></thead><tbody id="v-belanja"></tbody></table>
 
             <h4>7.0 PENUTUP</h4>
-            <p>Besar harapan kami agar kertas kerja bagi <strong><span class="v-prog-name">[TAJUK PROGRAM]</span></strong> ini mendapat pertimbangan dan kelulusan yang sewajarnya daripada pihak tuan dan diakhiri dengan jutaan terima kasih.</p>
+            <p>Besar harapan kami agar kertas kerja bagi <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong> ini mendapat pertimbangan dan kelulusan yang sewajarnya daripada pihak tuan dan diakhiri dengan jutaan terima kasih.</p>
 
             <div class="sign-grid">
                 <div>Disediakan:<div class="sign-line"><span id="v-n1">-</span><br><small id="v-j1">-</small></div></div>
@@ -164,55 +179,53 @@ function tambahObj(v='') {
     d.innerHTML = `<input value="${v}" oninput="kemaskini()" placeholder="Objektif..."><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
     document.getElementById('inputs-obj').appendChild(d);
 }
-
 function tambahDua(id, l1, l2) {
     const d = document.createElement('div'); d.className = 'row-2';
     d.innerHTML = `<input oninput="kemaskini()" placeholder="${l1}"><input oninput="kemaskini()" placeholder="${l2}"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
     document.getElementById('inputs-'+id).appendChild(d);
 }
-
 function tambahBelanja() {
-    const d = document.createElement('div'); d.className = 'row-4';
+    const d = document.createElement('div'); d.className = 'row-belanja';
     d.innerHTML = `<input oninput="kemaskini()" placeholder="Item"><input type="number" value="1" oninput="kemaskini()"><input type="number" value="0.00" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
     document.getElementById('inputs-belanja').appendChild(d);
 }
-
 function kemaskini() {
     const tajuk = document.getElementById('in-tajuk').value || "[TAJUK PROGRAM]";
-    document.getElementById('v-title-header').innerText = tajuk;
-    document.querySelectorAll('.v-prog-name').forEach(el => el.innerText = tajuk);
+    document.getElementById('v-title').innerText = tajuk;
+    document.querySelectorAll('.v-auto-name').forEach(el => el.innerText = tajuk);
 
-    const mapping = {
-        'in-tarikh':'v-tarikh', 'in-masa':'v-masa', 'in-tempat':'v-tempat', 'in-penglibatan':'v-penglibatan',
-        'in-n1':'v-n1', 'in-j1':'v-j1', 'in-n2':'v-n2', 'in-j2':'v-j2', 'in-n3':'v-n3', 'in-j3':'v-j3'
-    };
-    for(let i in mapping) document.getElementById(mapping[i]).innerText = document.getElementById(i).value || "-";
+    const map = {'in-tarikh':'v-tarikh','in-masa':'v-masa','in-tempat':'v-tempat','in-penglibatan':'v-penglibatan','in-n1':'v-n1','in-j1':'v-j1','in-n2':'v-n2','in-j2':'v-j2','in-n3':'v-n3','in-j3':'v-j3'};
+    for(let i in map) document.getElementById(map[i]).innerText = document.getElementById(i).value || "-";
 
     document.getElementById('v-obj').innerHTML = '';
-    document.querySelectorAll('#inputs-obj input').forEach(i => { if(i.value) document.getElementById('v-obj').innerHTML += `<li>${i.value}</li>`; });
+    document.querySelectorAll('#inputs-obj input').forEach(i => { if(i.value) document.getElementById('v-obj').innerHTML += `<li>${i.value}</li>` });
 
-    const fillT = (idIn, idV) => {
+    const fill = (idIn, idV) => {
         document.getElementById(idV).innerHTML = '';
         document.querySelectorAll(`#inputs-${idIn} .row-2`).forEach(r => {
             const ins = r.querySelectorAll('input'); if(ins[0].value || ins[1].value) document.getElementById(idV).innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td></tr>`;
         });
     }
-    fillT('tentatif', 'v-tentatif'); fillT('ajk', 'v-ajk'); fillT('sumber', 'v-sumber');
+    fill('tentatif', 'v-tentatif'); fill('ajk', 'v-ajk'); fill('sumber', 'v-sumber');
 
     document.getElementById('v-belanja').innerHTML = '';
-    document.querySelectorAll('#inputs-belanja .row-4').forEach(r => {
+    document.querySelectorAll('#inputs-belanja .row-belanja').forEach(r => {
         const ins = r.querySelectorAll('input');
-        const total = (parseFloat(ins[1].value) * parseFloat(ins[2].value)).toFixed(2);
-        if(ins[0].value) document.getElementById('v-belanja').innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td><td>${ins[2].value}</td><td>${total}</td></tr>`;
+        const t = (parseFloat(ins[1].value) * parseFloat(ins[2].value)).toFixed(2);
+        if(ins[0].value) document.getElementById('v-belanja').innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td><td>${ins[2].value}</td><td>${t}</td></tr>`;
     });
 }
-
 function exportData() {
     const d = Array.from(document.querySelectorAll('input, textarea')).map(i => i.value);
     const b = new Blob([JSON.stringify(d)], {type:'application/json'});
-    const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='KertasKerja.json'; a.click();
+    const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='KKerja.json'; a.click();
 }
-
+function importData(e) {
+    const r = new FileReader(); r.onload = (x) => {
+        const d = JSON.parse(x.target.result); const ins = document.querySelectorAll('input, textarea');
+        d.forEach((v, i) => { if(ins[i]) ins[i].value = v; }); kemaskini();
+    }; r.readAsText(e.target.files[0]);
+}
 window.onload = () => { tambahObj(); tambahDua('tentatif','Masa','Aktiviti'); tambahDua('ajk','Jawatan','Nama'); tambahDua('sumber','Punca','RM'); tambahBelanja(); kemaskini(); }
 </script>
 </body>
