@@ -2,7 +2,7 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Executive Document Builder V16.6</title>
+    <title>Executive Document Builder V16.7</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         :root { --editor-bg: #f1f5f9; --accent: #0f172a; }
@@ -11,26 +11,29 @@
         .no-print { width: 45%; height: 100vh; background: var(--editor-bg); padding: 20px; overflow-y: auto; border-right: 1px solid #94a3b8; box-sizing: border-box; }
         .toolbar { position: sticky; top: 0; z-index: 1000; background: white; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .btn-tool { padding: 8px 16px; border-radius: 6px; background: var(--accent); color: white; border: none; cursor: pointer; font-size: 11px; font-weight: 700; }
+        
         .section-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
         .section-h { font-size: 11px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; }
         .section-h::before { content: ""; width: 4px; height: 14px; background: var(--accent); margin-right: 8px; border-radius: 2px; }
 
-        .grid-layout { display: grid; grid-template-columns: 1.2fr 2.5fr 40px; gap: 10px; margin-bottom: 8px; align-items: end; }
-        .grid-finance { display: grid; grid-template-columns: 2fr 0.8fr 1fr 40px; gap: 8px; margin-bottom: 8px; align-items: end; }
+        /* GRID UNTUK SUMBER */
+        .grid-sumber { display: grid; grid-template-columns: 2fr 1.2fr 40px; gap: 10px; margin-bottom: 10px; }
+        /* GRID UNTUK BELANJA */
+        .grid-belanja { display: grid; grid-template-columns: 1.5fr 0.7fr 1fr 40px; gap: 8px; margin-bottom: 10px; }
         
-        .sub-label { font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; }
-        label { font-size: 11px; font-weight: 700; color: #334155; display: block; margin-top: 12px; text-transform: uppercase; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; box-sizing: border-box; background: #fff; margin-top: 4px; }
-        .btn-add { width: 100%; padding: 8px; background: #f8fafc; border: 1px dashed #94a3b8; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; color: #64748b; margin-top: 5px; }
-        .btn-del { background: #fee2e2; color: #ef4444; border: none; width: 40px; height: 38px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .sub-label { font-size: 9px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 2px; }
+        label { font-size: 11px; font-weight: 700; color: #1e293b; display: block; margin-top: 15px; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px; }
+        
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; box-sizing: border-box; background: #fff; }
+        .btn-add { width: 100%; padding: 10px; background: #f8fafc; border: 1px dashed #94a3b8; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; color: #475569; margin-top: 5px; }
+        .btn-del { background: #fee2e2; color: #ef4444; border: none; width: 40px; height: 38px; border-radius: 6px; cursor: pointer; font-weight: bold; align-self: end; }
 
         #preview-container { width: 55%; height: 100vh; overflow-y: auto; display: flex; justify-content: center; padding: 40px 0; background: #475569; }
-        #preview { width: 210mm; min-height: 297mm; background: white; padding: 25mm 20mm; box-shadow: 0 0 50px rgba(0,0,0,0.5); font-family: Arial, sans-serif; font-size: 11pt; color: #000; box-sizing: border-box; }
-        #v-tajuk { text-align: center; font-size: 14pt; font-weight: bold; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 30px; text-transform: uppercase;}
-        h4 { font-size: 11pt; font-weight: bold; margin: 20px 0 10px 0; text-transform: uppercase; border-left: 4px solid #000; padding-left: 10px; }
+        #preview { width: 210mm; min-height: 297mm; background: white; padding: 25mm 20mm; box-shadow: 0 0 50px rgba(0,0,0,0.5); font-family: Arial, sans-serif; font-size: 10.5pt; color: #000; box-sizing: border-box; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #000; padding: 8px; vertical-align: top; }
-        th { background: #f2f2f2 !important; font-size: 10pt; }
+        th, td { border: 1px solid #000; padding: 7px; vertical-align: top; }
+        th { background: #f2f2f2 !important; font-size: 10pt; text-align: center; }
         .total-row { background: #f9fafb; font-weight: bold; }
 
         @media print { .no-print { display: none !important; } #preview-container { background: white; padding: 0; } #preview { box-shadow: none; width: 100%; padding: 10mm; } }
@@ -40,185 +43,145 @@
 
 <div class="no-print">
     <div class="toolbar">
-        <span style="font-weight: 800; color: var(--accent);">DOC ENGINE V16.6</span>
+        <span style="font-weight: 800; color: var(--accent);">DOC ENGINE V16.7</span>
         <div style="display:flex; gap:8px;">
-            <button class="btn-tool" onclick="exportData()">💾 SIMPAN FAIL</button>
-            <button class="btn-tool" style="background:#64748b;" onclick="document.getElementById('fileInput').click()">📂 BUKA FAIL</button>
+            <button class="btn-tool" onclick="exportData()">💾 SIMPAN</button>
+            <button class="btn-tool" style="background:#64748b;" onclick="document.getElementById('fileInput').click()">📂 BUKA</button>
             <input type="file" id="fileInput" style="display:none" onchange="importData(event)">
         </div>
     </div>
 
     <div class="section-card">
-        <div class="section-h">1.0 Maklumat Asas</div>
-        <label>Tajuk Program</label><textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
-        <label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()">
-        <label>Masa</label><input type="text" id="in-masa-asas" oninput="kemaskini()">
-        <label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()">
-        <label>Penglibatan</label><input type="text" id="in-penglibatan" oninput="kemaskini()">
+        <div class="section-h">1.0 Maklumat</div>
+        <input type="text" id="in-tajuk" placeholder="TAJUK PROGRAM" oninput="kemaskini()" style="font-weight:bold; margin-bottom:10px;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <input type="text" id="in-tarikh" placeholder="Tarikh" oninput="kemaskini()">
+            <input type="text" id="in-masa-asas" placeholder="Masa" oninput="kemaskini()">
+        </div>
+        <input type="text" id="in-tempat" placeholder="Tempat" oninput="kemaskini()" style="margin-top:10px;">
     </div>
 
     <div class="section-card">
-        <div class="section-h">2.0 Objektif</div>
-        <div id="inputs-objektif"></div>
-        <button class="btn-add" onclick="tambahObjektif()">+ Tambah Objektif</button>
-    </div>
-
-    <div class="section-card">
-        <div class="section-h">3.0 Jadual & AJK</div>
-        <label>Tentatif</label>
-        <div id="inputs-tentatif"></div>
-        <button class="btn-add" onclick="tambahDua('tentatif')">+ Tambah Slot</button>
-        <label style="margin-top:15px">AJK</label>
-        <div id="inputs-ajk"></div>
-        <button class="btn-add" onclick="tambahDua('ajk')">+ Tambah AJK</button>
-    </div>
-
-    <div class="section-card">
-        <div class="section-h">4.0 Kewangan</div>
-        <label>4.1 Sumber Dana (Punca)</label>
+        <div class="section-h">2.0 Bahagian Kewangan</div>
+        
+        <label>2.1 Sumber Dana</label>
         <div id="inputs-sumber"></div>
-        <button class="btn-add" onclick="tambahDua('sumber')">+ Tambah Sumber Dana</button>
+        <button class="btn-add" onclick="tambahSumber()">+ Tambah Sumber Dana</button>
 
-        <label style="margin-top:20px">4.2 Anggaran Perbelanjaan</label>
-        <div class="grid-finance"><div class="sub-label">Perkara</div><div class="sub-label">Qty</div><div class="sub-label">Unit (RM)</div></div>
+        <label>2.2 Anggaran Perbelanjaan</label>
         <div id="inputs-belanja"></div>
-        <button class="btn-add" onclick="tambahFinance()">+ Tambah Item Belanja</button>
+        <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item Belanja</button>
     </div>
 
-    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:800; cursor:pointer; margin-bottom:50px;">🖨️ CETAK KE PDF</button>
+    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:800; cursor:pointer; margin-top:20px;">🖨️ CETAK SEKARANG</button>
 </div>
 
 <div id="preview-container">
     <div id="preview">
-        <div id="v-tajuk">KERTAS KERJA</div>
-        <h4>1.0 BUTIRAN PROGRAM</h4>
-        <table>
-            <tr style="border:none"><td style="border:none; width:150px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
+        <center><h3 id="v-tajuk" style="text-decoration:underline; text-transform:uppercase;">-</h3></center>
+        
+        <table style="border:none; margin-bottom:20px;">
+            <tr style="border:none"><td style="border:none; width:100px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
             <tr style="border:none"><td style="border:none">MASA</td><td style="border:none">: <span id="v-masa-asas">-</span></td></tr>
             <tr style="border:none"><td style="border:none">TEMPAT</td><td style="border:none">: <span id="v-tempat">-</span></td></tr>
-            <tr style="border:none"><td style="border:none">PENGLIBATAN</td><td style="border:none">: <span id="v-penglibatan">-</span></td></tr>
-        </table>
-        
-        <h4>2.0 OBJEKTIF</h4><ol id="v-objektif"></ol>
-        <h4>3.0 TENTATIF PROGRAM</h4>
-        <table><thead><tr><th width="120">MASA</th><th>AKTIVITI</th></tr></thead><tbody id="v-tentatif"></tbody></table>
-        <h4>4.0 JAWATANKUASA PELAKSANA</h4>
-        <table><thead><tr><th width="180">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead><tbody id="v-ajk"></tbody></table>
-        
-        <h4>5.0 IMPLIKASI KEWANGAN</h4>
-        <p style="font-weight:bold; font-size:10pt;">5.1 SUMBER KEWANGAN</p>
-        <table>
-            <thead><tr><th width="40">BIL</th><th>PERINCIAN</th><th width="150">JUMLAH (RM)</th></tr></thead>
-            <tbody id="v-sumber"></tbody>
-            <tfoot><tr class="total-row"><td colspan="2" style="text-align:right">JUMLAH BESAR SUMBER (RM)</td><td id="v-total-sumber">0.00</td></tr></tfoot>
         </table>
 
-        <p style="font-weight:bold; font-size:10pt; margin-top:15px;">5.2 ANGGARAN PERBELANJAAN</p>
+        <h4 style="margin-bottom:5px;">SUMBER KEWANGAN</h4>
         <table>
-            <thead><tr><th width="30">BIL</th><th>PERKARA</th><th width="80">KUANTITI</th><th width="100">UNIT (RM)</th><th width="120">JUMLAH (RM)</th></tr></thead>
+            <thead><tr><th width="40">BIL</th><th>PERINCIAN SUMBER</th><th width="150">JUMLAH (RM)</th></tr></thead>
+            <tbody id="v-sumber"></tbody>
+            <tfoot><tr class="total-row"><td colspan="2" style="text-align:right">JUMLAH BESAR SUMBER</td><td id="v-total-sumber">0.00</td></tr></tfoot>
+        </table>
+
+        <h4 style="margin-top:25px; margin-bottom:5px;">ANGGARAN PERBELANJAAN</h4>
+        <table>
+            <thead><tr><th width="30">BIL</th><th>PERKARA</th><th width="60">QTY</th><th width="100">UNIT (RM)</th><th width="120">JUMLAH (RM)</th></tr></thead>
             <tbody id="v-belanja"></tbody>
-            <tfoot><tr class="total-row"><td colspan="4" style="text-align:right">JUMLAH BESAR PERBELANJAAN (RM)</td><td id="v-total-belanja">0.00</td></tr></tfoot>
+            <tfoot><tr class="total-row"><td colspan="4" style="text-align:right">JUMLAH BESAR PERBELANJAAN</td><td id="v-total-belanja">0.00</td></tr></tfoot>
         </table>
     </div>
 </div>
 
 <script>
-function tambahObjektif(val='') {
+function tambahSumber(v1='', v2='') {
     const div = document.createElement('div');
-    div.className = 'grid-layout'; div.style.gridTemplateColumns = "1fr 40px";
-    div.innerHTML = `<input type="text" value="${val}" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-objektif').appendChild(div);
-}
-
-function tambahDua(jenis, v1='', v2='') {
-    const div = document.createElement('div');
-    div.className = 'grid-layout';
-    div.innerHTML = `<input type="text" value="${v1}" oninput="kemaskini()"><input type="text" value="${v2}" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-' + jenis).appendChild(div);
+    div.className = 'grid-sumber';
+    div.innerHTML = `
+        <div><div class="sub-label">Punca Dana</div><input type="text" value="${v1}" placeholder="Cth: Peruntukan" oninput="kemaskini()"></div>
+        <div><div class="sub-label">Jumlah (RM)</div><input type="number" value="${v2}" placeholder="0.00" oninput="kemaskini()"></div>
+        <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>
+    `;
+    document.getElementById('inputs-sumber').appendChild(div);
     kemaskini();
 }
 
-function tambahFinance(p='', q='1', u='0') {
+function tambahBelanja(p='', q='1', u='0') {
     const div = document.createElement('div');
-    div.className = 'grid-finance';
-    div.innerHTML = `<input type="text" value="${p}" oninput="kemaskini()"><input type="number" value="${q}" oninput="kemaskini()"><input type="number" step="0.01" value="${u}" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
+    div.className = 'grid-belanja';
+    div.innerHTML = `
+        <div><div class="sub-label">Perkara</div><input type="text" value="${p}" placeholder="Cth: Makan" oninput="kemaskini()"></div>
+        <div><div class="sub-label">Qty</div><input type="number" value="${q}" oninput="kemaskini()"></div>
+        <div><div class="sub-label">Harga (RM)</div><input type="number" step="0.01" value="${u}" oninput="kemaskini()"></div>
+        <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>
+    `;
     document.getElementById('inputs-belanja').appendChild(div);
     kemaskini();
 }
 
 function kemaskini() {
-    ['tajuk','tarikh','masa-asas','tempat','penglibatan'].forEach(f => {
-        const input = document.getElementById('in-'+f);
-        if(input) document.getElementById('v-'+f).innerText = input.value || "-";
-    });
+    document.getElementById('v-tajuk').innerText = document.getElementById('in-tajuk').value || "TAJUK PROGRAM";
+    document.getElementById('v-tarikh').innerText = document.getElementById('in-tarikh').value || "-";
+    document.getElementById('v-masa-asas').innerText = document.getElementById('in-masa-asas').value || "-";
+    document.getElementById('v-tempat').innerText = document.getElementById('in-tempat').value || "-";
 
-    const vObj = document.getElementById('v-objektif'); vObj.innerHTML = '';
-    document.querySelectorAll('#inputs-objektif input').forEach(i => { if(i.value) { const li = document.createElement('li'); li.innerText = i.value; vObj.appendChild(li); } });
-
-    // 5.1 Sumber (Kalkulasi)
+    // Update Sumber
     let totalS = 0;
-    const vSumber = document.getElementById('v-sumber'); vSumber.innerHTML = '';
-    document.querySelectorAll('#inputs-sumber .grid-layout').forEach((r, i) => {
+    const vS = document.getElementById('v-sumber'); vS.innerHTML = '';
+    document.querySelectorAll('#inputs-sumber .grid-sumber').forEach((r, i) => {
         const ins = r.querySelectorAll('input');
-        const val = parseFloat(ins[1].value) || 0;
-        totalS += val;
-        vSumber.innerHTML += `<tr><td>${i+1}</td><td>${ins[0].value}</td><td>RM ${val.toFixed(2)}</td></tr>`;
+        const amt = parseFloat(ins[1].value) || 0;
+        totalS += amt;
+        vS.innerHTML += `<tr><td align="center">${i+1}</td><td>${ins[0].value}</td><td align="right">${amt.toFixed(2)}</td></tr>`;
     });
-    document.getElementById('v-total-sumber').innerText = "RM " + totalS.toFixed(2);
+    document.getElementById('v-total-sumber').innerText = totalS.toFixed(2);
 
-    // 5.2 Belanja (Kalkulasi)
+    // Update Belanja
     let totalB = 0;
-    const vBelanja = document.getElementById('v-belanja'); vBelanja.innerHTML = '';
-    document.querySelectorAll('#inputs-belanja .grid-finance').forEach((r, i) => {
+    const vB = document.getElementById('v-belanja'); vB.innerHTML = '';
+    document.querySelectorAll('#inputs-belanja .grid-belanja').forEach((r, i) => {
         const ins = r.querySelectorAll('input');
         const q = parseFloat(ins[1].value) || 0;
         const u = parseFloat(ins[2].value) || 0;
         const sub = q * u; totalB += sub;
-        vBelanja.innerHTML += `<tr><td>${i+1}</td><td>${ins[0].value}</td><td>${q}</td><td>${u.toFixed(2)}</td><td>${sub.toFixed(2)}</td></tr>`;
+        vB.innerHTML += `<tr><td align="center">${i+1}</td><td>${ins[0].value}</td><td align="center">${q}</td><td align="right">${u.toFixed(2)}</td><td align="right">${sub.toFixed(2)}</td></tr>`;
     });
-    document.getElementById('v-total-belanja').innerText = "RM " + totalB.toFixed(2);
-
-    const fillT = (p, t) => {
-        document.getElementById(t).innerHTML = '';
-        document.querySelectorAll(`#${p} .grid-layout`).forEach(r => {
-            const ins = r.querySelectorAll('input'); if(ins.length >= 2) document.getElementById(t).innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td></tr>`;
-        });
-    };
-    fillT('inputs-tentatif', 'v-tentatif');
-    fillT('inputs-ajk', 'v-ajk');
+    document.getElementById('v-total-belanja').innerText = totalB.toFixed(2);
 }
 
 function exportData() {
     const data = {
-        main: { tajuk: document.getElementById('in-tajuk').value, tarikh: document.getElementById('in-tarikh').value, masa: document.getElementById('in-masa-asas').value, tempat: document.getElementById('in-tempat').value, penglibatan: document.getElementById('in-penglibatan').value },
-        obj: Array.from(document.querySelectorAll('#inputs-objektif input')).map(i => i.value),
-        tent: Array.from(document.querySelectorAll('#inputs-tentatif .grid-layout')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
-        ajk: Array.from(document.querySelectorAll('#inputs-ajk .grid-layout')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
-        sumber: Array.from(document.querySelectorAll('#inputs-sumber .grid-layout')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
-        belanja: Array.from(document.querySelectorAll('#inputs-belanja .grid-finance')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value, r.querySelectorAll('input')[2].value])
+        main: [document.getElementById('in-tajuk').value, document.getElementById('in-tarikh').value, document.getElementById('in-masa-asas').value, document.getElementById('in-tempat').value],
+        sumber: Array.from(document.querySelectorAll('#inputs-sumber .grid-sumber')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value]),
+        belanja: Array.from(document.querySelectorAll('#inputs-belanja .grid-belanja')).map(r => [r.querySelectorAll('input')[0].value, r.querySelectorAll('input')[1].value, r.querySelectorAll('input')[2].value])
     };
     const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Doc_V16_6.json'; a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Data_Kewangan.json'; a.click();
 }
 
 function importData(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
         const d = JSON.parse(ev.target.result);
-        document.getElementById('in-tajuk').value = d.main.tajuk; document.getElementById('in-tarikh').value = d.main.tarikh;
-        document.getElementById('in-masa-asas').value = d.main.masa; document.getElementById('in-tempat').value = d.main.tempat;
-        document.getElementById('in-penglibatan').value = d.main.penglibatan;
-        document.getElementById('inputs-objektif').innerHTML = ''; d.obj.forEach(v => tambahObjektif(v));
-        document.getElementById('inputs-tentatif').innerHTML = ''; d.tent.forEach(v => tambahDua('tentatif', v[0], v[1]));
-        document.getElementById('inputs-ajk').innerHTML = ''; d.ajk.forEach(v => tambahDua('ajk', v[0], v[1]));
-        document.getElementById('inputs-sumber').innerHTML = ''; d.sumber.forEach(v => tambahDua('sumber', v[0], v[1]));
-        document.getElementById('inputs-belanja').innerHTML = ''; d.belanja.forEach(v => tambahFinance(v[0], v[1], v[2]));
+        document.getElementById('in-tajuk').value = d.main[0]; document.getElementById('in-tarikh').value = d.main[1];
+        document.getElementById('in-masa-asas').value = d.main[2]; document.getElementById('in-tempat').value = d.main[3];
+        document.getElementById('inputs-sumber').innerHTML = ''; d.sumber.forEach(v => tambahSumber(v[0], v[1]));
+        document.getElementById('inputs-belanja').innerHTML = ''; d.belanja.forEach(v => tambahBelanja(v[0], v[1], v[2]));
         kemaskini();
     };
     reader.readAsText(e.target.files[0]);
 }
 
-window.onload = () => { tambahObjektif(); tambahDua('tentatif'); tambahDua('ajk'); tambahDua('sumber'); tambahFinance(); };
+window.onload = () => { tambahSumber(); tambahBelanja(); };
 </script>
 </body>
 </html>
