@@ -2,7 +2,7 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Sistem Penjana Kertas Kerja V8</title>
+    <title>Sistem Penjana Kertas Kerja V9</title>
     <style>
         :root { --p: #2563eb; --s: #64748b; --d: #ef4444; --g: #10b981; }
         body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
@@ -17,7 +17,7 @@
         th { background: #f1f5f9 !important; }
         
         /* Lebar Kolum Bil yang dikecilkan */
-        .col-bil { width: 40px; text-align: center; }
+        .col-bil { width: 30px !important; text-align: center; }
         
         .borderless td { border: none !important; padding: 5px 0; }
         .btn { padding: 10px 15px; cursor: pointer; border: none; border-radius: 4px; color: white; font-weight: bold; margin: 5px 2px; }
@@ -39,15 +39,13 @@
         <h1 style="color:var(--p); border-bottom: 2px solid var(--p);">📝 Editor Kertas Kerja</h1>
         
         <div style="background: #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-            <span style="font-weight:bold; display:block; margin-bottom:10px;">📂 Pengurusan Fail:</span>
             <button class="btn btn-file" onclick="exportJSON()">📤 Simpan Fail (.json)</button>
             <button class="btn btn-file" onclick="document.getElementById('importFile').click()">📥 Buka Fail (.json)</button>
             <input type="file" id="importFile" style="display:none" onchange="importJSON(event)">
-            <button class="btn" style="background:var(--d); float:right;" onclick="confirm('Padam semua data?') ? location.reload() : null">🗑️ Reset</button>
         </div>
 
         <label>Tajuk Program:</label>
-        <input type="text" id="in-tajuk" oninput="kemaskini()" placeholder="CONTOH: KERTAS KERJA PROGRAM SUKAN">
+        <input type="text" id="in-tajuk" oninput="kemaskini()" placeholder="TAJUK PROGRAM">
         
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
             <div><label>Tarikh:</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
@@ -63,29 +61,29 @@
 
         <div class="section-h">3.0 Tentatif Program</div>
         <div id="inputs-tentatif" style="margin-top:10px;"></div>
-        <button class="btn btn-add" onclick="tambah('tentatif')">+ Tambah Slot Masa</button>
+        <button class="btn btn-add" onclick="tambah('tentatif')">+ Tambah Baris Tentatif</button>
 
         <div class="section-h">4.0 Jawatankuasa Pelaksana</div>
         <div id="inputs-ajk" style="margin-top:10px;"></div>
-        <button class="btn btn-add" onclick="tambah('ajk')">+ Tambah Nama AJK</button>
+        <button class="btn btn-add" onclick="tambah('ajk')">+ Tambah Baris AJK</button>
 
-        <div class="section-h">5.0 Kewangan</div>
-        <label>5.1 Sumber Kewangan:</label>
-        <div id="inputs-sumber"></div>
-        <button class="btn btn-add" onclick="tambah('sumber')">+ Tambah Sumber</button>
+        <div class="section-h">5.0 Implikasi Kewangan</div>
+        <label>5.1 Sumber Kewangan (Punca Dana):</label>
+        <div id="inputs-sumber" style="margin-top:5px;"></div>
+        <button class="btn btn-add" onclick="tambah('sumber')">+ Tambah Baris Sumber</button>
 
-        <label>5.2 Anggaran Perbelanjaan:</label>
-        <div id="inputs-belanja"></div>
-        <button class="btn btn-add" onclick="tambah('belanja')">+ Tambah Item</button>
+        <label style="margin-top:20px;">5.2 Anggaran Perbelanjaan:</label>
+        <div id="inputs-belanja" style="margin-top:5px;"></div>
+        <button class="btn btn-add" onclick="tambah('belanja')">+ Tambah Baris Perbelanjaan</button>
 
         <div class="section-h">6.0 Pengesahan</div>
         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
-            <div><label>Penyedia:</label><input type="text" id="s1-n" oninput="kemaskini()"><input type="text" id="s1-j" oninput="kemaskini()" placeholder="Jawatan"></div>
-            <div><label>Penyemak:</label><input type="text" id="s2-n" oninput="kemaskini()"><input type="text" id="s2-j" oninput="kemaskini()" placeholder="Jawatan"></div>
-            <div><label>Pengesah:</label><input type="text" id="s3-n" oninput="kemaskini()"><input type="text" id="s3-j" oninput="kemaskini()" placeholder="Jawatan"></div>
+            <div><label>Penyedia:</label><input type="text" id="s1-n" oninput="kemaskini()" placeholder="Nama"><input type="text" id="s1-j" oninput="kemaskini()" placeholder="Jawatan"></div>
+            <div><label>Penyemak:</label><input type="text" id="s2-n" oninput="kemaskini()" placeholder="Nama"><input type="text" id="s2-j" oninput="kemaskini()" placeholder="Jawatan"></div>
+            <div><label>Pengesah:</label><input type="text" id="s3-n" oninput="kemaskini()" placeholder="Nama"><input type="text" id="s3-j" oninput="kemaskini()" placeholder="Jawatan"></div>
         </div>
 
-        <button class="btn" style="background:var(--p); width:100%; margin-top:30px; padding:15px; font-size:1.1em;" onclick="window.print()">🖨️ CETAK KE PDF</button>
+        <button class="btn" style="background:var(--p); width:100%; margin-top:30px; padding:15px;" onclick="window.print()">🖨️ CETAK KE PDF</button>
     </div>
 
     <div id="preview">
@@ -112,16 +110,10 @@
 
         <h4>6.0 IMPLIKASI KEWANGAN</h4>
         <p><strong>6.1 Sumber Kewangan</strong></p>
-        <table>
-            <thead><tr><th class="col-bil">Bil</th><th>Punca Dana</th><th width="150">Jumlah (RM)</th></tr></thead>
-            <tbody id="v-sumber"></tbody>
-        </table>
+        <table><thead><tr><th class="col-bil">Bil</th><th>Punca Dana</th><th width="150">Jumlah (RM)</th></tr></thead><tbody id="v-sumber"></tbody></table>
 
         <p><strong>6.2 Anggaran Perbelanjaan</strong></p>
-        <table>
-            <thead><tr><th class="col-bil">Bil</th><th>Perkara</th><th width="150">Kos (RM)</th></tr></thead>
-            <tbody id="v-belanja"></tbody>
-        </table>
+        <table><thead><tr><th class="col-bil">Bil</th><th>Perkara</th><th width="150">Kos (RM)</th></tr></thead><tbody id="v-belanja"></tbody></table>
 
         <div class="sig-grid">
             <div>Disediakan oleh:<br><br><br><br>________________<br><strong id="v-s1n">(NAMA)</strong><br><span id="v-s1j">Jawatan</span></div>
@@ -140,11 +132,11 @@ function tambah(jenis, val1='', val2='') {
     if(jenis === 'tentatif') {
         div.innerHTML = `<input type="text" style="flex:1" class="t-m" placeholder="Masa" value="${val1}" oninput="kemaskini()"><input type="text" style="flex:3" class="t-a" placeholder="Aktiviti" value="${val2}" oninput="kemaskini()">`;
     } else if(jenis === 'ajk') {
-        div.innerHTML = `<input type="text" style="flex:1" class="a-j" placeholder="Jawatan" value="${val1}" oninput="kemaskini()"><input type="text" style="flex:2" class="a-n" placeholder="Nama Penuh" value="${val2}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" style="flex:1" class="a-j" placeholder="Jawatan" value="${val1}" oninput="kemaskini()"><input type="text" style="flex:2" class="a-n" placeholder="Nama" value="${val2}" oninput="kemaskini()">`;
     } else if(jenis === 'sumber') {
-        div.innerHTML = `<input type="text" style="flex:3" class="s-i" placeholder="Punca Dana" value="${val1}" oninput="kemaskini()"><input type="text" style="flex:1" class="s-h" placeholder="Jumlah RM" value="${val2}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" style="flex:3" class="s-i" placeholder="Punca Dana" value="${val1}" oninput="kemaskini()"><input type="text" style="flex:1" class="s-h" placeholder="RM" value="${val2}" oninput="kemaskini()">`;
     } else {
-        div.innerHTML = `<input type="text" style="flex:3" class="k-i" placeholder="Item" value="${val1}" oninput="kemaskini()"><input type="text" style="flex:1" class="k-h" placeholder="Kos RM" value="${val2}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" style="flex:3" class="k-i" placeholder="Item" value="${val1}" oninput="kemaskini()"><input type="text" style="flex:1" class="k-h" placeholder="RM" value="${val2}" oninput="kemaskini()">`;
     }
 
     div.innerHTML += `<button onclick="this.parentElement.remove();kemaskini()" style="background:red;color:white;border:none;border-radius:4px;padding:0 12px;cursor:pointer;">X</button>`;
@@ -180,12 +172,9 @@ function kemaskini() {
 
 function exportJSON() {
     const data = {
-        tajuk: document.getElementById('in-tajuk').value,
-        tarikh: document.getElementById('in-tarikh').value,
-        masa: document.getElementById('in-masa').value,
-        tempat: document.getElementById('in-tempat').value,
-        pend: document.getElementById('in-pend').value,
-        obj: document.getElementById('in-obj').value,
+        tajuk: document.getElementById('in-tajuk').value, tarikh: document.getElementById('in-tarikh').value,
+        masa: document.getElementById('in-masa').value, tempat: document.getElementById('in-tempat').value,
+        pend: document.getElementById('in-pend').value, obj: document.getElementById('in-obj').value,
         sig: [document.getElementById('s1-n').value, document.getElementById('s1-j').value, 
               document.getElementById('s2-n').value, document.getElementById('s2-j').value,
               document.getElementById('s3-n').value, document.getElementById('s3-j').value],
@@ -195,8 +184,7 @@ function exportJSON() {
         belanja: Array.from(document.querySelectorAll('#inputs-belanja .input-row')).map(r => [r.querySelector('.k-i').value, r.querySelector('.k-h').value])
     };
     const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); 
-    a.download = (data.tajuk || 'kertas_kerja') + '.json'; a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'data_kertas_kerja.json'; a.click();
 }
 
 function importJSON(e) {
@@ -223,9 +211,7 @@ function importJSON(e) {
     reader.readAsText(e.target.files[0]);
 }
 
-window.onload = () => { 
-    tambah('tentatif'); tambah('ajk'); tambah('sumber'); tambah('belanja'); 
-};
+window.onload = () => { tambah('tentatif'); tambah('ajk'); tambah('sumber'); tambah('belanja'); };
 </script>
 </body>
 </html>
