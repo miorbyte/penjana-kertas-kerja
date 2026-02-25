@@ -2,14 +2,13 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Executive Document Builder V15.4</title>
+    <title>Executive Document Builder V15.5</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
         :root {
             --editor-bg: #f8fafc;
             --accent: #0f172a;
-            --gold-trim: #e2e8f0;
         }
 
         body { 
@@ -31,7 +30,7 @@
 
         .section-card {
             background: white; border-radius: 12px; padding: 20px;
-            margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border: 1px solid #e2e8f0;
         }
 
@@ -53,16 +52,12 @@
             box-sizing: border-box;
         }
 
-        #in-tajuk { height: 90px; font-weight: 600; }
-        #in-pend { height: 60px; }
-
         .input-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
         .f-1 { flex: 1; } .f-2 { flex: 2.5; }
 
         .btn-add {
             width: 100%; padding: 8px; background: #f1f5f9; border: 1px dashed #94a3b8;
-            border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; color: #475569;
-            margin-top: 10px;
+            border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; color: #475569; margin-top: 10px;
         }
 
         .btn-del { 
@@ -70,7 +65,7 @@
             width: 28px; height: 28px; border-radius: 6px; cursor: pointer;
         }
 
-        /* PREVIEW SIDE */
+        /* PREVIEW SIDE (A4) */
         #preview-container {
             width: 55%; height: 100vh; overflow-y: auto;
             display: flex; justify-content: center; padding: 40px 0;
@@ -94,9 +89,18 @@
         h4 { font-size: 11pt; font-weight: bold; margin: 25px 0 10px 0; text-transform: uppercase; }
         p { line-height: 1.5; text-align: justify; margin: 0; }
         
-        /* NUMBERING STYLE FOR OBJEKTIF */
-        #v-objektif { margin: 5px 0; padding-left: 35px; }
-        #v-objektif li { margin-bottom: 5px; text-align: justify; }
+        /* NUMBERING FIX */
+        ol#v-objektif { 
+            margin: 10px 0; 
+            padding-left: 40px; /* Ruang untuk nombor */
+            list-style-type: decimal !important; /* Paksa penomboran 1, 2, 3 */
+        }
+        ol#v-objektif li { 
+            display: list-item !important; /* Pastikan ia bertindak sebagai list */
+            margin-bottom: 8px; 
+            padding-left: 5px;
+            text-align: justify;
+        }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #000; padding: 8px; vertical-align: top; }
@@ -117,14 +121,14 @@
 
 <div class="no-print">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h3 style="margin:0; font-size:14px;">DOC ENGINE V15.4</h3>
-        <button onclick="window.print()" style="padding:8px 15px; background:var(--accent); color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">CETAK PDF</button>
+        <h3 style="margin:0; font-size:14px;">DOC ENGINE V15.5</h3>
+        <button onclick="window.print()" style="padding:10px 20px; background:var(--accent); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">🖨️ CETAK PDF</button>
     </div>
 
     <div class="section-card">
-        <div class="section-h">1.0 Asas</div>
-        <label>Tajuk Program</label>
-        <textarea id="in-tajuk" oninput="kemaskini()" placeholder="Tajuk penuh..."></textarea>
+        <div class="section-h">1.0 Maklumat Program</div>
+        <label>Tajuk Penuh</label>
+        <textarea id="in-tajuk" oninput="kemaskini()" rows="3"></textarea>
         <div class="input-row">
             <div class="f-1"><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
             <div class="f-1"><label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()"></div>
@@ -135,7 +139,7 @@
 
     <div class="section-card">
         <div class="section-h">2.0 Objektif</div>
-        <label>Senarai Objektif (Isi satu per satu)</label>
+        <label>Senarai Objektif (Isi kotak & ia akan bernombor)</label>
         <div id="inputs-objektif"></div>
         <button class="btn-add" onclick="tambah('objektif')">+ Tambah Objektif Baru</button>
     </div>
@@ -145,42 +149,42 @@
         <label>Tentatif</label>
         <div class="sub-label-row"><div class="sub-label f-1">Masa</div><div class="sub-label f-2">Aktiviti</div><div style="width:28px"></div></div>
         <div id="inputs-tentatif"></div>
-        <button class="btn-add" onclick="tambah('tentatif')">+ Tambah Baris</button>
+        <button class="btn-add" onclick="tambah('tentatif')">+ Tambah Slot</button>
 
-        <label style="margin-top:20px">AJK</label>
-        <div class="sub-label-row"><div class="sub-label f-1">Jawatan</div><div class="sub-label f-2">Nama</div><div style="width:28px"></div></div>
+        <label style="margin-top:20px">Jawatankuasa</label>
+        <div class="sub-label-row"><div class="sub-label f-1">Jawatan</div><div class="sub-label f-2">Nama Pegawai</div><div style="width:28px"></div></div>
         <div id="inputs-ajk"></div>
-        <button class="btn-add" onclick="tambah('ajk')">+ Tambah Baris</button>
+        <button class="btn-add" onclick="tambah('ajk')">+ Tambah AJK</button>
     </div>
 
     <div class="section-card">
         <div class="section-h">4.0 Kewangan</div>
-        <label>Perbelanjaan</label>
-        <div class="sub-label-row"><div class="sub-label f-1">Item</div><div class="sub-label f-2">Kos (RM)</div><div style="width:28px"></div></div>
+        <label>Anggaran Kos</label>
+        <div class="sub-label-row"><div class="sub-label f-1">Perkara</div><div class="sub-label f-2">RM</div><div style="width:28px"></div></div>
         <div id="inputs-belanja"></div>
-        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Baris</button>
+        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Baris Kos</button>
     </div>
 
     <div class="section-card">
         <div class="section-h">5.0 Pengesahan</div>
         <div class="input-row">
-            <input type="text" id="s1-n" placeholder="Nama" oninput="kemaskini()">
-            <input type="text" id="s1-j" placeholder="Jawatan" oninput="kemaskini()">
+            <div class="f-1"><label>Nama Penyedia</label><input type="text" id="s1-n" oninput="kemaskini()"></div>
+            <div class="f-1"><label>Jawatan</label><input type="text" id="s1-j" oninput="kemaskini()"></div>
         </div>
     </div>
 </div>
 
 <div id="preview-container">
     <div id="preview">
-        <div id="v-tajuk">KERTAS KERJA PROGRAM</div>
+        <div id="v-tajuk">KERTAS KERJA</div>
 
         <h4>1.0 PENDAHULUAN</h4>
-        <p>Program ini dirancang untuk mencapai matlamat yang telah ditetapkan...</p>
+        <p>Kertas kerja ini disediakan untuk memohon pertimbangan pihak pengurusan bagi melaksanakan program seperti yang dirancang.</p>
 
         <h4>2.0 OBJEKTIF</h4>
         <ol id="v-objektif"></ol> <h4>3.0 BUTIRAN PROGRAM</h4>
-        <table style="border:none">
-            <tr style="border:none"><td style="border:none; width:140px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
+        <table>
+            <tr style="border:none"><td style="border:none; width:150px">TARIKH</td><td style="border:none">: <span id="v-tarikh">-</span></td></tr>
             <tr style="border:none"><td style="border:none">TEMPAT</td><td style="border:none">: <span id="v-tempat">-</span></td></tr>
             <tr style="border:none"><td style="border:none">PENGLIBATAN</td><td style="border:none">: <span id="v-penglibatan">-</span></td></tr>
         </table>
@@ -204,9 +208,11 @@
         </table>
 
         <div class="sig-container" style="grid-template-columns: 1fr;">
-            <div style="width:250px; text-align:left;">
-                Disediakan oleh:<div class="sig-line"></div>
-                <strong id="v-s1n"></strong><br><span id="v-s1j"></span>
+            <div style="width:300px; text-align:left;">
+                Disediakan oleh:<br><br><br>
+                <div class="sig-line"></div>
+                <strong id="v-s1n"></strong><br>
+                <span id="v-s1j"></span>
             </div>
         </div>
     </div>
@@ -219,7 +225,7 @@ function tambah(jenis, v1='', v2='') {
     div.className = 'input-row';
     
     if(jenis === 'objektif') {
-        div.innerHTML = `<input type="text" style="flex:1" placeholder="Taip objektif di sini..." value="${v1}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" style="flex:1" placeholder="Taip objektif..." value="${v1}" oninput="kemaskini()">`;
     } else {
         div.innerHTML = `<input type="text" class="f-1" value="${v1}" oninput="kemaskini()">
                          <input type="text" class="f-2" value="${v2}" oninput="kemaskini()">`;
@@ -232,24 +238,23 @@ function tambah(jenis, v1='', v2='') {
 
 function kemaskini() {
     ['tajuk','tarikh','tempat','penglibatan'].forEach(f => {
-        document.getElementById('v-'+f).innerText = document.getElementById('in-'+f).value || "-";
+        document.getElementById('v-'+f).innerText = (document.getElementById('in-'+f).value) || "-";
     });
 
-    // DINAMIK NUMBERING 1, 2, 3...
+    // OBJEKTIF AUTO-NUMBERING
     const vObj = document.getElementById('v-objektif'); 
     vObj.innerHTML = '';
-    document.querySelectorAll('#inputs-objektif input').forEach(i => {
-        if(i.value) {
+    const inputs = document.querySelectorAll('#inputs-objektif input');
+    inputs.forEach(i => {
+        if(i.value.trim() !== "") {
             const li = document.createElement('li');
             li.innerText = i.value;
             vObj.appendChild(li);
         }
     });
 
-    const s1n = document.getElementById('s1-n').value;
-    const s1j = document.getElementById('s1-j').value;
-    document.getElementById('v-s1n').innerText = s1n.toUpperCase();
-    document.getElementById('v-s1j').innerText = s1j;
+    document.getElementById('v-s1n').innerText = document.getElementById('s1-n').value.toUpperCase();
+    document.getElementById('v-s1j').innerText = document.getElementById('s1-j').value;
 
     const fillTable = (parentId, targetId, isFinance = false) => {
         const rows = document.querySelectorAll(`#${parentId} .input-row`);
@@ -268,7 +273,12 @@ function kemaskini() {
     fillTable('inputs-belanja', 'v-belanja', true);
 }
 
-window.onload = () => { tambah('objektif'); tambah('tentatif'); tambah('ajk'); tambah('belanja'); };
+window.onload = () => { 
+    tambah('objektif'); 
+    tambah('tentatif'); 
+    tambah('ajk'); 
+    tambah('belanja'); 
+};
 </script>
 </body>
 </html>
