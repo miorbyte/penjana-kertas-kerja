@@ -2,7 +2,7 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Executive Document Builder V16.0</title>
+    <title>Executive Document Builder V16.1</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
@@ -19,12 +19,12 @@
             padding: 20px; overflow-y: auto; border-right: 1px solid #94a3b8; box-sizing: border-box;
         }
 
-        /* TOOLBAR TETAP DI ATAS */
+        /* TOOLBAR STABIL */
         .toolbar {
-            position: sticky; top: 0; z-index: 100;
+            position: sticky; top: 0; z-index: 1000;
             background: white; padding: 15px; border-radius: 10px;
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px; border: 1px solid #e2e8f0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .btn-tool {
@@ -49,11 +49,12 @@
         .sub-label { font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; }
         .shift-right { padding-left: 2ch; } /* Ganjak 2 aksara ke kanan */
 
-        label { font-size: 11px; font-weight: 700; color: #334155; display: block; margin-top: 10px; text-transform: uppercase; }
+        label { font-size: 11px; font-weight: 700; color: #334155; display: block; margin-top: 12px; text-transform: uppercase; }
 
         input, textarea {
             width: 100%; padding: 10px; border: 1px solid #cbd5e1;
             border-radius: 6px; font-size: 13px; outline: none; box-sizing: border-box; background: #fff;
+            margin-top: 4px;
         }
 
         .btn-add {
@@ -85,45 +86,47 @@
 
 <div class="no-print">
     <div class="toolbar">
-        <span style="font-weight: 800; color: var(--accent);">DOC ENGINE V16.0</span>
+        <span style="font-weight: 800; color: var(--accent);">DOC ENGINE V16.1</span>
         <div style="display:flex; gap:8px;">
-            <button class="btn-tool" onclick="exportData()">💾 SIMPAN</button>
-            <button class="btn-tool" style="background:#64748b;" onclick="document.getElementById('fileInput').click()">📂 BUKA</button>
+            <button class="btn-tool" onclick="exportData()">💾 SIMPAN FAIL</button>
+            <button class="btn-tool" style="background:#64748b;" onclick="document.getElementById('fileInput').click()">📂 BUKA FAIL</button>
             <input type="file" id="fileInput" style="display:none" onchange="importData(event)">
         </div>
     </div>
 
     <div class="section-card">
         <div class="section-h">1.0 Maklumat Asas</div>
-        <label>Tajuk Program</label>
+        
+        <label>Tajuk Penuh Program</label>
         <textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
         
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <div><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
-            <div><label>Masa (Program)</label><input type="text" id="in-masa-asas" oninput="kemaskini()" placeholder="Cth: 8:00 Pagi"></div>
-        </div>
+        <label>Tarikh Program</label>
+        <input type="text" id="in-tarikh" oninput="kemaskini()" placeholder="Contoh: 25 Mac 2026">
         
-        <label>Tempat</label>
+        <label>Masa (Waktu Pelaksanaan)</label>
+        <input type="text" id="in-masa-asas" oninput="kemaskini()" placeholder="Contoh: 8:00 Pagi - 5:00 Petang">
+        
+        <label>Tempat / Lokasi</label>
         <input type="text" id="in-tempat" oninput="kemaskini()">
         
-        <label>Penglibatan</label>
+        <label>Penglibatan / Kumpulan Sasar</label>
         <input type="text" id="in-penglibatan" oninput="kemaskini()">
     </div>
 
     <div class="section-card">
         <div class="section-h">2.0 Objektif</div>
         <div id="inputs-objektif"></div>
-        <button class="btn-add" onclick="tambah('objektif')">+ Tambah Objektif</button>
+        <button class="btn-add" onclick="tambah('objektif')">+ Tambah Objektif Baru</button>
     </div>
 
     <div class="section-card">
-        <div class="section-h">3.0 Tentatif</div>
+        <div class="section-h">3.0 Jadual Tentatif</div>
         <div class="grid-layout" style="margin-bottom:0;">
             <div class="sub-label">Masa</div>
             <div class="sub-label shift-right">Aktiviti / Pengisian</div>
         </div>
         <div id="inputs-tentatif"></div>
-        <button class="btn-add" onclick="tambah('tentatif')">+ Tambah Slot</button>
+        <button class="btn-add" onclick="tambah('tentatif')">+ Tambah Baris Tentatif</button>
     </div>
 
     <div class="section-card">
@@ -133,35 +136,35 @@
             <div class="sub-label shift-right">Nama Pegawai</div>
         </div>
         <div id="inputs-ajk"></div>
-        <button class="btn-add" onclick="tambah('ajk')">+ Tambah AJK</button>
+        <button class="btn-add" onclick="tambah('ajk')">+ Tambah Baris Jawatankuasa</button>
     </div>
 
     <div class="section-card">
-        <div class="section-h">5.0 Kewangan</div>
-        <label>Sumber Dana</label>
+        <div class="section-h">5.0 Implikasi Kewangan</div>
+        <label>Punca Dana / Sumber</label>
         <div class="grid-layout" style="margin-bottom:0;">
-            <div class="sub-label">Punca</div>
+            <div class="sub-label">Sumber Dana</div>
             <div class="sub-label shift-right">Jumlah (RM)</div>
         </div>
         <div id="inputs-sumber"></div>
-        <button class="btn-add" onclick="tambah('sumber')">+ Tambah Sumber</button>
+        <button class="btn-add" onclick="tambah('sumber')">+ Tambah Punca Dana</button>
 
-        <label style="margin-top:15px;">Anggaran Belanja</label>
+        <label style="margin-top:20px;">Anggaran Perbelanjaan</label>
         <div class="grid-layout" style="margin-bottom:0;">
             <div class="sub-label">Perkara</div>
             <div class="sub-label shift-right">Kos (RM)</div>
         </div>
         <div id="inputs-belanja"></div>
-        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Belanja</button>
+        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Perbelanjaan</button>
     </div>
 
     <div class="section-card">
         <div class="section-h">6.0 Tandatangan</div>
-        <label>Penyedia</label>
+        <label>Penyedia (Kiri)</label>
         <div style="display:flex; gap:5px;"><input type="text" id="s1-n" placeholder="Nama" oninput="kemaskini()"><input type="text" id="s1-j" placeholder="Jawatan" oninput="kemaskini()"></div>
-        <label>Penyemak</label>
+        <label>Penyemak (Tengah)</label>
         <div style="display:flex; gap:5px;"><input type="text" id="s2-n" placeholder="Nama" oninput="kemaskini()"><input type="text" id="s2-j" placeholder="Jawatan" oninput="kemaskini()"></div>
-        <label>Pelulus</label>
+        <label>Pelulus (Kanan)</label>
         <div style="display:flex; gap:5px;"><input type="text" id="s3-n" placeholder="Nama" oninput="kemaskini()"><input type="text" id="s3-j" placeholder="Jawatan" oninput="kemaskini()"></div>
     </div>
 
@@ -171,7 +174,7 @@
 <div id="preview-container">
     <div id="preview">
         <div id="v-tajuk">KERTAS KERJA</div>
-        <h4>1.0 PENDAHULUAN</h4><p>Kertas kerja ini dikemukakan untuk memohon pertimbangan bagi pelaksanaan program.</p>
+        <h4>1.0 PENDAHULUAN</h4><p>Kertas kerja ini disediakan untuk memohon kelulusan pelaksanaan program.</p>
         <h4>2.0 OBJEKTIF</h4><ol id="v-objektif"></ol>
         <h4>3.0 BUTIRAN PROGRAM</h4>
         <table style="border:none">
@@ -217,7 +220,8 @@ function tambah(jenis, v1='', v2='') {
 
 function kemaskini() {
     ['tajuk','tarikh','masa-asas','tempat','penglibatan'].forEach(f => { 
-        document.getElementById('v-'+f).innerText = (document.getElementById('in-'+f).value) || "-"; 
+        const el = document.getElementById('in-'+f);
+        if(el) document.getElementById('v-'+f).innerText = el.value || "-"; 
     });
 
     const vObj = document.getElementById('v-objektif'); vObj.innerHTML = '';
@@ -249,12 +253,18 @@ function kemaskini() {
 function exportData() {
     const getRows = (id) => Array.from(document.querySelectorAll(`#${id} .grid-layout`)).map(r => Array.from(r.querySelectorAll('input')).map(i => i.value));
     const data = {
-        main: { tajuk: document.getElementById('in-tajuk').value, tarikh: document.getElementById('in-tarikh').value, masa_asas: document.getElementById('in-masa-asas').value, tempat: document.getElementById('in-tempat').value, penglibatan: document.getElementById('in-penglibatan').value },
+        main: { 
+            tajuk: document.getElementById('in-tajuk').value, 
+            tarikh: document.getElementById('in-tarikh').value, 
+            masa_asas: document.getElementById('in-masa-asas').value, 
+            tempat: document.getElementById('in-tempat').value, 
+            penglibatan: document.getElementById('in-penglibatan').value 
+        },
         sigs: [1,2,3].map(i => [document.getElementById(`s${i}-n`).value, document.getElementById(`s${i}-j`).value]),
         obj: getRows('inputs-objektif'), tent: getRows('inputs-tentatif'), ajk: getRows('inputs-ajk'), sumb: getRows('inputs-sumber'), bel: getRows('inputs-belanja')
     };
     const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Doc_Save.json'; a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'Kertas_Kerja_Data.json'; a.click();
 }
 
 function importData(e) {
