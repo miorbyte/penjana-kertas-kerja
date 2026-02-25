@@ -2,68 +2,85 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Penjana Kertas Kerja Lengkap V6</title>
+    <title>Sistem Penjana Kertas Kerja Muktamad</title>
     <style>
         :root { --p: #2563eb; --s: #64748b; --d: #ef4444; }
-        body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .no-print { background: #eef2f3; padding: 20px; margin-bottom: 30px; border-radius: 8px; border: 1px solid #ddd; }
-        .section-h { background: var(--p); color: white; padding: 8px; margin-top: 15px; font-weight: bold; border-radius: 4px; }
-        label { font-weight: bold; display: block; margin-top: 10px; font-size: 0.9em; }
-        input, textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        .input-row { display: flex; gap: 5px; margin-bottom: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid black; padding: 8px; text-align: left; }
-        .borderless td { border: none !important; padding: 4px 0; }
-        .btn { padding: 12px; cursor: pointer; border: none; border-radius: 4px; color: white; font-weight: bold; margin: 5px 0; }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .no-print { background: #f8fafc; padding: 25px; margin-bottom: 40px; border-radius: 8px; border: 2px solid #e2e8f0; }
+        .section-h { background: var(--p); color: white; padding: 10px; margin-top: 20px; font-weight: bold; border-radius: 4px; text-transform: uppercase; }
+        label { font-weight: bold; display: block; margin-top: 15px; font-size: 0.9em; color: var(--p); }
+        input, textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+        .input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; }
+        th, td { border: 1px solid black; padding: 10px; text-align: left; }
+        th { background: #f1f5f9 !important; }
+        .borderless td { border: none !important; padding: 5px 0; }
+        .btn { padding: 12px 20px; cursor: pointer; border: none; border-radius: 4px; color: white; font-weight: bold; margin: 5px 2px; }
+        .btn-add { background: var(--s); font-size: 0.8em; }
         @media print { 
             .no-print { display: none !important; } 
             body { background: white; padding: 0; }
             .container { box-shadow: none; max-width: 100%; padding: 0; }
         }
-        .sig-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 50px; text-align: center; }
+        .sig-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-top: 60px; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="no-print">
-        <h2>🛠️ Editor Kertas Kerja</h2>
+        <h1 style="color:var(--p); border-bottom: 2px solid var(--p);">📝 Editor Kertas Kerja Lengkap</h1>
         
-        <label>Tajuk Program:</label>
-        <input type="text" id="in-tajuk" oninput="kemaskini()" placeholder="CONTOH: KEM MOTIVASI 2026">
+        <label>Tajuk Program / Kertas Kerja:</label>
+        <input type="text" id="in-tajuk" oninput="kemaskini()" placeholder="CONTOH: KERTAS KERJA PROGRAM KHIDMAT MASYARAKAT">
         
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px;">
             <div><label>Tarikh:</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
             <div><label>Masa:</label><input type="text" id="in-masa" oninput="kemaskini()"></div>
             <div><label>Tempat:</label><input type="text" id="in-tempat" oninput="kemaskini()"></div>
         </div>
 
         <label>1.0 Pendahuluan:</label>
-        <textarea id="in-pend" oninput="kemaskini()" rows="3"></textarea>
+        <textarea id="in-pend" oninput="kemaskini()" rows="4"></textarea>
 
         <label>2.0 Objektif:</label>
-        <textarea id="in-obj" oninput="kemaskini()" rows="3"></textarea>
+        <textarea id="in-obj" oninput="kemaskini()" rows="4"></textarea>
 
-        <div class="section-h">👥 Bahagian Pengesahan</div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; background: #fff; padding: 10px; margin-top: 5px; border-radius: 4px;">
-            <div><label>Penyedia</label><input type="text" id="s1-n" oninput="kemaskini()"><input type="text" id="s1-j" oninput="kemaskini()" placeholder="Jawatan"></div>
-            <div><label>Penyemak</label><input type="text" id="s2-n" oninput="kemaskini()"><input type="text" id="s2-j" oninput="kemaskini()" placeholder="Jawatan"></div>
-            <div><label>Pengesah</label><input type="text" id="s3-n" oninput="kemaskini()"><input type="text" id="s3-j" oninput="kemaskini()" placeholder="Jawatan"></div>
+        <div class="section-h">3.0 Tentatif & 4.0 AJK</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+            <div>
+                <label>Tentatif (Masa & Aktiviti):</label>
+                <div id="inputs-tentatif"></div>
+                <button class="btn btn-add" onclick="tambah('tentatif')">+ Tambah Slot</button>
+            </div>
+            <div>
+                <label>AJK (Jawatan & Nama):</label>
+                <div id="inputs-ajk"></div>
+                <button class="btn btn-add" onclick="tambah('ajk')">+ Tambah AJK</button>
+            </div>
         </div>
 
-        <div class="section-h">📋 Jadual Dinamik</div>
-        <div style="margin-top: 10px;">
-            <button class="btn" style="background:var(--s)" onclick="tambah('tentatif')">+ Tambah Tentatif</button>
-            <button class="btn" style="background:var(--s)" onclick="tambah('kewangan')">+ Tambah Perbelanjaan</button>
-        </div>
-        <div id="inputs-tentatif"></div>
-        <div id="inputs-kewangan"></div>
+        <div class="section-h">5.0 Kewangan</div>
+        <label>5.1 Sumber Kewangan (Punca Dana):</label>
+        <div id="inputs-sumber"></div>
+        <button class="btn btn-add" onclick="tambah('sumber')">+ Tambah Sumber</button>
 
-        <button class="btn" style="background:var(--p); width:100%; margin-top:20px;" onclick="window.print()">🖨️ CETAK KE PDF</button>
+        <label>5.2 Anggaran Perbelanjaan:</label>
+        <div id="inputs-belanja"></div>
+        <button class="btn btn-add" onclick="tambah('belanja')">+ Tambah Item</button>
+
+        <div class="section-h">6.0 Pengesahan</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+            <div><label>Penyedia:</label><input type="text" id="s1-n" oninput="kemaskini()" placeholder="Nama"><input type="text" id="s1-j" oninput="kemaskini()" placeholder="Jawatan"></div>
+            <div><label>Penyemak:</label><input type="text" id="s2-n" oninput="kemaskini()" placeholder="Nama"><input type="text" id="s2-j" oninput="kemaskini()" placeholder="Jawatan"></div>
+            <div><label>Pengesah:</label><input type="text" id="s3-n" oninput="kemaskini()" placeholder="Nama"><input type="text" id="s3-j" oninput="kemaskini()" placeholder="Jawatan"></div>
+        </div>
+
+        <button class="btn" style="background:var(--p); width:100%; margin-top:30px; padding:15px; font-size:1.1em;" onclick="window.print()">🖨️ CETAK KERTAS KERJA KE PDF</button>
     </div>
 
-    <div id="cetak">
+    <div id="dokumen-rasmi">
         <h2 id="v-tajuk" style="text-align:center; text-transform:uppercase; text-decoration:underline;">TAJUK PROGRAM</h2>
         
         <h4>1.0 PENDAHULUAN</h4>
@@ -74,21 +91,28 @@
 
         <h4>3.0 BUTIRAN PROGRAM</h4>
         <table class="borderless" style="width: auto;">
-            <tr><td width="100"><strong>TARIKH</strong></td><td>: <span id="v-tarikh">-</span></td></tr>
+            <tr><td width="120"><strong>TARIKH</strong></td><td>: <span id="v-tarikh">-</span></td></tr>
             <tr><td><strong>MASA</strong></td><td>: <span id="v-masa">-</span></td></tr>
             <tr><td><strong>TEMPAT</strong></td><td>: <span id="v-tempat">-</span></td></tr>
         </table>
 
         <h4>4.0 TENTATIF PROGRAM</h4>
-        <table><thead><tr><th width="20%">Masa</th><th>Aktiviti</th></tr></thead><tbody id="v-tentatif"></tbody></table>
+        <table><thead><tr><th width="25%">Masa</th><th>Aktiviti</th></tr></thead><tbody id="v-tentatif"></tbody></table>
 
-        <h4>5.0 ANGGARAN PERBELANJAAN</h4>
-        <table><thead><tr><th>Perkara</th><th width="20%">Kos (RM)</th></tr></thead><tbody id="v-kewangan"></tbody></table>
+        <h4>5.0 JAWATANKUASA PELAKSANA</h4>
+        <table><thead><tr><th>Jawatan</th><th>Nama</th></tr></thead><tbody id="v-ajk"></tbody></table>
+
+        <h4>6.0 IMPLIKASI KEWANGAN</h4>
+        <p><strong>6.1 SUMBER KEWANGAN</strong></p>
+        <table><thead><tr><th>Bil</th><th>Punca Dana</th><th>Jumlah (RM)</th></tr></thead><tbody id="v-sumber"></tbody></table>
+
+        <p><strong>6.2 ANGGARAN PERBELANJAAN</strong></p>
+        <table><thead><tr><th>Bil</th><th>Perkara</th><th>Kos (RM)</th></tr></thead><tbody id="v-belanja"></tbody></table>
 
         <div class="sig-grid">
-            <div>Disediakan oleh:<br><br><br>________________<br><strong id="v-s1n">(NAMA)</strong><br><span id="v-s1j">Jawatan</span></div>
-            <div>Disemak oleh:<br><br><br>________________<br><strong id="v-s2n">(NAMA)</strong><br><span id="v-s2j">Jawatan</span></div>
-            <div>Disahkan oleh:<br><br><br>________________<br><strong id="v-s3n">(NAMA)</strong><br><span id="v-s3j">Jawatan</span></div>
+            <div>Disediakan oleh:<br><br><br><br>________________<br><strong id="v-s1n">(NAMA)</strong><br><span id="v-s1j">Jawatan</span></div>
+            <div>Disemak oleh:<br><br><br><br>________________<br><strong id="v-s2n">(NAMA)</strong><br><span id="v-s2j">Jawatan</span></div>
+            <div>Disahkan oleh:<br><br><br><br>________________<br><strong id="v-s3n">(NAMA)</strong><br><span id="v-s3j">Jawatan</span></div>
         </div>
     </div>
 </div>
@@ -96,24 +120,25 @@
 <script>
 function tambah(jenis) {
     const div = document.createElement('div'); div.className = 'input-row';
-    if(jenis==='tentatif') {
-        div.innerHTML = `<input type="text" class="t-m" placeholder="Masa" oninput="kemaskini()"><input type="text" class="t-a" placeholder="Aktiviti" oninput="kemaskini()">`;
-    } else {
-        div.innerHTML = `<input type="text" class="k-i" placeholder="Item/Barang" oninput="kemaskini()"><input type="text" class="k-h" placeholder="Jumlah RM" oninput="kemaskini()">`;
-    }
-    div.innerHTML += `<button onclick="this.parentElement.remove();kemaskini()" style="background:red;color:white;border:none;padding:5px 10px;cursor:pointer;">X</button>`;
+    if(jenis==='tentatif') div.innerHTML = `<input type="text" class="t-m" placeholder="Masa" oninput="kemaskini()"><input type="text" class="t-a" placeholder="Aktiviti" oninput="kemaskini()">`;
+    else if(jenis==='ajk') div.innerHTML = `<input type="text" class="a-j" placeholder="Jawatan" oninput="kemaskini()"><input type="text" class="a-n" placeholder="Nama" oninput="kemaskini()">`;
+    else if(jenis==='sumber') div.innerHTML = `<input type="text" class="s-i" placeholder="Punca Dana" oninput="kemaskini()"><input type="text" class="s-h" placeholder="RM" oninput="kemaskini()">`;
+    else div.innerHTML = `<input type="text" class="k-i" placeholder="Item/Perkara" oninput="kemaskini()"><input type="text" class="k-h" placeholder="Kos RM" oninput="kemaskini()">`;
+    
+    div.innerHTML += `<button onclick="this.parentElement.remove();kemaskini()" style="background:red;color:white;border:none;border-radius:4px;padding:0 10px;cursor:pointer;">X</button>`;
     document.getElementById('inputs-'+jenis).appendChild(div);
+    kemaskini();
 }
 
 function kemaskini() {
-    // Teks Asas
+    // Teks
     document.getElementById('v-tajuk').innerText = document.getElementById('in-tajuk').value || "TAJUK PROGRAM";
     document.getElementById('v-tarikh').innerText = document.getElementById('in-tarikh').value || "-";
     document.getElementById('v-masa').innerText = document.getElementById('in-masa').value || "-";
     document.getElementById('v-tempat').innerText = document.getElementById('in-tempat').value || "-";
     document.getElementById('v-pend').innerText = document.getElementById('in-pend').value || "-";
     document.getElementById('v-obj').innerText = document.getElementById('in-obj').value || "-";
-    
+
     // Tandatangan
     document.getElementById('v-s1n').innerText = "(" + (document.getElementById('s1-n').value.toUpperCase() || "NAMA") + ")";
     document.getElementById('v-s1j').innerText = document.getElementById('s1-j').value || "Jawatan";
@@ -122,21 +147,20 @@ function kemaskini() {
     document.getElementById('v-s3n').innerText = "(" + (document.getElementById('s3-n').value.toUpperCase() || "NAMA") + ")";
     document.getElementById('v-s3j').innerText = document.getElementById('s3-j').value || "Jawatan";
 
-    // Jadual Tentatif
-    const vT = document.getElementById('v-tentatif'); vT.innerHTML = '';
-    document.querySelectorAll('#inputs-tentatif .input-row').forEach(r => {
-        vT.innerHTML += `<tr><td>${r.querySelector('.t-m').value}</td><td>${r.querySelector('.t-a').value}</td></tr>`;
-    });
+    // Jadual-Jadual
+    const updateTable = (inputSel, targetId, htmlFn) => {
+        const target = document.getElementById(targetId); target.innerHTML = '';
+        document.querySelectorAll(inputSel).forEach((r, i) => target.innerHTML += htmlFn(r, i));
+    };
 
-    // Jadual Kewangan
-    const vK = document.getElementById('v-kewangan'); vK.innerHTML = '';
-    document.querySelectorAll('#inputs-kewangan .input-row').forEach(r => {
-        vK.innerHTML += `<tr><td>${r.querySelector('.k-i').value}</td><td>${r.querySelector('.k-h').value}</td></tr>`;
-    });
+    updateTable('#inputs-tentatif .input-row', 'v-tentatif', r => `<tr><td>${r.querySelector('.t-m').value}</td><td>${r.querySelector('.t-a').value}</td></tr>`);
+    updateTable('#inputs-ajk .input-row', 'v-ajk', r => `<tr><td>${r.querySelector('.a-j').value}</td><td>${r.querySelector('.a-n').value}</td></tr>`);
+    updateTable('#inputs-sumber .input-row', 'v-sumber', (r, i) => `<tr><td>${i+1}</td><td>${r.querySelector('.s-i').value}</td><td>${r.querySelector('.s-h').value}</td></tr>`);
+    updateTable('#inputs-belanja .input-row', 'v-belanja', (r, i) => `<tr><td>${i+1}</td><td>${r.querySelector('.k-i').value}</td><td>${r.querySelector('.k-h').value}</td></tr>`);
 }
 
-// Tambah baris kosong permulaan
-window.onload = () => { tambah('tentatif'); tambah('kewangan'); };
+// Tambah baris awal
+window.onload = () => { tambah('tentatif'); tambah('ajk'); tambah('sumber'); tambah('belanja'); };
 </script>
 </body>
 </html>
