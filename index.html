@@ -37,7 +37,7 @@
             letter-spacing: 1.5px;
             margin: 35px 0 15px 0;
             display: flex; align-items: center;
-            clear: both; /* Memastikan tajuk tidak "float" */
+            clear: both;
         }
 
         .section-title::after { content: ""; flex: 1; height: 1px; background: #e2e8f0; margin-left: 15px; }
@@ -83,8 +83,8 @@
             background: white;
             padding: 25mm 20mm;
             box-shadow: 0 0 40px rgba(0,0,0,0.05);
-            font-family: Arial, Helvetica, sans-serif; /* Font Formal */
-            font-size: 11pt; /* Saiz Formal */
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
             color: #000;
             box-sizing: border-box;
         }
@@ -156,7 +156,7 @@
 
     <div class="section-title">D. Perincian Kewangan</div>
     
-    <div style="margin-bottom: 30px;">
+    <div style="margin-bottom: 10px;">
         <label>5.1 Sumber Kewangan (Punca Dana):</label>
         <div id="inputs-sumber"></div>
         <button class="btn-add" onclick="tambah('sumber')">+ Tambah Baris Sumber</button>
@@ -239,7 +239,7 @@ function tambah(jenis, v1='', v2='') {
     
     let p1 = "Masa", p2 = "Aktiviti";
     if(jenis === 'ajk') { p1 = "Jawatan"; p2 = "Nama Penuh"; }
-    if(jenis === 'sumber' || jenis === 'belanja') { p1 = "Perkara"; p2 = "Jumlah RM"; }
+    if(jenis === 'sumber' || jenis === 'belanja') { p1 = "Perkara"; p2 = "RM"; }
 
     div.innerHTML = `
         <input type="text" class="f-1" placeholder="${p1}" value="${v1}" oninput="kemaskini()">
@@ -301,7 +301,7 @@ function exportJSON() {
     };
     const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); 
-    a.download = 'Projek_KertasKerja.json'; a.click();
+    a.download = 'Data_KertasKerja.json'; a.click();
 }
 
 function importJSON(e) {
