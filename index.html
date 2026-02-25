@@ -2,9 +2,8 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <title>Executive Proposal Builder V15</title>
+    <title>Executive Proposal Builder V15.1</title>
     <style>
-        /* FONT SELECTIONS */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
         :root {
@@ -56,6 +55,10 @@
             box-sizing: border-box; transition: 0.2s;
         }
         input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1); }
+
+        /* Custom heights for textareas */
+        #in-tajuk { height: 100px; font-weight: bold; } /* Panjangkan kotak tajuk */
+        #in-pend { height: 70px; } /* Kecilkan kotak pendahuluan */
 
         .input-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
         .f-1 { flex: 1; } .f-2 { flex: 2.5; }
@@ -116,60 +119,63 @@
 
 <div class="no-print">
     <div class="editor-header">
-        <h2 style="margin:0; font-size:16px; color:var(--accent)">DOCUMENT ENGINE V15</h2>
+        <h2 style="margin:0; font-size:16px; color:var(--accent)">DOCUMENT BUILDER V15.1</h2>
         <div style="display:flex; gap:8px;">
-            <button onclick="exportJSON()" style="padding:6px 12px; border-radius:6px; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">💾 SAVE</button>
-            <button onclick="document.getElementById('importFile').click()" style="padding:6px 12px; border-radius:6px; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">📂 LOAD</button>
+            <button onclick="exportJSON()" style="padding:6px 12px; border-radius:6px; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">💾 SIMPAN</button>
+            <button onclick="document.getElementById('importFile').click()" style="padding:6px 12px; border-radius:6px; border:1px solid #cbd5e1; cursor:pointer; font-size:11px">📂 BUKA</button>
             <input type="file" id="importFile" style="display:none" onchange="importJSON(event)">
         </div>
     </div>
 
     <div class="section-card">
-        <div class="section-h">1.0 Header & Tajuk</div>
-        <label>Tajuk Penuh Kertas Kerja</label>
-        <textarea id="in-tajuk" oninput="kemaskini()" rows="2" placeholder="Nama program..."></textarea>
+        <div class="section-h">1.0 Maklumat Asas</div>
+        <label>Tajuk Kertas Kerja (Penuh)</label>
+        <textarea id="in-tajuk" oninput="kemaskini()" placeholder="Taip tajuk penuh di sini..."></textarea>
         
         <div class="input-row" style="margin-top:10px">
             <div class="f-1"><label>Tarikh</label><input type="text" id="in-tarikh" oninput="kemaskini()"></div>
             <div class="f-1"><label>Masa</label><input type="text" id="in-masa" oninput="kemaskini()"></div>
             <div class="f-1"><label>Tempat</label><input type="text" id="in-tempat" oninput="kemaskini()"></div>
         </div>
+
+        <label style="margin-top:15px">Penglibatan / Kumpulan Sasar</label>
+        <input type="text" id="in-penglibatan" oninput="kemaskini()" placeholder="Contoh: 40 orang pelajar, 5 orang guru">
     </div>
 
     <div class="section-card">
-        <div class="section-h">2.0 Kandungan Utama</div>
-        <label>Pendahuluan</label>
-        <textarea id="in-pend" oninput="kemaskini()" rows="3"></textarea>
+        <div class="section-h">2.0 Kandungan Program</div>
+        <label>Pendahuluan (Ringkas)</label>
+        <textarea id="in-pend" oninput="kemaskini()" placeholder="Tujuan utama program..."></textarea>
         
-        <label style="margin-top:15px">Objektif (Senarai berbutir)</label>
+        <label style="margin-top:15px">Objektif (Satu per satu)</label>
         <div id="inputs-objektif"></div>
-        <button class="btn-add" onclick="tambah('objektif')">+ Tambah Item Objektif</button>
+        <button class="btn-add" onclick="tambah('objektif')">+ Tambah Objektif</button>
     </div>
 
     <div class="section-card">
-        <div class="section-h">3.0 Susunan Jadual</div>
+        <div class="section-h">3.0 Pelaksanaan</div>
         <label>Tentatif Program</label>
         <div id="inputs-tentatif"></div>
         <button class="btn-add" onclick="tambah('tentatif')">+ Tambah Slot Masa</button>
 
         <label style="margin-top:15px">Jawatankuasa</label>
         <div id="inputs-ajk"></div>
-        <button class="btn-add" onclick="tambah('ajk')">+ Tambah Ahli Jawatankuasa</button>
+        <button class="btn-add" onclick="tambah('ajk')">+ Tambah AJK</button>
     </div>
 
     <div class="section-card">
         <div class="section-h">4.0 Kewangan</div>
         <label>Sumber Dana</label>
         <div id="inputs-sumber"></div>
-        <button class="btn-add" onclick="tambah('sumber')">+ Tambah Baris Sumber</button>
+        <button class="btn-add" onclick="tambah('sumber')">+ Tambah Sumber</button>
 
         <label style="margin-top:15px">Anggaran Perbelanjaan</label>
         <div id="inputs-belanja"></div>
-        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Baris Kos</button>
+        <button class="btn-add" onclick="tambah('belanja')">+ Tambah Kos</button>
     </div>
 
     <div class="section-card">
-        <div class="section-h">5.0 Tandatangan</div>
+        <div class="section-h">5.0 Pengesahan</div>
         <div class="input-row">
             <input type="text" id="s1-n" placeholder="Nama Penyedia" oninput="kemaskini()">
             <input type="text" id="s2-n" placeholder="Nama Penyemak" oninput="kemaskini()">
@@ -182,7 +188,7 @@
         </div>
     </div>
 
-    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-bottom:50px;">📥 PRINT TO OFFICIAL PDF (Arial 11pt)</button>
+    <button onclick="window.print()" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer; margin-bottom:50px;">📥 CETAK PDF RASMI</button>
 </div>
 
 <div id="preview-container">
@@ -197,9 +203,10 @@
 
         <h4>3.0 MAKLUMAT PROGRAM</h4>
         <table style="border:none">
-            <tr style="border:none"><td style="border:none; width:120px; padding:2px">TARIKH</td><td style="border:none; padding:2px">: <span id="v-tarikh">-</span></td></tr>
+            <tr style="border:none"><td style="border:none; width:150px; padding:2px">TARIKH</td><td style="border:none; padding:2px">: <span id="v-tarikh">-</span></td></tr>
             <tr style="border:none"><td style="border:none; padding:2px">MASA</td><td style="border:none; padding:2px">: <span id="v-masa">-</span></td></tr>
             <tr style="border:none"><td style="border:none; padding:2px">TEMPAT</td><td style="border:none; padding:2px">: <span id="v-tempat">-</span></td></tr>
+            <tr style="border:none"><td style="border:none; padding:2px">PENGLIBATAN</td><td style="border:none; padding:2px">: <span id="v-penglibatan">-</span></td></tr>
         </table>
 
         <h4>4.0 TENTATIF PROGRAM</h4>
@@ -244,8 +251,8 @@ function tambah(jenis, v1='', v2='') {
     if(jenis === 'objektif') {
         div.innerHTML = `<input type="text" style="flex:1" placeholder="Isi objektif..." value="${v1}" oninput="kemaskini()">`;
     } else {
-        div.innerHTML = `<input type="text" class="f-1" placeholder="Kolum 1" value="${v1}" oninput="kemaskini()">
-                         <input type="text" class="f-2" placeholder="Kolum 2" value="${v2}" oninput="kemaskini()">`;
+        div.innerHTML = `<input type="text" class="f-1" placeholder="..." value="${v1}" oninput="kemaskini()">
+                         <input type="text" class="f-2" placeholder="..." value="${v2}" oninput="kemaskini()">`;
     }
 
     div.innerHTML += `<button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
@@ -254,11 +261,11 @@ function tambah(jenis, v1='', v2='') {
 }
 
 function kemaskini() {
-    ['tajuk','tarikh','masa','tempat','pend'].forEach(f => {
+    ['tajuk','tarikh','masa','tempat','pend','penglibatan'].forEach(f => {
         document.getElementById('v-'+f).innerText = document.getElementById('in-'+f).value || "-";
     });
 
-    // Objektif
+    // Objektif Bullet Points
     const vObj = document.getElementById('v-objektif'); vObj.innerHTML = '';
     document.querySelectorAll('#inputs-objektif input').forEach(i => {
         if(i.value) vObj.innerHTML += `<li>${i.value}</li>`;
@@ -296,7 +303,8 @@ function exportJSON() {
             tarikh: document.getElementById('in-tarikh').value,
             masa: document.getElementById('in-masa').value,
             tempat: document.getElementById('in-tempat').value,
-            pend: document.getElementById('in-pend').value
+            pend: document.getElementById('in-pend').value,
+            penglibatan: document.getElementById('in-penglibatan').value
         },
         sig: [
             document.getElementById('s1-n').value, document.getElementById('s1-j').value,
@@ -311,14 +319,17 @@ function exportJSON() {
     };
     const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); 
-    a.download = 'Projek_KertasKerja.json'; a.click();
+    a.download = 'Doc_KertasKerja.json'; a.click();
 }
 
 function importJSON(e) {
     const reader = new FileReader();
     reader.onload = (ev) => {
         const d = JSON.parse(ev.target.result);
-        Object.keys(d.main).forEach(k => document.getElementById('in-'+k).value = d.main[k]);
+        Object.keys(d.main).forEach(k => {
+            const el = document.getElementById('in-'+k);
+            if(el) el.value = d.main[k];
+        });
         const sigFields = ['s1-n','s1-j','s2-n','s2-j','s3-n','s3-j'];
         sigFields.forEach((f, i) => document.getElementById(f).value = d.sig[i]);
         
@@ -331,7 +342,6 @@ function importJSON(e) {
     reader.readAsText(e.target.files[0]);
 }
 
-// Initial Rows
 window.onload = () => { tambah('objektif'); tambah('tentatif'); tambah('ajk'); tambah('sumber'); tambah('belanja'); };
 </script>
 </body>
