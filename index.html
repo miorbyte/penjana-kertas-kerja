@@ -3,23 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EZI Paperwork Generator BPP - V18.6 STABLE</title>
+    <title>EZI Paperwork Generator BPP - V18.7 PROFESSIONAL</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         
         * { box-sizing: border-box; }
         body { background: #0f172a; font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow: hidden; }
 
-        /* NAV ATAS */
-        .top-nav { 
-            background: #1e293b; padding: 15px; 
-            border-bottom: 3px solid #3b82f6; height: 100px;
-        }
+        .top-nav { background: #1e293b; padding: 15px; border-bottom: 3px solid #3b82f6; height: 100px; }
         .nav-title { color: #3b82f6; font-weight: 800; text-align: center; font-size: 18px; margin-bottom: 10px; }
         .nav-buttons { display: flex; justify-content: center; gap: 10px; }
         .btn-nav { padding: 8px 15px; border: none; border-radius: 6px; color: white; font-weight: 800; font-size: 12px; cursor: pointer; }
 
-        /* CONTAINER UTAMA */
         .main-container { display: flex; height: calc(100vh - 100px); width: 100%; }
         .editor-side { flex: 1; background: #f1f5f9; padding: 20px; overflow-y: auto; border-right: 2px solid #cbd5e1; }
         .preview-side { flex: 1.2; background: #334155; padding: 40px 20px; overflow-y: auto; display: flex; justify-content: center; }
@@ -40,13 +35,12 @@
         .btn-del { background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; padding: 0 10px; font-weight: bold; cursor: pointer; }
         .btn-add { width: 100%; padding: 10px; background: #e2e8f0; border: 1px dashed #64748b; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 5px; font-size: 11px; }
 
-        /* PREVIEW A4 */
         #preview { 
             width: 210mm; min-height: 297mm; background: white; 
             padding: 20mm; color: black; font-family: Arial, sans-serif;
-            line-height: 1.5; font-size: 11pt; box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            line-height: 1.6; font-size: 11pt; box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
-        #v-title { text-align: center; font-weight: bold; font-size: 13pt; text-decoration: underline; margin-bottom: 20px; text-transform: uppercase; }
+        #v-title { text-align: center; font-weight: bold; font-size: 13pt; text-decoration: underline; margin-bottom: 25px; text-transform: uppercase; }
         h4 { border-left: 5px solid black; padding-left: 10px; margin: 20px 0 10px 0; text-transform: uppercase; font-size: 11pt; background: #f8fafc; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid black; padding: 8px; text-align: left; }
@@ -56,56 +50,21 @@
         .sign-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 50px; text-align: center; }
         .sign-line { border-top: 1px solid black; margin-top: 50px; padding-top: 5px; font-weight: bold; font-size: 9pt; }
 
-        /* MOD PENYELESAIAN RULER/SCROLL */
         @media print { 
             @page { size: A4; margin: 0; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            
-            html, body { 
-                background: white !important; 
-                overflow: visible !important; 
-                height: auto !important; 
-                margin: 0 !important; 
-                padding: 0 !important;
-            }
-
-            .top-nav, .editor-side, .btn-nav, .btn-add, .btn-del { 
-                display: none !important; 
-            }
-
-            .main-container { 
-                display: block !important; 
-                height: auto !important; 
-                overflow: visible !important;
-            }
-
-            .preview-side { 
-                background: white !important; 
-                padding: 0 !important; 
-                margin: 0 !important;
-                display: block !important;
-                overflow: visible !important;
-                height: auto !important;
-                width: 100% !important;
-            }
-
-            #preview { 
-                box-shadow: none !important; 
-                border: none !important; 
-                width: 210mm !important; /* Saiz tepat A4 */
-                margin: 0 auto !important; 
-                padding: 20mm !important;
-                overflow: visible !important;
-                height: auto !important;
-                page-break-after: always;
-            }
+            html, body { background: white !important; overflow: visible !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
+            .top-nav, .editor-side, .btn-nav, .btn-add, .btn-del { display: none !important; }
+            .main-container { display: block !important; }
+            .preview-side { background: white !important; padding: 0 !important; margin: 0 !important; display: block !important; }
+            #preview { box-shadow: none !important; border: none !important; width: 100% !important; padding: 20mm !important; }
         }
     </style>
 </head>
 <body>
 
 <div class="top-nav">
-    <div class="nav-title">EZI PAPERWORK GENERATOR BPP</div>
+    <div class="nav-title">EZI PAPERWORK GENERATOR BPP (PRO)</div>
     <div class="nav-buttons">
         <button class="btn-nav" style="background: #2563eb;" onclick="exportData()">💾 Simpan</button>
         <button class="btn-nav" style="background: #4b5563;" onclick="document.getElementById('fileIn').click()">📂 Buka</button>
@@ -119,13 +78,13 @@
         <div class="card">
             <div class="card-h">1.0 Info Utama</div>
             <label>Tajuk Kertas Kerja</label>
-            <textarea id="in-tajuk" oninput="kemaskini()" rows="2"></textarea>
+            <textarea id="in-tajuk" oninput="kemaskini()" rows="2" placeholder="Contoh: PROGRAM JATI DIRI DAN KEPIMPINAN ORGANISASI"></textarea>
             <div style="display:flex; gap:10px;">
-                <div style="flex:1;"><label>Tarikh</label><input id="in-tarikh" oninput="kemaskini()"></div>
-                <div style="flex:1;"><label>Masa</label><input id="in-masa" oninput="kemaskini()"></div>
+                <div style="flex:1;"><label>Tarikh</label><input id="in-tarikh" oninput="kemaskini()" placeholder="Contoh: 15 MAC 2026"></div>
+                <div style="flex:1;"><label>Masa</label><input id="in-masa" oninput="kemaskini()" placeholder="Contoh: 8.00 PAGI - 5.00 PETANG"></div>
             </div>
-            <label>Tempat</label><input id="in-tempat" oninput="kemaskini()">
-            <label>Sasaran</label><input id="in-penglibatan" oninput="kemaskini()">
+            <label>Tempat</label><input id="in-tempat" oninput="kemaskini()" placeholder="Contoh: DEWAN SERBAGUNA">
+            <label>Sasaran / Penglibatan</label><input id="in-penglibatan" oninput="kemaskini()" placeholder="Contoh: 50 ORANG AHLI KELAB">
         </div>
 
         <div class="card">
@@ -165,8 +124,12 @@
     <div class="preview-side">
         <div id="preview">
             <div id="v-title">KERTAS KERJA PROGRAM</div>
+
             <h4>1.0 PENDAHULUAN</h4>
-            <p>Kertas kerja ini disediakan bertujuan untuk memohon pertimbangan serta kelulusan bagi melaksanakan <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong>.</p>
+            <p style="text-align: justify;">
+                Kertas kerja ini dikemukakan bertujuan untuk memohon pertimbangan dan kelulusan daripada pihak pengurusan bagi melaksanakan program <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong>. Program ini dirancang sebagai satu inisiatif proaktif dalam memperkasakan kemahiran serta pengetahuan para peserta selaras dengan objektif pembangunan organisasi yang cemerlang. Adalah diharapkan melalui pelaksanaan program ini, ia mampu memberikan impak positif serta memupuk semangat kerjasama dalam kalangan peserta yang terlibat.
+            </p>
+
             <h4>2.0 MAKLUMAT PROGRAM</h4>
             <table>
                 <tr><td width="150">TARIKH</td><td>: <span id="v-tarikh">-</span></td></tr>
@@ -174,30 +137,37 @@
                 <tr><td>TEMPAT</td><td>: <span id="v-tempat">-</span></td></tr>
                 <tr><td>SASARAN</td><td>: <span id="v-penglibatan">-</span></td></tr>
             </table>
+
             <h4>3.0 OBJEKTIF</h4>
             <ul id="v-obj" style="padding-left:20px;"></ul>
+
             <h4>4.0 TENTATIF PROGRAM</h4>
             <table><thead><tr><th width="120">MASA</th><th>PERKARA/AKTIVITI</th></tr></thead><tbody id="v-tentatif"></tbody></table>
+
             <h4>5.0 JAWATANKUASA PELAKSANA</h4>
             <table><thead><tr><th width="180">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead><tbody id="v-ajk"></tbody></table>
+
             <h4>6.0 KEWANGAN</h4>
             <p><strong>6.1 Sumber Dana</strong></p>
             <table><thead><tr><th>PERINCIAN</th><th width="120">RM</th></tr></thead><tbody id="v-sumber"></tbody><tfoot id="v-sumber-total"></tfoot></table>
             <p style="margin-top:10px;"><strong>6.2 Anggaran Perbelanjaan</strong></p>
             <table><thead><tr><th>ITEM</th><th width="60">UNIT</th><th width="90">HARGA</th><th width="100">JUMLAH (RM)</th></tr></thead><tbody id="v-belanja"></tbody><tfoot id="v-belanja-total"></tfoot></table>
+
             <h4>7.0 PENUTUP</h4>
-            <p>Besar harapan kami agar kertas kerja bagi <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong> ini mendapat pertimbangan dan kelulusan sewajarnya.</p>
+            <p style="text-align: justify;">
+                Kesimpulannya, penganjuran <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong> ini amat penting dalam memastikan kesinambungan kecemerlangan dan pengukuhan jati diri setiap individu yang terlibat. Pihak jawatankuasa komited untuk memastikan program ini berjalan dengan lancar mengikut perancangan yang telah ditetapkan. Justeru, segala perhatian, sokongan dan kelulusan daripada pihak tuan/puan didahului dengan ucapan setinggi-tinggi penghargaan dan terima kasih.
+            </p>
+
             <div class="sign-grid">
-                <div>Disediakan:<div class="sign-line"><span id="v-n1">-</span><br><small id="v-j1">-</small></div></div>
-                <div>Disemak:<div class="sign-line"><span id="v-n2">-</span><br><small id="v-j2">-</small></div></div>
-                <div>Disahkan:<div class="sign-line"><span id="v-n3">-</span><br><small id="v-j3">-</small></div></div>
+                <div>Disediakan oleh:<div class="sign-line"><span id="v-n1">-</span><br><small id="v-j1">-</small></div></div>
+                <div>Disemak oleh:<div class="sign-line"><span id="v-n2">-</span><br><small id="v-j2">-</small></div></div>
+                <div>Disahkan oleh:<div class="sign-line"><span id="v-n3">-</span><br><small id="v-j3">-</small></div></div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-// Logic remains same as previous working version
 function tambahObj(v='') {
     const d = document.createElement('div'); d.className = 'row-obj';
     d.innerHTML = `<input style="flex:1" value="${v}" oninput="kemaskini()" placeholder="Objektif..."><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
