@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EZI Paperwork Generator BPP - V18.5 FINAL</title>
+    <title>EZI Paperwork Generator BPP - V18.6 STABLE</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         
@@ -24,7 +24,6 @@
         .editor-side { flex: 1; background: #f1f5f9; padding: 20px; overflow-y: auto; border-right: 2px solid #cbd5e1; }
         .preview-side { flex: 1.2; background: #334155; padding: 40px 20px; overflow-y: auto; display: flex; justify-content: center; }
 
-        /* RESPONSIVE TELEFON */
         @media screen and (max-width: 900px) {
             body { overflow: auto; }
             .main-container { flex-direction: column; height: auto; }
@@ -57,19 +56,48 @@
         .sign-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 50px; text-align: center; }
         .sign-line { border-top: 1px solid black; margin-top: 50px; padding-top: 5px; font-weight: bold; font-size: 9pt; }
 
-        /* FIX PRINT - TIADA SKROL & BERSIH */
+        /* MOD PENYELESAIAN RULER/SCROLL */
         @media print { 
             @page { size: A4; margin: 0; }
-            body, html { background: white !important; overflow: visible !important; height: auto !important; }
-            .top-nav, .editor-side { display: none !important; }
-            .main-container { display: block !important; height: auto !important; }
-            .preview-side { background: white !important; padding: 0 !important; overflow: visible !important; display: block !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            
+            html, body { 
+                background: white !important; 
+                overflow: visible !important; 
+                height: auto !important; 
+                margin: 0 !important; 
+                padding: 0 !important;
+            }
+
+            .top-nav, .editor-side, .btn-nav, .btn-add, .btn-del { 
+                display: none !important; 
+            }
+
+            .main-container { 
+                display: block !important; 
+                height: auto !important; 
+                overflow: visible !important;
+            }
+
+            .preview-side { 
+                background: white !important; 
+                padding: 0 !important; 
+                margin: 0 !important;
+                display: block !important;
+                overflow: visible !important;
+                height: auto !important;
+                width: 100% !important;
+            }
+
             #preview { 
                 box-shadow: none !important; 
                 border: none !important; 
-                width: 100% !important; 
-                margin: 0 !important; 
-                padding: 15mm !important; /* Margin dalam kertas */
+                width: 210mm !important; /* Saiz tepat A4 */
+                margin: 0 auto !important; 
+                padding: 20mm !important;
+                overflow: visible !important;
+                height: auto !important;
+                page-break-after: always;
             }
         }
     </style>
@@ -118,10 +146,10 @@
 
         <div class="card">
             <div class="card-h">4.0 Kewangan</div>
-            <label>Sumber Dana (Butiran | RM)</label>
+            <label>Sumber Dana</label>
             <div id="inputs-sumber"></div>
             <button class="btn-add" onclick="tambahDua('sumber', 'Punca', '0.00')">+ Tambah Sumber</button>
-            <label style="margin-top:15px">Anggaran Belanja (Item | Unit | Harga)</label>
+            <label style="margin-top:15px">Anggaran Belanja</label>
             <div id="inputs-belanja"></div>
             <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item</button>
         </div>
@@ -137,10 +165,8 @@
     <div class="preview-side">
         <div id="preview">
             <div id="v-title">KERTAS KERJA PROGRAM</div>
-
             <h4>1.0 PENDAHULUAN</h4>
             <p>Kertas kerja ini disediakan bertujuan untuk memohon pertimbangan serta kelulusan bagi melaksanakan <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong>.</p>
-
             <h4>2.0 MAKLUMAT PROGRAM</h4>
             <table>
                 <tr><td width="150">TARIKH</td><td>: <span id="v-tarikh">-</span></td></tr>
@@ -148,34 +174,19 @@
                 <tr><td>TEMPAT</td><td>: <span id="v-tempat">-</span></td></tr>
                 <tr><td>SASARAN</td><td>: <span id="v-penglibatan">-</span></td></tr>
             </table>
-
             <h4>3.0 OBJEKTIF</h4>
             <ul id="v-obj" style="padding-left:20px;"></ul>
-
             <h4>4.0 TENTATIF PROGRAM</h4>
             <table><thead><tr><th width="120">MASA</th><th>PERKARA/AKTIVITI</th></tr></thead><tbody id="v-tentatif"></tbody></table>
-
             <h4>5.0 JAWATANKUASA PELAKSANA</h4>
             <table><thead><tr><th width="180">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead><tbody id="v-ajk"></tbody></table>
-
             <h4>6.0 KEWANGAN</h4>
             <p><strong>6.1 Sumber Dana</strong></p>
-            <table>
-                <thead><tr><th>PERINCIAN</th><th width="120">RM</th></tr></thead>
-                <tbody id="v-sumber"></tbody>
-                <tfoot id="v-sumber-total"></tfoot>
-            </table>
-
+            <table><thead><tr><th>PERINCIAN</th><th width="120">RM</th></tr></thead><tbody id="v-sumber"></tbody><tfoot id="v-sumber-total"></tfoot></table>
             <p style="margin-top:10px;"><strong>6.2 Anggaran Perbelanjaan</strong></p>
-            <table>
-                <thead><tr><th>ITEM</th><th width="60">UNIT</th><th width="90">HARGA</th><th width="100">JUMLAH (RM)</th></tr></thead>
-                <tbody id="v-belanja"></tbody>
-                <tfoot id="v-belanja-total"></tfoot>
-            </table>
-
+            <table><thead><tr><th>ITEM</th><th width="60">UNIT</th><th width="90">HARGA</th><th width="100">JUMLAH (RM)</th></tr></thead><tbody id="v-belanja"></tbody><tfoot id="v-belanja-total"></tfoot></table>
             <h4>7.0 PENUTUP</h4>
-            <p>Besar harapan kami agar kertas kerja bagi <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong> ini mendapat pertimbangan dan kelulusan yang sewajarnya.</p>
-
+            <p>Besar harapan kami agar kertas kerja bagi <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong> ini mendapat pertimbangan dan kelulusan sewajarnya.</p>
             <div class="sign-grid">
                 <div>Disediakan:<div class="sign-line"><span id="v-n1">-</span><br><small id="v-j1">-</small></div></div>
                 <div>Disemak:<div class="sign-line"><span id="v-n2">-</span><br><small id="v-j2">-</small></div></div>
@@ -186,6 +197,7 @@
 </div>
 
 <script>
+// Logic remains same as previous working version
 function tambahObj(v='') {
     const d = document.createElement('div'); d.className = 'row-obj';
     d.innerHTML = `<input style="flex:1" value="${v}" oninput="kemaskini()" placeholder="Objektif..."><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
@@ -201,18 +213,14 @@ function tambahBelanja() {
     d.innerHTML = `<input style="flex:1.5" oninput="kemaskini()" placeholder="Item"><input style="flex:0.5" type="number" value="1" oninput="kemaskini()"><input style="flex:0.8" type="number" value="0.00" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
     document.getElementById('inputs-belanja').appendChild(d);
 }
-
 function kemaskini() {
     const tajuk = document.getElementById('in-tajuk').value || "[TAJUK PROGRAM]";
     document.getElementById('v-title').innerText = tajuk;
     document.querySelectorAll('.v-auto-name').forEach(el => el.innerText = tajuk);
-
     const map = {'in-tarikh':'v-tarikh','in-masa':'v-masa','in-tempat':'v-tempat','in-penglibatan':'v-penglibatan','in-n1':'v-n1','in-j1':'v-j1','in-n2':'v-n2','in-j2':'v-j2','in-n3':'v-n3','in-j3':'v-j3'};
     for(let i in map) { if(document.getElementById(map[i])) document.getElementById(map[i]).innerText = document.getElementById(i).value || "-"; }
-
     document.getElementById('v-obj').innerHTML = '';
     document.querySelectorAll('#inputs-obj input').forEach(i => { if(i.value) document.getElementById('v-obj').innerHTML += `<li>${i.value}</li>` });
-
     const fill = (idIn, idV) => {
         document.getElementById(idV).innerHTML = '';
         document.querySelectorAll(`#inputs-${idIn} .row-2`).forEach(r => {
@@ -221,7 +229,6 @@ function kemaskini() {
         });
     }
     fill('tentatif', 'v-tentatif'); fill('ajk', 'v-ajk');
-
     document.getElementById('v-sumber').innerHTML = '';
     let tS = 0;
     document.querySelectorAll('#inputs-sumber .row-2').forEach(r => {
@@ -233,7 +240,6 @@ function kemaskini() {
         }
     });
     document.getElementById('v-sumber-total').innerHTML = `<tr class="total-row"><td>JUMLAH KESELURUHAN</td><td>RM ${tS.toFixed(2)}</td></tr>`;
-
     document.getElementById('v-belanja').innerHTML = '';
     let tB = 0;
     document.querySelectorAll('#inputs-belanja .row-belanja').forEach(r => {
@@ -248,7 +254,6 @@ function kemaskini() {
     });
     document.getElementById('v-belanja-total').innerHTML = `<tr class="total-row"><td colspan="3">JUMLAH KESELURUHAN</td><td>RM ${tB.toFixed(2)}</td></tr>`;
 }
-
 function exportData() {
     const d = Array.from(document.querySelectorAll('input, textarea')).map(i => i.value);
     const b = new Blob([JSON.stringify(d)], {type:'application/json'});
