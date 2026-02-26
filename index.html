@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EZI Paperwork Generator BPP - V18.5 FIXED</title>
+    <title>EZI Paperwork Generator BPP - V18.5 FINAL</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         
@@ -57,10 +57,20 @@
         .sign-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 50px; text-align: center; }
         .sign-line { border-top: 1px solid black; margin-top: 50px; padding-top: 5px; font-weight: bold; font-size: 9pt; }
 
+        /* FIX PRINT - TIADA SKROL & BERSIH */
         @media print { 
-            .top-nav, .editor-side { display: none; }
-            .preview-side { background: white; padding: 0; }
-            #preview { box-shadow: none; border: none; width: 100%; }
+            @page { size: A4; margin: 0; }
+            body, html { background: white !important; overflow: visible !important; height: auto !important; }
+            .top-nav, .editor-side { display: none !important; }
+            .main-container { display: block !important; height: auto !important; }
+            .preview-side { background: white !important; padding: 0 !important; overflow: visible !important; display: block !important; }
+            #preview { 
+                box-shadow: none !important; 
+                border: none !important; 
+                width: 100% !important; 
+                margin: 0 !important; 
+                padding: 15mm !important; /* Margin dalam kertas */
+            }
         }
     </style>
 </head>
@@ -212,7 +222,6 @@ function kemaskini() {
     }
     fill('tentatif', 'v-tentatif'); fill('ajk', 'v-ajk');
 
-    // 6.1 SUMBER DANA + AUTO SUM
     document.getElementById('v-sumber').innerHTML = '';
     let tS = 0;
     document.querySelectorAll('#inputs-sumber .row-2').forEach(r => {
@@ -225,7 +234,6 @@ function kemaskini() {
     });
     document.getElementById('v-sumber-total').innerHTML = `<tr class="total-row"><td>JUMLAH KESELURUHAN</td><td>RM ${tS.toFixed(2)}</td></tr>`;
 
-    // 6.2 BELANJA + AUTO SUM
     document.getElementById('v-belanja').innerHTML = '';
     let tB = 0;
     document.querySelectorAll('#inputs-belanja .row-belanja').forEach(r => {
