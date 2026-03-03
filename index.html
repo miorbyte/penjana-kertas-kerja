@@ -1,241 +1,603 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EZI Paperwork Generator BPP - V18.7 PROFESSIONAL</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        
-        * { box-sizing: border-box; }
-        body { background: #0f172a; font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>EZI Paperwork Generator BPP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #080b10;
+  --surface:  #0f1420;
+  --surface2: #141926;
+  --surface3: #1a2030;
+  --border:   rgba(255,255,255,0.06);
+  --border2:  rgba(255,255,255,0.11);
+  --gold:     #c8a86b;
+  --gold2:    #e4c98a;
+  --gold-dim: rgba(200,168,107,0.10);
+  --gold-glow:rgba(200,168,107,0.20);
+  --blue:     #4f9cf9;
+  --blue-dim: rgba(79,156,249,0.10);
+  --green:    #2dd68a;
+  --red:      #f05252;
+  --text:     #e4e9f2;
+  --text2:    #8896ad;
+  --text3:    #3d4d62;
+  --font:     'DM Sans', sans-serif;
+  --mono:     'DM Mono', monospace;
+  --display:  'Syne', sans-serif;
+  --r:        12px;
+  --r-sm:     7px;
+}
 
-        .top-nav { background: #1e293b; padding: 15px; border-bottom: 3px solid #3b82f6; height: 100px; }
-        .nav-title { color: #3b82f6; font-weight: 800; text-align: center; font-size: 18px; margin-bottom: 10px; }
-        .nav-buttons { display: flex; justify-content: center; gap: 10px; }
-        .btn-nav { padding: 8px 15px; border: none; border-radius: 6px; color: white; font-weight: 800; font-size: 12px; cursor: pointer; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--text); font-family: var(--font);
+  font-size: 13px; overflow: hidden; height: 100vh;
+  background-image:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(200,168,107,0.04) 0%, transparent 55%);
+}
 
-        .main-container { display: flex; height: calc(100vh - 100px); width: 100%; }
-        .editor-side { flex: 1; background: #f1f5f9; padding: 20px; overflow-y: auto; border-right: 2px solid #cbd5e1; }
-        .preview-side { flex: 1.2; background: #334155; padding: 40px 20px; overflow-y: auto; display: flex; justify-content: center; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
 
-        @media screen and (max-width: 900px) {
-            body { overflow: auto; }
-            .main-container { flex-direction: column; height: auto; }
-            .editor-side, .preview-side { flex: none; width: 100%; height: auto; overflow: visible; }
-            #preview { width: 100% !important; padding: 10mm 5mm !important; }
-        }
+/* ── TOP NAV ── */
+.top-nav {
+  background: rgba(15,20,32,0.98);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  height: 58px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  position: relative; z-index: 100;
+  backdrop-filter: blur(20px);
+  flex-shrink: 0;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-logo {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #080b10; font-family: var(--display); font-weight: 800;
+  font-size: 9px; padding: 5px 9px; border-radius: 5px;
+  letter-spacing: 1.5px; white-space: nowrap;
+  box-shadow: 0 2px 12px var(--gold-glow);
+}
+.nav-title {
+  font-family: var(--display); font-size: 13px; font-weight: 700;
+  color: var(--text2); letter-spacing: 0.5px; white-space: nowrap;
+}
+@media(max-width:500px){ .nav-title { display: none; } }
 
-        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #e2e8f0; }
-        .card-h { font-size: 13px; font-weight: 800; border-bottom: 2px solid #3b82f6; padding-bottom: 5px; margin-bottom: 12px; color: #0f172a; }
-        label { font-size: 10px; font-weight: 700; color: #64748b; display: block; margin-top: 10px; text-transform: uppercase; }
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin-top: 4px; font-size: 14px; }
+.nav-actions { display: flex; align-items: center; gap: 6px; }
+.btn-nav {
+  padding: 8px 14px; border: 1px solid var(--border2); border-radius: var(--r-sm);
+  color: var(--text2); background: var(--surface2); cursor: pointer;
+  font-family: var(--font); font-weight: 700; font-size: 11px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.btn-nav:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+.btn-nav.print {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #080b10; border-color: transparent;
+  box-shadow: 0 2px 10px var(--gold-glow);
+}
+.btn-nav.print:hover { opacity: 0.9; }
 
-        .row-obj, .row-2, .row-belanja { display: flex; gap: 5px; margin-bottom: 5px; }
-        .btn-del { background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; padding: 0 10px; font-weight: bold; cursor: pointer; }
-        .btn-add { width: 100%; padding: 10px; background: #e2e8f0; border: 1px dashed #64748b; border-radius: 6px; font-weight: 700; cursor: pointer; margin-top: 5px; font-size: 11px; }
+/* ── SPLIT VIEW TABS (mobile) ── */
+.view-toggle {
+  display: none;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+}
+.view-toggle button {
+  padding: 10px 20px; background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--text3); font-family: var(--font); font-weight: 700; font-size: 12px;
+  cursor: pointer; transition: all 0.2s;
+}
+.view-toggle button.active { color: var(--gold); border-bottom-color: var(--gold); }
+@media(max-width: 900px) {
+  body { overflow: auto; height: auto; }
+  .view-toggle { display: flex; }
+  .main-container { flex-direction: column !important; height: auto !important; overflow: visible !important; }
+  .editor-side { height: auto !important; overflow: visible !important; }
+  .preview-side { height: auto !important; overflow: visible !important; display: none; }
+  .preview-side.show { display: flex !important; }
+  .editor-side.hide { display: none; }
+}
 
-        #preview { 
-            width: 210mm; min-height: 297mm; background: white; 
-            padding: 20mm; color: black; font-family: Arial, sans-serif;
-            line-height: 1.6; font-size: 11pt; box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-        #v-title { text-align: center; font-weight: bold; font-size: 13pt; text-decoration: underline; margin-bottom: 25px; text-transform: uppercase; }
-        h4 { border-left: 5px solid black; padding-left: 10px; margin: 20px 0 10px 0; text-transform: uppercase; font-size: 11pt; background: #f8fafc; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid black; padding: 8px; text-align: left; }
-        th { background: #f1f5f9 !important; }
-        .total-row { font-weight: bold; background: #f1f5f9; }
+/* ── MAIN LAYOUT ── */
+.main-container {
+  display: flex; height: calc(100vh - 58px); width: 100%; overflow: hidden;
+}
+.editor-side {
+  width: 380px; flex-shrink: 0;
+  background: var(--surface); border-right: 1px solid var(--border);
+  overflow-y: auto; padding: 16px;
+}
+@media(max-width:1100px){ .editor-side { width: 340px; } }
+@media(max-width:900px){ .editor-side { width: 100%; } }
 
-        .sign-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 50px; text-align: center; }
-        .sign-line { border-top: 1px solid black; margin-top: 50px; padding-top: 5px; font-weight: bold; font-size: 9pt; }
+.preview-side {
+  flex: 1; background: var(--bg);
+  padding: 24px 20px; overflow-y: auto;
+  display: flex; justify-content: center; align-items: flex-start;
+}
 
-        @media print { 
-            @page { size: A4; margin: 0; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            html, body { background: white !important; overflow: visible !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
-            .top-nav, .editor-side, .btn-nav, .btn-add, .btn-del { display: none !important; }
-            .main-container { display: block !important; }
-            .preview-side { background: white !important; padding: 0 !important; margin: 0 !important; display: block !important; }
-            #preview { box-shadow: none !important; border: none !important; width: 100% !important; padding: 20mm !important; }
-        }
-    </style>
+/* ── EDITOR CARDS ── */
+.card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 16px; margin-bottom: 12px;
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.35;
+}
+.card-h {
+  font-family: var(--display); font-size: 10px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 2px; color: var(--gold);
+  margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-h::before {
+  content: ''; display: inline-block; width: 3px; height: 12px;
+  background: var(--gold); border-radius: 2px; flex-shrink: 0;
+}
+
+label {
+  font-size: 9px; font-weight: 700; color: var(--text3);
+  display: block; margin-top: 12px; margin-bottom: 5px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+label:first-of-type { margin-top: 0; }
+
+input[type="text"], input[type="number"], textarea {
+  width: 100%; padding: 10px 12px;
+  background: var(--surface3); border: 1px solid var(--border2);
+  border-radius: var(--r-sm); color: var(--text);
+  font-family: var(--font); font-size: 13px; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical;
+}
+input:focus, textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-dim);
+  background: var(--bg);
+}
+textarea { min-height: 60px; line-height: 1.5; }
+
+.row-2cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+/* ── DYNAMIC ROWS ── */
+.row-obj, .row-2, .row-belanja {
+  display: flex; gap: 6px; margin-bottom: 6px; align-items: center;
+}
+.row-obj input, .row-2 input, .row-belanja input { margin: 0; }
+
+.btn-del {
+  background: rgba(240,82,82,0.1); color: var(--red);
+  border: 1px solid rgba(240,82,82,0.2); border-radius: var(--r-sm);
+  padding: 0 10px; font-weight: 700; cursor: pointer; font-size: 14px;
+  height: 38px; flex-shrink: 0; transition: all 0.15s; line-height: 1;
+}
+.btn-del:hover { background: rgba(240,82,82,0.2); border-color: var(--red); }
+
+.btn-add {
+  width: 100%; padding: 9px; margin-top: 6px;
+  background: none; border: 1px dashed var(--border2); color: var(--text3);
+  border-radius: var(--r-sm); font-weight: 700; cursor: pointer;
+  font-size: 11px; font-family: var(--font); transition: all 0.2s;
+}
+.btn-add:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+/* ── PREVIEW DOCUMENT ── */
+#preview {
+  width: 210mm; min-height: 297mm; background: white;
+  padding: 20mm; color: #1a1a1a;
+  font-family: 'Times New Roman', serif;
+  line-height: 1.7; font-size: 11pt;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  border-radius: 2px;
+}
+@media(max-width:900px){
+  #preview { width: 100%; padding: 12mm 8mm; min-height: auto; border-radius: var(--r); }
+}
+
+.doc-kop {
+  text-align: center; padding-bottom: 14px;
+  border-bottom: 3px double #1a1a1a; margin-bottom: 18px;
+}
+.doc-kop-org {
+  font-size: 15pt; font-weight: bold; text-transform: uppercase;
+  letter-spacing: 1px; color: #1a1a1a;
+}
+.doc-kop-sub { font-size: 9pt; color: #444; margin-top: 3px; letter-spacing: 0.5px; }
+
+#v-title {
+  text-align: center; font-weight: bold; font-size: 12pt;
+  text-decoration: underline; margin: 0 0 22px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  color: #1a1a1a;
+}
+
+.doc-section-head {
+  background: #f8f8f8; border-left: 4px solid #1a1a1a;
+  padding: 6px 12px; margin: 20px 0 10px; font-weight: bold;
+  text-transform: uppercase; font-size: 10.5pt; font-family: Arial, sans-serif;
+  color: #1a1a1a;
+}
+
+#preview p { text-align: justify; margin: 8px 0; }
+#preview table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 10pt; }
+#preview th, #preview td { border: 1px solid #aaa; padding: 7px 10px; text-align: left; }
+#preview th { background: #f1f1f1; font-weight: bold; font-family: Arial, sans-serif; font-size: 9.5pt; }
+#preview .total-row { font-weight: bold; background: #f8f8f8; }
+
+.sign-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px; margin-top: 50px; text-align: center;
+}
+.sign-block { font-size: 9.5pt; font-family: Arial, sans-serif; }
+.sign-line {
+  border-top: 1px solid #555; margin-top: 52px; padding-top: 6px;
+  font-weight: bold; font-size: 9pt;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; top: 70px; right: 16px; z-index: 9999;
+  background: var(--surface3); border: 1px solid var(--border2);
+  border-left: 3px solid var(--green); color: var(--text);
+  padding: 11px 16px; border-radius: var(--r-sm);
+  font-weight: 600; font-size: 13px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  animation: toastIn 0.3s ease; max-width: 300px;
+}
+@keyframes toastIn { from { opacity:0; transform: translateX(14px); } to { opacity:1; transform: translateX(0); } }
+
+/* ── PRINT ── */
+@media print {
+  @page { size: A4; margin: 0; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  html, body { background: white !important; overflow: visible !important; height: auto !important; margin: 0 !important; padding: 0 !important; }
+  .top-nav, .editor-side, .view-toggle { display: none !important; }
+  .main-container { display: block !important; height: auto !important; overflow: visible !important; }
+  .preview-side { background: white !important; padding: 0 !important; margin: 0 !important; display: block !important; overflow: visible !important; }
+  #preview { box-shadow: none !important; border: none !important; width: 100% !important; padding: 20mm !important; border-radius: 0 !important; }
+}
+</style>
 </head>
 <body>
 
+<!-- TOP NAV -->
 <div class="top-nav">
-    <div class="nav-title">EZI PAPERWORK GENERATOR BPP (PRO)</div>
-    <div class="nav-buttons">
-        <button class="btn-nav" style="background: #2563eb;" onclick="exportData()">💾 Simpan</button>
-        <button class="btn-nav" style="background: #4b5563;" onclick="document.getElementById('fileIn').click()">📂 Buka</button>
-        <button class="btn-nav" style="background: #059669;" onclick="window.print()">🖨️ Cetak</button>
-    </div>
+  <div class="nav-brand">
+    <div class="nav-logo">EZI</div>
+    <div class="nav-title">Paperwork Generator BPP</div>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-nav" onclick="exportData()">💾 Simpan</button>
+    <button class="btn-nav" onclick="document.getElementById('fileIn').click()">📂 Buka</button>
+    <button class="btn-nav print" onclick="window.print()">🖨️ Cetak</button>
     <input type="file" id="fileIn" style="display:none" onchange="importData(event)">
+  </div>
+</div>
+
+<!-- MOBILE VIEW TOGGLE -->
+<div class="view-toggle">
+  <button class="active" id="toggle-editor" onclick="switchView('editor')">⌨️ Editor</button>
+  <button id="toggle-preview" onclick="switchView('preview')">📄 Pratonton</button>
 </div>
 
 <div class="main-container">
-    <div class="editor-side">
-        <div class="card">
-            <div class="card-h">1.0 Info Utama</div>
-            <label>Tajuk Kertas Kerja</label>
-            <textarea id="in-tajuk" oninput="kemaskini()" rows="2" placeholder="Contoh: PROGRAM JATI DIRI DAN KEPIMPINAN ORGANISASI"></textarea>
-            <div style="display:flex; gap:10px;">
-                <div style="flex:1;"><label>Tarikh</label><input id="in-tarikh" oninput="kemaskini()" placeholder="Contoh: 15 MAC 2026"></div>
-                <div style="flex:1;"><label>Masa</label><input id="in-masa" oninput="kemaskini()" placeholder="Contoh: 8.00 PAGI - 5.00 PETANG"></div>
-            </div>
-            <label>Tempat</label><input id="in-tempat" oninput="kemaskini()" placeholder="Contoh: DEWAN SERBAGUNA">
-            <label>Sasaran / Penglibatan</label><input id="in-penglibatan" oninput="kemaskini()" placeholder="Contoh: 50 ORANG AHLI KELAB">
-        </div>
+  <!-- EDITOR SIDE -->
+  <div class="editor-side" id="editor-panel">
 
-        <div class="card">
-            <div class="card-h">2.0 Objektif</div>
-            <div id="inputs-obj"></div>
-            <button class="btn-add" onclick="tambahObj()">+ Tambah Objektif</button>
+    <!-- 1.0 Info Utama -->
+    <div class="card">
+      <div class="card-h">1.0 Info Utama</div>
+      <label>Tajuk Kertas Kerja</label>
+      <textarea id="in-tajuk" oninput="kemaskini()" rows="2" placeholder="Contoh: PROGRAM JATI DIRI DAN KEPIMPINAN ORGANISASI"></textarea>
+      <div class="row-2cols">
+        <div>
+          <label>Tarikh</label>
+          <input type="text" id="in-tarikh" oninput="kemaskini()" placeholder="15 MAC 2026">
         </div>
-
-        <div class="card">
-            <div class="card-h">3.0 Jadual & Tenaga Kerja</div>
-            <label>Tentatif</label>
-            <div id="inputs-tentatif"></div>
-            <button class="btn-add" onclick="tambahDua('tentatif', 'Masa', 'Aktiviti')">+ Tambah Slot</button>
-            <label style="margin-top:15px">AJK Pelaksana</label>
-            <div id="inputs-ajk"></div>
-            <button class="btn-add" onclick="tambahDua('ajk', 'Jawatan', 'Nama')">+ Tambah AJK</button>
+        <div>
+          <label>Masa</label>
+          <input type="text" id="in-masa" oninput="kemaskini()" placeholder="8.00 PAGI - 5.00 PETANG">
         </div>
-
-        <div class="card">
-            <div class="card-h">4.0 Kewangan</div>
-            <label>Sumber Dana</label>
-            <div id="inputs-sumber"></div>
-            <button class="btn-add" onclick="tambahDua('sumber', 'Punca', '0.00')">+ Tambah Sumber</button>
-            <label style="margin-top:15px">Anggaran Belanja</label>
-            <div id="inputs-belanja"></div>
-            <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item</button>
-        </div>
-
-        <div class="card" style="margin-bottom:50px;">
-            <div class="card-h">5.0 Kelulusan</div>
-            <label>Penyedia</label><input id="in-n1" oninput="kemaskini()" placeholder="Nama"><input id="in-j1" oninput="kemaskini()" placeholder="Jawatan">
-            <label>Penyemak</label><input id="in-n2" oninput="kemaskini()" placeholder="Nama"><input id="in-j2" oninput="kemaskini()" placeholder="Jawatan">
-            <label>Pengesah</label><input id="in-n3" oninput="kemaskini()" placeholder="Nama"><input id="in-j3" oninput="kemaskini()" placeholder="Jawatan">
-        </div>
+      </div>
+      <label>Tempat</label>
+      <input type="text" id="in-tempat" oninput="kemaskini()" placeholder="Contoh: DEWAN SERBAGUNA">
+      <label>Sasaran / Penglibatan</label>
+      <input type="text" id="in-penglibatan" oninput="kemaskini()" placeholder="Contoh: 50 ORANG AHLI KELAB">
     </div>
 
-    <div class="preview-side">
-        <div id="preview">
-            <div id="v-title">KERTAS KERJA PROGRAM</div>
-
-            <h4>1.0 PENDAHULUAN</h4>
-            <p style="text-align: justify;">
-                Kertas kerja ini dikemukakan bertujuan untuk memohon pertimbangan dan kelulusan daripada pihak pengurusan bagi melaksanakan program <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong>. Program ini dirancang sebagai satu inisiatif proaktif dalam memperkasakan kemahiran serta pengetahuan para peserta selaras dengan objektif pembangunan organisasi yang cemerlang. Adalah diharapkan melalui pelaksanaan program ini, ia mampu memberikan impak positif serta memupuk semangat kerjasama dalam kalangan peserta yang terlibat.
-            </p>
-
-            <h4>2.0 MAKLUMAT PROGRAM</h4>
-            <table>
-                <tr><td width="150">TARIKH</td><td>: <span id="v-tarikh">-</span></td></tr>
-                <tr><td>MASA</td><td>: <span id="v-masa">-</span></td></tr>
-                <tr><td>TEMPAT</td><td>: <span id="v-tempat">-</span></td></tr>
-                <tr><td>SASARAN</td><td>: <span id="v-penglibatan">-</span></td></tr>
-            </table>
-
-            <h4>3.0 OBJEKTIF</h4>
-            <ul id="v-obj" style="padding-left:20px;"></ul>
-
-            <h4>4.0 TENTATIF PROGRAM</h4>
-            <table><thead><tr><th width="120">MASA</th><th>PERKARA/AKTIVITI</th></tr></thead><tbody id="v-tentatif"></tbody></table>
-
-            <h4>5.0 JAWATANKUASA PELAKSANA</h4>
-            <table><thead><tr><th width="180">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead><tbody id="v-ajk"></tbody></table>
-
-            <h4>6.0 KEWANGAN</h4>
-            <p><strong>6.1 Sumber Dana</strong></p>
-            <table><thead><tr><th>PERINCIAN</th><th width="120">RM</th></tr></thead><tbody id="v-sumber"></tbody><tfoot id="v-sumber-total"></tfoot></table>
-            <p style="margin-top:10px;"><strong>6.2 Anggaran Perbelanjaan</strong></p>
-            <table><thead><tr><th>ITEM</th><th width="60">UNIT</th><th width="90">HARGA</th><th width="100">JUMLAH (RM)</th></tr></thead><tbody id="v-belanja"></tbody><tfoot id="v-belanja-total"></tfoot></table>
-
-            <h4>7.0 PENUTUP</h4>
-            <p style="text-align: justify;">
-                Kesimpulannya, penganjuran <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong> ini amat penting dalam memastikan kesinambungan kecemerlangan dan pengukuhan jati diri setiap individu yang terlibat. Pihak jawatankuasa komited untuk memastikan program ini berjalan dengan lancar mengikut perancangan yang telah ditetapkan. Justeru, segala perhatian, sokongan dan kelulusan daripada pihak tuan/puan didahului dengan ucapan setinggi-tinggi penghargaan dan terima kasih.
-            </p>
-
-            <div class="sign-grid">
-                <div>Disediakan oleh:<div class="sign-line"><span id="v-n1">-</span><br><small id="v-j1">-</small></div></div>
-                <div>Disemak oleh:<div class="sign-line"><span id="v-n2">-</span><br><small id="v-j2">-</small></div></div>
-                <div>Disahkan oleh:<div class="sign-line"><span id="v-n3">-</span><br><small id="v-j3">-</small></div></div>
-            </div>
-        </div>
+    <!-- 2.0 Objektif -->
+    <div class="card">
+      <div class="card-h">2.0 Objektif</div>
+      <div id="inputs-obj"></div>
+      <button class="btn-add" onclick="tambahObj()">+ Tambah Objektif</button>
     </div>
+
+    <!-- 3.0 Jadual & Tenaga Kerja -->
+    <div class="card">
+      <div class="card-h">3.0 Jadual & Tenaga Kerja</div>
+      <label>Tentatif Program</label>
+      <div id="inputs-tentatif"></div>
+      <button class="btn-add" onclick="tambahDua('tentatif','Masa','Aktiviti')">+ Tambah Slot</button>
+      <label style="margin-top:16px;">AJK Pelaksana</label>
+      <div id="inputs-ajk"></div>
+      <button class="btn-add" onclick="tambahDua('ajk','Jawatan','Nama')">+ Tambah AJK</button>
+    </div>
+
+    <!-- 4.0 Kewangan -->
+    <div class="card">
+      <div class="card-h">4.0 Kewangan</div>
+      <label>Sumber Dana</label>
+      <div id="inputs-sumber"></div>
+      <button class="btn-add" onclick="tambahDua('sumber','Punca','0.00')">+ Tambah Sumber</button>
+      <label style="margin-top:16px;">Anggaran Belanja</label>
+      <div id="inputs-belanja"></div>
+      <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item</button>
+    </div>
+
+    <!-- 5.0 Kelulusan -->
+    <div class="card" style="margin-bottom:40px;">
+      <div class="card-h">5.0 Kelulusan</div>
+      <label>Penyedia — Nama</label>
+      <input type="text" id="in-n1" oninput="kemaskini()" placeholder="Nama penuh...">
+      <label>Penyedia — Jawatan</label>
+      <input type="text" id="in-j1" oninput="kemaskini()" placeholder="Jawatan...">
+      <label>Penyemak — Nama</label>
+      <input type="text" id="in-n2" oninput="kemaskini()" placeholder="Nama penuh...">
+      <label>Penyemak — Jawatan</label>
+      <input type="text" id="in-j2" oninput="kemaskini()" placeholder="Jawatan...">
+      <label>Pengesah — Nama</label>
+      <input type="text" id="in-n3" oninput="kemaskini()" placeholder="Nama penuh...">
+      <label>Pengesah — Jawatan</label>
+      <input type="text" id="in-j3" oninput="kemaskini()" placeholder="Jawatan...">
+    </div>
+
+  </div><!-- end editor-side -->
+
+  <!-- PREVIEW SIDE -->
+  <div class="preview-side" id="preview-panel">
+    <div id="preview">
+      <!-- KOP SURAT -->
+      <div class="doc-kop">
+        <div class="doc-kop-org" id="v-kop-org">NAMA ORGANISASI / JABATAN</div>
+        <div class="doc-kop-sub">KERTAS KERJA PROGRAM</div>
+      </div>
+
+      <div id="v-title">TAJUK PROGRAM</div>
+
+      <div class="doc-section-head">1.0 PENDAHULUAN</div>
+      <p>
+        Kertas kerja ini dikemukakan bertujuan untuk memohon pertimbangan dan kelulusan daripada pihak pengurusan bagi melaksanakan program <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong>. Program ini dirancang sebagai satu inisiatif proaktif dalam memperkasakan kemahiran serta pengetahuan para peserta selaras dengan objektif pembangunan organisasi yang cemerlang. Adalah diharapkan melalui pelaksanaan program ini, ia mampu memberikan impak positif serta memupuk semangat kerjasama dalam kalangan peserta yang terlibat.
+      </p>
+
+      <div class="doc-section-head">2.0 MAKLUMAT PROGRAM</div>
+      <table>
+        <tr><td width="150"><strong>TARIKH</strong></td><td>: <span id="v-tarikh">—</span></td></tr>
+        <tr><td><strong>MASA</strong></td><td>: <span id="v-masa">—</span></td></tr>
+        <tr><td><strong>TEMPAT</strong></td><td>: <span id="v-tempat">—</span></td></tr>
+        <tr><td><strong>SASARAN</strong></td><td>: <span id="v-penglibatan">—</span></td></tr>
+      </table>
+
+      <div class="doc-section-head">3.0 OBJEKTIF</div>
+      <ul id="v-obj" style="padding-left:22px; margin:8px 0;"></ul>
+
+      <div class="doc-section-head">4.0 TENTATIF PROGRAM</div>
+      <table>
+        <thead><tr><th width="120">MASA</th><th>PERKARA / AKTIVITI</th></tr></thead>
+        <tbody id="v-tentatif"></tbody>
+      </table>
+
+      <div class="doc-section-head">5.0 JAWATANKUASA PELAKSANA</div>
+      <table>
+        <thead><tr><th width="200">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead>
+        <tbody id="v-ajk"></tbody>
+      </table>
+
+      <div class="doc-section-head">6.0 KEWANGAN</div>
+      <p><strong>6.1 Sumber Dana</strong></p>
+      <table>
+        <thead><tr><th>PERINCIAN</th><th width="120">AMAUN (RM)</th></tr></thead>
+        <tbody id="v-sumber"></tbody>
+        <tfoot id="v-sumber-total"></tfoot>
+      </table>
+
+      <p style="margin-top:14px;"><strong>6.2 Anggaran Perbelanjaan</strong></p>
+      <table>
+        <thead><tr><th>ITEM PERBELANJAAN</th><th width="60">UNIT</th><th width="90">HARGA (RM)</th><th width="110">JUMLAH (RM)</th></tr></thead>
+        <tbody id="v-belanja"></tbody>
+        <tfoot id="v-belanja-total"></tfoot>
+      </table>
+
+      <div class="doc-section-head">7.0 PENUTUP</div>
+      <p>
+        Kesimpulannya, penganjuran <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong> ini amat penting dalam memastikan kesinambungan kecemerlangan dan pengukuhan jati diri setiap individu yang terlibat. Pihak jawatankuasa komited untuk memastikan program ini berjalan dengan lancar mengikut perancangan yang telah ditetapkan. Justeru, segala perhatian, sokongan dan kelulusan daripada pihak tuan/puan didahului dengan ucapan setinggi-tinggi penghargaan dan terima kasih.
+      </p>
+
+      <div class="sign-grid">
+        <div class="sign-block">
+          Disediakan oleh:
+          <div class="sign-line"><span id="v-n1">—</span><br><small id="v-j1">—</small></div>
+        </div>
+        <div class="sign-block">
+          Disemak oleh:
+          <div class="sign-line"><span id="v-n2">—</span><br><small id="v-j2">—</small></div>
+        </div>
+        <div class="sign-block">
+          Disahkan oleh:
+          <div class="sign-line"><span id="v-n3">—</span><br><small id="v-j3">—</small></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end preview-side -->
 </div>
 
 <script>
+// ── MOBILE VIEW TOGGLE ──
+function switchView(view) {
+  const editor = document.getElementById('editor-panel');
+  const preview = document.getElementById('preview-panel');
+  const btnE = document.getElementById('toggle-editor');
+  const btnP = document.getElementById('toggle-preview');
+  if (view === 'editor') {
+    editor.classList.remove('hide');
+    preview.classList.remove('show');
+    btnE.classList.add('active'); btnP.classList.remove('active');
+  } else {
+    editor.classList.add('hide');
+    preview.classList.add('show');
+    btnE.classList.remove('active'); btnP.classList.add('active');
+  }
+}
+
+// ── DYNAMIC ROW BUILDERS ──
 function tambahObj(v='') {
-    const d = document.createElement('div'); d.className = 'row-obj';
-    d.innerHTML = `<input style="flex:1" value="${v}" oninput="kemaskini()" placeholder="Objektif..."><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-obj').appendChild(d);
+  const d = document.createElement('div'); d.className = 'row-obj';
+  d.innerHTML = `<input type="text" style="flex:1" value="${v}" oninput="kemaskini()" placeholder="Nyatakan objektif program...">
+    <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
+  document.getElementById('inputs-obj').appendChild(d);
 }
-function tambahDua(id, l1, l2) {
-    const d = document.createElement('div'); d.className = 'row-2';
-    d.innerHTML = `<input style="flex:1" oninput="kemaskini()" placeholder="${l1}"><input style="flex:1" oninput="kemaskini()" placeholder="${l2}"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-'+id).appendChild(d);
+
+function tambahDua(id, l1, l2, v1='', v2='') {
+  const d = document.createElement('div'); d.className = 'row-2';
+  d.innerHTML = `<input type="text" style="flex:1" value="${v1}" oninput="kemaskini()" placeholder="${l1}">
+    <input type="text" style="flex:1.2" value="${v2}" oninput="kemaskini()" placeholder="${l2}">
+    <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
+  document.getElementById('inputs-'+id).appendChild(d);
 }
-function tambahBelanja() {
-    const d = document.createElement('div'); d.className = 'row-belanja';
-    d.innerHTML = `<input style="flex:1.5" oninput="kemaskini()" placeholder="Item"><input style="flex:0.5" type="number" value="1" oninput="kemaskini()"><input style="flex:0.8" type="number" value="0.00" oninput="kemaskini()"><button class="btn-del" onclick="this.parentElement.remove();kemaskini()">&times;</button>`;
-    document.getElementById('inputs-belanja').appendChild(d);
+
+function tambahBelanja(item='', qty=1, harga=0) {
+  const d = document.createElement('div'); d.className = 'row-belanja';
+  d.innerHTML = `<input type="text" style="flex:1.8" value="${item}" oninput="kemaskini()" placeholder="Item belanja">
+    <input type="number" style="flex:0.5; min-width:50px;" value="${qty}" oninput="kemaskini()" placeholder="Unit">
+    <input type="number" style="flex:0.8; min-width:70px;" value="${harga}" step="0.01" oninput="kemaskini()" placeholder="Harga">
+    <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
+  document.getElementById('inputs-belanja').appendChild(d);
 }
+
+// ── KEMASKINI PREVIEW ──
 function kemaskini() {
-    const tajuk = document.getElementById('in-tajuk').value || "[TAJUK PROGRAM]";
-    document.getElementById('v-title').innerText = tajuk;
-    document.querySelectorAll('.v-auto-name').forEach(el => el.innerText = tajuk);
-    const map = {'in-tarikh':'v-tarikh','in-masa':'v-masa','in-tempat':'v-tempat','in-penglibatan':'v-penglibatan','in-n1':'v-n1','in-j1':'v-j1','in-n2':'v-n2','in-j2':'v-j2','in-n3':'v-n3','in-j3':'v-j3'};
-    for(let i in map) { if(document.getElementById(map[i])) document.getElementById(map[i]).innerText = document.getElementById(i).value || "-"; }
-    document.getElementById('v-obj').innerHTML = '';
-    document.querySelectorAll('#inputs-obj input').forEach(i => { if(i.value) document.getElementById('v-obj').innerHTML += `<li>${i.value}</li>` });
-    const fill = (idIn, idV) => {
-        document.getElementById(idV).innerHTML = '';
-        document.querySelectorAll(`#inputs-${idIn} .row-2`).forEach(r => {
-            const ins = r.querySelectorAll('input'); 
-            if(ins[0].value || ins[1].value) document.getElementById(idV).innerHTML += `<tr><td>${ins[0].value}</td><td>${ins[1].value}</td></tr>`;
-        });
+  const tajuk = document.getElementById('in-tajuk').value || '[TAJUK PROGRAM]';
+  document.getElementById('v-title').innerText = tajuk;
+  document.getElementById('v-kop-org').innerText = tajuk;
+  document.querySelectorAll('.v-auto-name').forEach(el => el.innerText = tajuk);
+
+  const map = {
+    'in-tarikh':'v-tarikh','in-masa':'v-masa','in-tempat':'v-tempat',
+    'in-penglibatan':'v-penglibatan',
+    'in-n1':'v-n1','in-j1':'v-j1','in-n2':'v-n2',
+    'in-j2':'v-j2','in-n3':'v-n3','in-j3':'v-j3'
+  };
+  for (let i in map) {
+    const el = document.getElementById(map[i]);
+    if (el) el.innerText = document.getElementById(i).value || '—';
+  }
+
+  // Objektif
+  document.getElementById('v-obj').innerHTML = '';
+  document.querySelectorAll('#inputs-obj input').forEach(i => {
+    if (i.value) document.getElementById('v-obj').innerHTML += `<li style="margin-bottom:4px;">${i.value}</li>`;
+  });
+
+  // Fill 2-col tables
+  const fill = (idIn, idV) => {
+    document.getElementById(idV).innerHTML = '';
+    document.querySelectorAll(`#inputs-${idIn} .row-2`).forEach(r => {
+      const ins = r.querySelectorAll('input');
+      if (ins[0].value || ins[1].value)
+        document.getElementById(idV).innerHTML += `<tr><td>${ins[0].value || '—'}</td><td>${ins[1].value || '—'}</td></tr>`;
+    });
+  };
+  fill('tentatif','v-tentatif'); fill('ajk','v-ajk');
+
+  // Sumber Dana
+  document.getElementById('v-sumber').innerHTML = '';
+  let tS = 0;
+  document.querySelectorAll('#inputs-sumber .row-2').forEach(r => {
+    const ins = r.querySelectorAll('input');
+    const val = parseFloat(ins[1].value) || 0;
+    if (ins[0].value || ins[1].value) {
+      document.getElementById('v-sumber').innerHTML += `<tr><td>${ins[0].value}</td><td>${val.toFixed(2)}</td></tr>`;
+      tS += val;
     }
-    fill('tentatif', 'v-tentatif'); fill('ajk', 'v-ajk');
-    document.getElementById('v-sumber').innerHTML = '';
-    let tS = 0;
-    document.querySelectorAll('#inputs-sumber .row-2').forEach(r => {
-        const ins = r.querySelectorAll('input');
-        const val = parseFloat(ins[1].value) || 0;
-        if(ins[0].value || ins[1].value) {
-            document.getElementById('v-sumber').innerHTML += `<tr><td>${ins[0].value}</td><td>${val.toFixed(2)}</td></tr>`;
-            tS += val;
-        }
-    });
-    document.getElementById('v-sumber-total').innerHTML = `<tr class="total-row"><td>JUMLAH KESELURUHAN</td><td>RM ${tS.toFixed(2)}</td></tr>`;
-    document.getElementById('v-belanja').innerHTML = '';
-    let tB = 0;
-    document.querySelectorAll('#inputs-belanja .row-belanja').forEach(r => {
-        const ins = r.querySelectorAll('input');
-        const q = parseFloat(ins[1].value) || 0;
-        const p = parseFloat(ins[2].value) || 0;
-        const rowT = q * p;
-        if(ins[0].value) {
-            document.getElementById('v-belanja').innerHTML += `<tr><td>${ins[0].value}</td><td>${q}</td><td>${p.toFixed(2)}</td><td>${rowT.toFixed(2)}</td></tr>`;
-            tB += rowT;
-        }
-    });
-    document.getElementById('v-belanja-total').innerHTML = `<tr class="total-row"><td colspan="3">JUMLAH KESELURUHAN</td><td>RM ${tB.toFixed(2)}</td></tr>`;
+  });
+  document.getElementById('v-sumber-total').innerHTML =
+    `<tr class="total-row"><td><strong>JUMLAH KESELURUHAN</strong></td><td><strong>RM ${tS.toFixed(2)}</strong></td></tr>`;
+
+  // Anggaran Belanja
+  document.getElementById('v-belanja').innerHTML = '';
+  let tB = 0;
+  document.querySelectorAll('#inputs-belanja .row-belanja').forEach(r => {
+    const ins = r.querySelectorAll('input');
+    const q = parseFloat(ins[1].value) || 0;
+    const p = parseFloat(ins[2].value) || 0;
+    const rowT = q * p;
+    if (ins[0].value) {
+      document.getElementById('v-belanja').innerHTML +=
+        `<tr><td>${ins[0].value}</td><td>${q}</td><td>${p.toFixed(2)}</td><td>${rowT.toFixed(2)}</td></tr>`;
+      tB += rowT;
+    }
+  });
+  document.getElementById('v-belanja-total').innerHTML =
+    `<tr class="total-row"><td colspan="3"><strong>JUMLAH KESELURUHAN</strong></td><td><strong>RM ${tB.toFixed(2)}</strong></td></tr>`;
 }
+
+// ── SAVE / LOAD ──
+function showToast(msg) {
+  const t = document.createElement('div'); t.className = 'toast';
+  t.textContent = msg; document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+}
+
 function exportData() {
-    const d = Array.from(document.querySelectorAll('input, textarea')).map(i => i.value);
-    const b = new Blob([JSON.stringify(d)], {type:'application/json'});
-    const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='Data_EZI.json'; a.click();
+  const d = Array.from(document.querySelectorAll('.editor-side input, .editor-side textarea')).map(i => i.value);
+  // Also save dynamic rows count info
+  const rows = {
+    obj: document.querySelectorAll('#inputs-obj .row-obj').length,
+    tentatif: document.querySelectorAll('#inputs-tentatif .row-2').length,
+    ajk: document.querySelectorAll('#inputs-ajk .row-2').length,
+    sumber: document.querySelectorAll('#inputs-sumber .row-2').length,
+    belanja: document.querySelectorAll('#inputs-belanja .row-belanja').length,
+  };
+  const blob = new Blob([JSON.stringify({d, rows})], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `EZI_Paperwork_${new Date().toISOString().split('T')[0]}.json`; a.click();
+  showToast('✅ Data berjaya disimpan!');
 }
+
 function importData(e) {
-    const r = new FileReader(); r.onload = (x) => {
-        const d = JSON.parse(x.target.result); const ins = document.querySelectorAll('input, textarea');
-        d.forEach((v, i) => { if(ins[i]) ins[i].value = v; }); kemaskini();
-    }; r.readAsText(e.target.files[0]);
+  const r = new FileReader();
+  r.onload = (x) => {
+    try {
+      const parsed = JSON.parse(x.target.result);
+      const d = parsed.d || parsed; // support old format too
+      const ins = document.querySelectorAll('.editor-side input, .editor-side textarea');
+      d.forEach((v, i) => { if (ins[i]) ins[i].value = v; });
+      kemaskini();
+      showToast('✅ Data berjaya dimuatkan!');
+    } catch { showToast('⚠️ Fail tidak sah!'); }
+  };
+  r.readAsText(e.target.files[0]);
 }
-window.onload = () => { tambahObj(); tambahDua('tentatif','Masa','Aktiviti'); tambahDua('ajk','Jawatan','Nama'); tambahDua('sumber','Punca','0.00'); tambahBelanja(); kemaskini(); }
+
+// ── INIT ──
+window.onload = () => {
+  tambahObj();
+  tambahDua('tentatif','Masa','Aktiviti');
+  tambahDua('ajk','Jawatan','Nama');
+  tambahDua('sumber','Punca','0.00');
+  tambahBelanja();
+  kemaskini();
+};
 </script>
 </body>
 </html>
