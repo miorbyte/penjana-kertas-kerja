@@ -21,9 +21,9 @@
   --blue-dim: rgba(79,156,249,0.10);
   --green:    #2dd68a;
   --red:      #f05252;
-  --text:     #e4e9f2;
-  --text2:    #8896ad;
-  --text3:    #3d4d62;
+  --text:     #ffffff;
+  --text2:    #ffffff;
+  --text3:    #ffffff;
   --font:     'DM Sans', sans-serif;
   --mono:     'DM Mono', monospace;
   --display:  'Syne', sans-serif;
@@ -36,8 +36,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg); color: var(--text); font-family: var(--font);
   font-size: 13px; overflow: hidden; height: 100vh;
-  background-image:
-    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(200,168,107,0.04) 0%, transparent 55%);
+  background-image: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(200,168,107,0.04) 0%, transparent 55%);
 }
 
 ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -48,12 +47,10 @@ body {
 .top-nav {
   background: rgba(15,20,32,0.98);
   border-bottom: 1px solid var(--border);
-  padding: 0 16px;
-  height: 58px;
+  padding: 0 16px; height: 58px;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   position: relative; z-index: 100;
-  backdrop-filter: blur(20px);
-  flex-shrink: 0;
+  backdrop-filter: blur(20px); flex-shrink: 0;
 }
 .nav-brand { display: flex; align-items: center; gap: 10px; }
 .nav-logo {
@@ -65,14 +62,14 @@ body {
 }
 .nav-title {
   font-family: var(--display); font-size: 13px; font-weight: 700;
-  color: var(--text2); letter-spacing: 0.5px; white-space: nowrap;
+  color: #ffffff; letter-spacing: 0.5px; white-space: nowrap;
 }
 @media(max-width:500px){ .nav-title { display: none; } }
 
 .nav-actions { display: flex; align-items: center; gap: 6px; }
 .btn-nav {
   padding: 8px 14px; border: 1px solid var(--border2); border-radius: var(--r-sm);
-  color: var(--text2); background: var(--surface2); cursor: pointer;
+  color: #ffffff; background: var(--surface2); cursor: pointer;
   font-family: var(--font); font-weight: 700; font-size: 11px;
   transition: all 0.2s; white-space: nowrap;
 }
@@ -84,19 +81,20 @@ body {
 }
 .btn-nav.print:hover { opacity: 0.9; }
 
-/* ── SPLIT VIEW TABS (mobile) ── */
+/* ── MOBILE TOGGLE ── */
 .view-toggle {
   display: none;
   background: var(--surface); border-bottom: 1px solid var(--border);
   padding: 0 16px;
 }
 .view-toggle button {
-  padding: 10px 20px; background: none; border: none; border-bottom: 2px solid transparent;
-  color: var(--text3); font-family: var(--font); font-weight: 700; font-size: 12px;
-  cursor: pointer; transition: all 0.2s;
+  padding: 10px 20px; background: none; border: none;
+  border-bottom: 2px solid transparent;
+  color: rgba(255,255,255,0.4); font-family: var(--font); font-weight: 700;
+  font-size: 12px; cursor: pointer; transition: all 0.2s;
 }
 .view-toggle button.active { color: var(--gold); border-bottom-color: var(--gold); }
-@media(max-width: 900px) {
+@media(max-width:900px) {
   body { overflow: auto; height: auto; }
   .view-toggle { display: flex; }
   .main-container { flex-direction: column !important; height: auto !important; overflow: visible !important; }
@@ -111,11 +109,11 @@ body {
   display: flex; height: calc(100vh - 58px); width: 100%; overflow: hidden;
 }
 .editor-side {
-  width: 380px; flex-shrink: 0;
+  width: 400px; flex-shrink: 0;
   background: var(--surface); border-right: 1px solid var(--border);
   overflow-y: auto; padding: 16px;
 }
-@media(max-width:1100px){ .editor-side { width: 340px; } }
+@media(max-width:1100px){ .editor-side { width: 350px; } }
 @media(max-width:900px){ .editor-side { width: 100%; } }
 
 .preview-side {
@@ -132,7 +130,7 @@ body {
 }
 .card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.35;
+  background: linear-gradient(90deg, var(--gold), transparent); opacity: 0.4;
 }
 .card-h {
   font-family: var(--display); font-size: 10px; font-weight: 800;
@@ -146,35 +144,44 @@ body {
   background: var(--gold); border-radius: 2px; flex-shrink: 0;
 }
 
+/* ALL LABELS WHITE */
 label {
-  font-size: 9px; font-weight: 700; color: var(--text3);
+  font-size: 9px; font-weight: 700; color: #ffffff;
   display: block; margin-top: 12px; margin-bottom: 5px;
   text-transform: uppercase; letter-spacing: 1px;
 }
 label:first-of-type { margin-top: 0; }
 
-input[type="text"], input[type="number"], textarea {
+input[type="text"], input[type="number"], textarea, select {
   width: 100%; padding: 10px 12px;
   background: var(--surface3); border: 1px solid var(--border2);
-  border-radius: var(--r-sm); color: var(--text);
+  border-radius: var(--r-sm); color: #ffffff;
   font-family: var(--font); font-size: 13px; outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  resize: vertical;
+  resize: vertical; -webkit-appearance: none; appearance: none;
 }
-input:focus, textarea:focus {
+input:focus, textarea:focus, select:focus {
   border-color: var(--gold);
   box-shadow: 0 0 0 3px var(--gold-dim);
   background: var(--bg);
 }
 textarea { min-height: 60px; line-height: 1.5; }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 34px; cursor: pointer;
+}
+select option { background: #1a2030; color: #ffffff; }
+input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.25); }
 
 .row-2cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.row-3cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 
 /* ── DYNAMIC ROWS ── */
-.row-obj, .row-2, .row-belanja {
+.row-obj, .row-2, .row-belanja, .row-lampiran {
   display: flex; gap: 6px; margin-bottom: 6px; align-items: center;
 }
-.row-obj input, .row-2 input, .row-belanja input { margin: 0; }
+.row-obj input, .row-2 input, .row-belanja input, .row-lampiran input { margin: 0; }
 
 .btn-del {
   background: rgba(240,82,82,0.1); color: var(--red);
@@ -186,23 +193,27 @@ textarea { min-height: 60px; line-height: 1.5; }
 
 .btn-add {
   width: 100%; padding: 9px; margin-top: 6px;
-  background: none; border: 1px dashed var(--border2); color: var(--text3);
+  background: none; border: 1px dashed var(--border2); color: #ffffff;
   border-radius: var(--r-sm); font-weight: 700; cursor: pointer;
   font-size: 11px; font-family: var(--font); transition: all 0.2s;
 }
 .btn-add:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
 
+.section-note {
+  font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 6px;
+  line-height: 1.5; font-style: italic;
+}
+
 /* ── PREVIEW DOCUMENT ── */
 #preview {
   width: 210mm; min-height: 297mm; background: white;
-  padding: 20mm; color: #1a1a1a;
-  font-family: Arial, sans-serif;
-  line-height: 1.7; font-size: 11pt;
+  padding: 18mm 20mm; color: #1a1a1a;
+  font-family: Arial, sans-serif; line-height: 1.7; font-size: 10.5pt;
   box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
   border-radius: 2px;
 }
 @media(max-width:900px){
-  #preview { width: 100%; padding: 12mm 8mm; min-height: auto; border-radius: var(--r); }
+  #preview { width: 100%; padding: 10mm 8mm; min-height: auto; border-radius: var(--r); }
 }
 
 .doc-kop {
@@ -210,30 +221,39 @@ textarea { min-height: 60px; line-height: 1.5; }
   border-bottom: 3px double #1a1a1a; margin-bottom: 18px;
 }
 .doc-kop-org {
-  font-size: 15pt; font-weight: bold; text-transform: uppercase;
+  font-size: 14pt; font-weight: bold; text-transform: uppercase;
   letter-spacing: 1px; color: #1a1a1a;
 }
-.doc-kop-sub { font-size: 9pt; color: #444; margin-top: 3px; letter-spacing: 0.5px; }
+.doc-kop-dept { font-size: 10pt; color: #333; margin-top: 2px; font-weight: bold; }
+.doc-kop-sub { font-size: 9pt; color: #555; margin-top: 2px; letter-spacing: 0.5px; }
+.doc-kop-ref { font-size: 9pt; color: #555; margin-top: 4px; font-family: Arial, sans-serif; }
 
 #v-title {
   text-align: center; font-weight: bold; font-size: 12pt;
-  text-decoration: underline; margin: 0 0 22px;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  color: #1a1a1a;
+  text-decoration: underline; margin: 0 0 20px;
+  text-transform: uppercase; letter-spacing: 0.5px; color: #1a1a1a;
 }
 
 .doc-section-head {
-  background: #f8f8f8; border-left: 4px solid #1a1a1a;
-  padding: 6px 12px; margin: 20px 0 10px; font-weight: bold;
+  background: #f0f0f0; border-left: 4px solid #1a1a1a;
+  padding: 6px 12px; margin: 18px 0 10px; font-weight: bold;
   text-transform: uppercase; font-size: 10.5pt; font-family: Arial, sans-serif;
   color: #1a1a1a;
 }
+.doc-section-sub {
+  font-weight: bold; font-size: 10pt; margin: 12px 0 6px;
+  color: #1a1a1a; font-family: Arial, sans-serif;
+}
 
-#preview p { text-align: justify; margin: 8px 0; }
-#preview table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 10pt; }
-#preview th, #preview td { border: 1px solid #aaa; padding: 7px 10px; text-align: left; }
+#preview p { text-align: justify; margin: 6px 0; }
+#preview ul, #preview ol { padding-left: 22px; margin: 6px 0; }
+#preview li { margin-bottom: 3px; }
+
+#preview table { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 10pt; }
+#preview th, #preview td { border: 1px solid #aaa; padding: 6px 10px; text-align: left; vertical-align: top; }
 #preview th { background: #f1f1f1; font-weight: bold; font-family: Arial, sans-serif; font-size: 9.5pt; }
 #preview .total-row { font-weight: bold; background: #f8f8f8; }
+#preview .no-col { width: 40px; text-align: center; }
 
 .sign-grid {
   display: grid; grid-template-columns: 1fr 1fr 1fr;
@@ -249,13 +269,13 @@ textarea { min-height: 60px; line-height: 1.5; }
 .toast {
   position: fixed; top: 70px; right: 16px; z-index: 9999;
   background: var(--surface3); border: 1px solid var(--border2);
-  border-left: 3px solid var(--green); color: var(--text);
+  border-left: 3px solid var(--green); color: #ffffff;
   padding: 11px 16px; border-radius: var(--r-sm);
   font-weight: 600; font-size: 13px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.5);
   animation: toastIn 0.3s ease; max-width: 300px;
 }
-@keyframes toastIn { from { opacity:0; transform: translateX(14px); } to { opacity:1; transform: translateX(0); } }
+@keyframes toastIn { from{opacity:0;transform:translateX(14px)} to{opacity:1;transform:translateX(0)} }
 
 /* ── PRINT ── */
 @media print {
@@ -265,7 +285,7 @@ textarea { min-height: 60px; line-height: 1.5; }
   .top-nav, .editor-side, .view-toggle { display: none !important; }
   .main-container { display: block !important; height: auto !important; overflow: visible !important; }
   .preview-side { background: white !important; padding: 0 !important; margin: 0 !important; display: block !important; overflow: visible !important; }
-  #preview { box-shadow: none !important; border: none !important; width: 100% !important; padding: 20mm !important; border-radius: 0 !important; }
+  #preview { box-shadow: none !important; border: none !important; width: 100% !important; padding: 18mm 20mm !important; border-radius: 0 !important; }
 }
 </style>
 </head>
@@ -292,13 +312,24 @@ textarea { min-height: 60px; line-height: 1.5; }
 </div>
 
 <div class="main-container">
-  <!-- EDITOR SIDE -->
+  <!-- ═══ EDITOR SIDE ═══ -->
   <div class="editor-side" id="editor-panel">
+
+    <!-- KOP SURAT -->
+    <div class="card">
+      <div class="card-h">🏛️ Kop Surat</div>
+      <label>Nama Organisasi / Jabatan</label>
+      <input type="text" id="in-org" oninput="kemaskini()" placeholder="Contoh: PERSATUAN MAHASISWA UTM">
+      <label>Sub-unit / Cawangan (Pilihan)</label>
+      <input type="text" id="in-dept" oninput="kemaskini()" placeholder="Contoh: BIRO KEBAJIKAN DAN SUKAN">
+      <label>Nombor Rujukan (Pilihan)</label>
+      <input type="text" id="in-ref" oninput="kemaskini()" placeholder="Contoh: PM/BKS/2026/001">
+    </div>
 
     <!-- 1.0 Info Utama -->
     <div class="card">
       <div class="card-h">1.0 Info Utama</div>
-      <label>Tajuk Kertas Kerja</label>
+      <label>Tajuk Program</label>
       <textarea id="in-tajuk" oninput="kemaskini()" rows="2" placeholder="Contoh: PROGRAM JATI DIRI DAN KEPIMPINAN ORGANISASI"></textarea>
       <div class="row-2cols">
         <div>
@@ -306,26 +337,52 @@ textarea { min-height: 60px; line-height: 1.5; }
           <input type="text" id="in-tarikh" oninput="kemaskini()" placeholder="15 MAC 2026">
         </div>
         <div>
-          <label>Masa</label>
-          <input type="text" id="in-masa" oninput="kemaskini()" placeholder="8.00 PAGI - 5.00 PETANG">
+          <label>Tempoh / Jangka Masa</label>
+          <input type="text" id="in-tempoh" oninput="kemaskini()" placeholder="2 Hari 1 Malam">
         </div>
       </div>
-      <label>Tempat</label>
-      <input type="text" id="in-tempat" oninput="kemaskini()" placeholder="Contoh: DEWAN SERBAGUNA">
-      <label>Sasaran / Penglibatan</label>
-      <input type="text" id="in-penglibatan" oninput="kemaskini()" placeholder="Contoh: 50 ORANG AHLI KELAB">
+      <label>Masa</label>
+      <input type="text" id="in-masa" oninput="kemaskini()" placeholder="8.00 PAGI - 5.00 PETANG">
+      <label>Tempat / Lokasi</label>
+      <input type="text" id="in-tempat" oninput="kemaskini()" placeholder="Contoh: DEWAN SERBAGUNA UTM">
+      <div class="row-2cols">
+        <div>
+          <label>Jumlah Peserta</label>
+          <input type="text" id="in-jmlh" oninput="kemaskini()" placeholder="50 orang">
+        </div>
+        <div>
+          <label>Kumpulan Sasaran</label>
+          <input type="text" id="in-penglibatan" oninput="kemaskini()" placeholder="Ahli Kelab / Pelajar Sem 3">
+        </div>
+      </div>
     </div>
 
-    <!-- 2.0 Objektif -->
+    <!-- 2.0 Latar Belakang -->
     <div class="card">
-      <div class="card-h">2.0 Objektif</div>
+      <div class="card-h">2.0 Latar Belakang / Rasional</div>
+      <label>Penerangan Latar Belakang</label>
+      <textarea id="in-latar" oninput="kemaskini()" rows="4" placeholder="Huraikan latar belakang / rasional mengapa program ini perlu diadakan..."></textarea>
+    </div>
+
+    <!-- 3.0 Objektif -->
+    <div class="card">
+      <div class="card-h">3.0 Objektif</div>
       <div id="inputs-obj"></div>
       <button class="btn-add" onclick="tambahObj()">+ Tambah Objektif</button>
     </div>
 
-    <!-- 3.0 Jadual & Tenaga Kerja -->
+    <!-- 4.0 Kaedah Pelaksanaan -->
     <div class="card">
-      <div class="card-h">3.0 Jadual & Tenaga Kerja</div>
+      <div class="card-h">4.0 Kaedah Pelaksanaan</div>
+      <label>Kaedah / Format Program</label>
+      <div id="inputs-kaedah"></div>
+      <button class="btn-add" onclick="tambahKaedah()">+ Tambah Kaedah</button>
+      <p class="section-note">Contoh: Ceramah, Bengkel, Aktiviti Kumpulan, Simulasi, Forum Perbincangan</p>
+    </div>
+
+    <!-- 5.0 Tentatif & AJK -->
+    <div class="card">
+      <div class="card-h">5.0 Jadual & Tenaga Kerja</div>
       <label>Tentatif Program</label>
       <div id="inputs-tentatif"></div>
       <button class="btn-add" onclick="tambahDua('tentatif','Masa','Aktiviti')">+ Tambah Slot</button>
@@ -334,20 +391,45 @@ textarea { min-height: 60px; line-height: 1.5; }
       <button class="btn-add" onclick="tambahDua('ajk','Jawatan','Nama')">+ Tambah AJK</button>
     </div>
 
-    <!-- 4.0 Kewangan -->
+    <!-- 6.0 Keperluan Logistik -->
     <div class="card">
-      <div class="card-h">4.0 Kewangan</div>
-      <label>Sumber Dana</label>
-      <div id="inputs-sumber"></div>
-      <button class="btn-add" onclick="tambahDua('sumber','Punca','0.00')">+ Tambah Sumber</button>
-      <label style="margin-top:16px;">Anggaran Belanja</label>
-      <div id="inputs-belanja"></div>
-      <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item</button>
+      <div class="card-h">6.0 Keperluan Logistik</div>
+      <div id="inputs-logistik"></div>
+      <button class="btn-add" onclick="tambahLogistik()">+ Tambah Item Logistik</button>
+      <p class="section-note">Contoh: Projektor, Sistem Pembesar Suara, Khemah, Kenderaan</p>
     </div>
 
-    <!-- 5.0 Kelulusan -->
+    <!-- 7.0 Kewangan -->
+    <div class="card">
+      <div class="card-h">7.0 Kewangan</div>
+      <label>Sumber Dana</label>
+      <div id="inputs-sumber"></div>
+      <button class="btn-add" onclick="tambahDua('sumber','Punca Dana','0.00')">+ Tambah Sumber</button>
+      <label style="margin-top:16px;">Anggaran Belanja</label>
+      <div id="inputs-belanja"></div>
+      <button class="btn-add" onclick="tambahBelanja()">+ Tambah Item Belanja</button>
+    </div>
+
+    <!-- 8.0 Impak Jangkaan -->
+    <div class="card">
+      <div class="card-h">8.0 Impak Jangkaan</div>
+      <label>Faedah / Impak Yang Dijangka</label>
+      <div id="inputs-impak"></div>
+      <button class="btn-add" onclick="tambahImpak()">+ Tambah Impak</button>
+      <p class="section-note">Contoh: Peserta mampu berkomunikasi dengan lebih berkesan, Meningkatkan semangat berpasukan</p>
+    </div>
+
+    <!-- 9.0 Lampiran -->
+    <div class="card">
+      <div class="card-h">9.0 Lampiran</div>
+      <div id="inputs-lampiran"></div>
+      <button class="btn-add" onclick="tambahLampiran()">+ Tambah Lampiran</button>
+      <p class="section-note">Contoh: Lampiran A – Senarai Peserta, Lampiran B – Peta Lokasi</p>
+    </div>
+
+    <!-- 10.0 Kelulusan -->
     <div class="card" style="margin-bottom:40px;">
-      <div class="card-h">5.0 Kelulusan</div>
+      <div class="card-h">10.0 Tandatangan Kelulusan</div>
       <label>Penyedia — Nama</label>
       <input type="text" id="in-n1" oninput="kemaskini()" placeholder="Nama penuh...">
       <label>Penyedia — Jawatan</label>
@@ -364,65 +446,115 @@ textarea { min-height: 60px; line-height: 1.5; }
 
   </div><!-- end editor-side -->
 
-  <!-- PREVIEW SIDE -->
+  <!-- ═══ PREVIEW SIDE ═══ -->
   <div class="preview-side" id="preview-panel">
     <div id="preview">
+
       <!-- KOP SURAT -->
       <div class="doc-kop">
         <div class="doc-kop-org" id="v-kop-org">NAMA ORGANISASI / JABATAN</div>
+        <div class="doc-kop-dept" id="v-kop-dept" style="display:none"></div>
         <div class="doc-kop-sub">KERTAS KERJA PROGRAM</div>
+        <div class="doc-kop-ref" id="v-kop-ref" style="display:none"></div>
       </div>
 
       <div id="v-title">TAJUK PROGRAM</div>
 
+      <!-- 1.0 PENDAHULUAN -->
       <div class="doc-section-head">1.0 PENDAHULUAN</div>
       <p>
-        Kertas kerja ini dikemukakan bertujuan untuk memohon pertimbangan dan kelulusan daripada pihak pengurusan bagi melaksanakan program <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong>. Program ini dirancang sebagai satu inisiatif proaktif dalam memperkasakan kemahiran serta pengetahuan para peserta selaras dengan objektif pembangunan organisasi yang cemerlang. Adalah diharapkan melalui pelaksanaan program ini, ia mampu memberikan impak positif serta memupuk semangat kerjasama dalam kalangan peserta yang terlibat.
+        Kertas kerja ini dikemukakan bertujuan untuk memohon pertimbangan dan kelulusan daripada pihak pengurusan bagi melaksanakan program <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong>. Program ini dirancang sebagai satu inisiatif proaktif dalam memperkasakan kemahiran serta pengetahuan para peserta selaras dengan objektif pembangunan organisasi yang cemerlang.
       </p>
 
+      <!-- 2.0 MAKLUMAT PROGRAM -->
       <div class="doc-section-head">2.0 MAKLUMAT PROGRAM</div>
       <table>
-        <tr><td width="150"><strong>TARIKH</strong></td><td>: <span id="v-tarikh">—</span></td></tr>
+        <tr><td width="160"><strong>TARIKH</strong></td><td>: <span id="v-tarikh">—</span></td></tr>
+        <tr><td><strong>TEMPOH / JANGKA MASA</strong></td><td>: <span id="v-tempoh">—</span></td></tr>
         <tr><td><strong>MASA</strong></td><td>: <span id="v-masa">—</span></td></tr>
         <tr><td><strong>TEMPAT</strong></td><td>: <span id="v-tempat">—</span></td></tr>
-        <tr><td><strong>SASARAN</strong></td><td>: <span id="v-penglibatan">—</span></td></tr>
+        <tr><td><strong>JUMLAH PESERTA</strong></td><td>: <span id="v-jmlh">—</span></td></tr>
+        <tr><td><strong>KUMPULAN SASARAN</strong></td><td>: <span id="v-penglibatan">—</span></td></tr>
       </table>
 
-      <div class="doc-section-head">3.0 OBJEKTIF</div>
-      <ul id="v-obj" style="padding-left:22px; margin:8px 0;"></ul>
+      <!-- 3.0 LATAR BELAKANG -->
+      <div class="doc-section-head">3.0 LATAR BELAKANG / RASIONAL</div>
+      <p id="v-latar">—</p>
 
-      <div class="doc-section-head">4.0 TENTATIF PROGRAM</div>
+      <!-- 4.0 OBJEKTIF -->
+      <div class="doc-section-head">4.0 OBJEKTIF PROGRAM</div>
+      <p>Program ini dilaksanakan dengan beberapa objektif utama, iaitu:</p>
+      <ol id="v-obj" style="padding-left:22px; margin:8px 0;"></ol>
+
+      <!-- 5.0 KAEDAH PELAKSANAAN -->
+      <div class="doc-section-head">5.0 KAEDAH PELAKSANAAN</div>
+      <p>Program ini akan dilaksanakan menggunakan kaedah-kaedah berikut:</p>
+      <ul id="v-kaedah" style="padding-left:22px; margin:8px 0;"></ul>
+
+      <!-- 6.0 TENTATIF PROGRAM -->
+      <div class="doc-section-head">6.0 TENTATIF PROGRAM</div>
       <table>
-        <thead><tr><th width="120">MASA</th><th>PERKARA / AKTIVITI</th></tr></thead>
+        <thead><tr><th width="130">MASA</th><th>PERKARA / AKTIVITI</th></tr></thead>
         <tbody id="v-tentatif"></tbody>
       </table>
 
-      <div class="doc-section-head">5.0 JAWATANKUASA PELAKSANA</div>
+      <!-- 7.0 JAWATANKUASA -->
+      <div class="doc-section-head">7.0 JAWATANKUASA PELAKSANA</div>
       <table>
-        <thead><tr><th width="200">JAWATAN</th><th>NAMA PEGAWAI</th></tr></thead>
+        <thead><tr><th width="200">JAWATAN</th><th>NAMA PEGAWAI / AHLI</th></tr></thead>
         <tbody id="v-ajk"></tbody>
       </table>
 
-      <div class="doc-section-head">6.0 KEWANGAN</div>
-      <p><strong>6.1 Sumber Dana</strong></p>
+      <!-- 8.0 KEPERLUAN LOGISTIK -->
+      <div class="doc-section-head">8.0 KEPERLUAN LOGISTIK</div>
       <table>
-        <thead><tr><th>PERINCIAN</th><th width="120">AMAUN (RM)</th></tr></thead>
+        <thead><tr><th class="no-col">BIL.</th><th>PERALATAN / KEPERLUAN</th><th width="80">STATUS</th></tr></thead>
+        <tbody id="v-logistik"></tbody>
+      </table>
+
+      <!-- 9.0 KEWANGAN -->
+      <div class="doc-section-head">9.0 KEWANGAN</div>
+      <div class="doc-section-sub">9.1 Sumber Dana</div>
+      <table>
+        <thead><tr><th>PUNCA / PERINCIAN DANA</th><th width="130">AMAUN (RM)</th></tr></thead>
         <tbody id="v-sumber"></tbody>
         <tfoot id="v-sumber-total"></tfoot>
       </table>
 
-      <p style="margin-top:14px;"><strong>6.2 Anggaran Perbelanjaan</strong></p>
+      <div class="doc-section-sub" style="margin-top:14px;">9.2 Anggaran Perbelanjaan</div>
       <table>
-        <thead><tr><th>ITEM PERBELANJAAN</th><th width="60">UNIT</th><th width="90">HARGA (RM)</th><th width="110">JUMLAH (RM)</th></tr></thead>
+        <thead><tr><th class="no-col">BIL.</th><th>ITEM PERBELANJAAN</th><th width="55">UNIT</th><th width="90">HARGA (RM)</th><th width="110">JUMLAH (RM)</th></tr></thead>
         <tbody id="v-belanja"></tbody>
         <tfoot id="v-belanja-total"></tfoot>
       </table>
 
-      <div class="doc-section-head">7.0 PENUTUP</div>
+      <div id="v-baki-wrap" style="margin-top:8px; display:none;">
+        <table>
+          <tr class="total-row">
+            <td><strong>LEBIHAN / (KURANGAN) DANA</strong></td>
+            <td width="130"><strong id="v-baki">RM 0.00</strong></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 10.0 IMPAK JANGKAAN -->
+      <div class="doc-section-head">10.0 IMPAK DAN FAEDAH JANGKAAN</div>
+      <p>Melalui pelaksanaan program ini, adalah dijangkakan peserta akan memperolehi manfaat berikut:</p>
+      <ul id="v-impak" style="padding-left:22px; margin:8px 0;"></ul>
+
+      <!-- 11.0 PENUTUP -->
+      <div class="doc-section-head">11.0 PENUTUP</div>
       <p>
         Kesimpulannya, penganjuran <strong><span class="v-auto-name">[TAJUK PROGRAM]</span></strong> ini amat penting dalam memastikan kesinambungan kecemerlangan dan pengukuhan jati diri setiap individu yang terlibat. Pihak jawatankuasa komited untuk memastikan program ini berjalan dengan lancar mengikut perancangan yang telah ditetapkan. Justeru, segala perhatian, sokongan dan kelulusan daripada pihak tuan/puan didahului dengan ucapan setinggi-tinggi penghargaan dan terima kasih.
       </p>
 
+      <!-- 12.0 LAMPIRAN -->
+      <div id="v-lampiran-section" style="display:none;">
+        <div class="doc-section-head">12.0 SENARAI LAMPIRAN</div>
+        <ul id="v-lampiran" style="padding-left:22px; margin:8px 0;"></ul>
+      </div>
+
+      <!-- TANDATANGAN -->
       <div class="sign-grid">
         <div class="sign-block">
           Disediakan oleh:
@@ -437,165 +569,337 @@ textarea { min-height: 60px; line-height: 1.5; }
           <div class="sign-line"><span id="v-n3">—</span><br><small id="v-j3">—</small></div>
         </div>
       </div>
+
     </div>
   </div><!-- end preview-side -->
 </div>
 
 <script>
-// ── MOBILE VIEW TOGGLE ──
-function switchView(view) {
-  const editor = document.getElementById('editor-panel');
-  const preview = document.getElementById('preview-panel');
-  const btnE = document.getElementById('toggle-editor');
-  const btnP = document.getElementById('toggle-preview');
-  if (view === 'editor') {
-    editor.classList.remove('hide');
-    preview.classList.remove('show');
-    btnE.classList.add('active'); btnP.classList.remove('active');
+// ── MOBILE TOGGLE ──
+function switchView(v) {
+  const ed=document.getElementById('editor-panel');
+  const pr=document.getElementById('preview-panel');
+  const bE=document.getElementById('toggle-editor');
+  const bP=document.getElementById('toggle-preview');
+  if(v==='editor'){
+    ed.classList.remove('hide'); pr.classList.remove('show');
+    bE.classList.add('active'); bP.classList.remove('active');
   } else {
-    editor.classList.add('hide');
-    preview.classList.add('show');
-    btnE.classList.remove('active'); btnP.classList.add('active');
+    ed.classList.add('hide'); pr.classList.add('show');
+    bE.classList.remove('active'); bP.classList.add('active');
   }
 }
 
-// ── DYNAMIC ROW BUILDERS ──
+// ── DYNAMIC ROWS ──
 function tambahObj(v='') {
-  const d = document.createElement('div'); d.className = 'row-obj';
-  d.innerHTML = `<input type="text" style="flex:1" value="${v}" oninput="kemaskini()" placeholder="Nyatakan objektif program...">
+  const d=document.createElement('div'); d.className='row-obj';
+  d.innerHTML=`<input type="text" style="flex:1" value="${esc(v)}" oninput="kemaskini()" placeholder="Nyatakan objektif program...">
     <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
   document.getElementById('inputs-obj').appendChild(d);
+  kemaskini();
 }
 
-function tambahDua(id, l1, l2, v1='', v2='') {
-  const d = document.createElement('div'); d.className = 'row-2';
-  d.innerHTML = `<input type="text" style="flex:1" value="${v1}" oninput="kemaskini()" placeholder="${l1}">
-    <input type="text" style="flex:1.2" value="${v2}" oninput="kemaskini()" placeholder="${l2}">
+function tambahDua(id,l1,l2,v1='',v2='') {
+  const d=document.createElement('div'); d.className='row-2';
+  d.innerHTML=`<input type="text" style="flex:1" value="${esc(v1)}" oninput="kemaskini()" placeholder="${l1}">
+    <input type="text" style="flex:1.2" value="${esc(v2)}" oninput="kemaskini()" placeholder="${l2}">
     <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
   document.getElementById('inputs-'+id).appendChild(d);
+  kemaskini();
 }
 
-function tambahBelanja(item='', qty=1, harga=0) {
-  const d = document.createElement('div'); d.className = 'row-belanja';
-  d.innerHTML = `<input type="text" style="flex:1.8" value="${item}" oninput="kemaskini()" placeholder="Item belanja">
-    <input type="number" style="flex:0.5; min-width:50px;" value="${qty}" oninput="kemaskini()" placeholder="Unit">
-    <input type="number" style="flex:0.8; min-width:70px;" value="${harga}" step="0.01" oninput="kemaskini()" placeholder="Harga">
+function tambahBelanja(item='',qty=1,harga=0) {
+  const d=document.createElement('div'); d.className='row-belanja';
+  d.innerHTML=`<input type="text" style="flex:1.8" value="${esc(item)}" oninput="kemaskini()" placeholder="Item belanja">
+    <input type="number" style="flex:0.5;min-width:50px;" value="${qty}" oninput="kemaskini()" placeholder="Unit">
+    <input type="number" style="flex:0.8;min-width:70px;" value="${harga}" step="0.01" oninput="kemaskini()" placeholder="Harga">
     <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
   document.getElementById('inputs-belanja').appendChild(d);
+  kemaskini();
 }
+
+function tambahKaedah(v='') {
+  const d=document.createElement('div'); d.className='row-obj';
+  d.innerHTML=`<input type="text" style="flex:1" value="${esc(v)}" oninput="kemaskini()" placeholder="Contoh: Ceramah, Bengkel, Aktiviti Kumpulan...">
+    <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
+  document.getElementById('inputs-kaedah').appendChild(d);
+  kemaskini();
+}
+
+function tambahLogistik(item='',status='Perlu Sedia') {
+  const d=document.createElement('div'); d.className='row-2';
+  d.innerHTML=`<input type="text" style="flex:2" value="${esc(item)}" oninput="kemaskini()" placeholder="Nama peralatan / keperluan...">
+    <select style="flex:1;min-width:110px;" onchange="kemaskini()">
+      <option value="Perlu Sedia" ${status==='Perlu Sedia'?'selected':''}>Perlu Sedia</option>
+      <option value="Sedia Ada" ${status==='Sedia Ada'?'selected':''}>Sedia Ada</option>
+      <option value="Perlu Sewa" ${status==='Perlu Sewa'?'selected':''}>Perlu Sewa</option>
+      <option value="Perlu Beli" ${status==='Perlu Beli'?'selected':''}>Perlu Beli</option>
+    </select>
+    <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
+  document.getElementById('inputs-logistik').appendChild(d);
+  kemaskini();
+}
+
+function tambahImpak(v='') {
+  const d=document.createElement('div'); d.className='row-obj';
+  d.innerHTML=`<input type="text" style="flex:1" value="${esc(v)}" oninput="kemaskini()" placeholder="Nyatakan impak / faedah yang dijangka...">
+    <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
+  document.getElementById('inputs-impak').appendChild(d);
+  kemaskini();
+}
+
+function tambahLampiran(v='') {
+  const d=document.createElement('div'); d.className='row-lampiran';
+  d.innerHTML=`<input type="text" style="flex:1" value="${esc(v)}" oninput="kemaskini()" placeholder="Contoh: Lampiran A – Senarai Peserta">
+    <button class="btn-del" onclick="this.parentElement.remove();kemaskini()">×</button>`;
+  document.getElementById('inputs-lampiran').appendChild(d);
+  kemaskini();
+}
+
+function esc(v) { return String(v).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
 // ── KEMASKINI PREVIEW ──
 function kemaskini() {
   const tajuk = document.getElementById('in-tajuk').value || '[TAJUK PROGRAM]';
   document.getElementById('v-title').innerText = tajuk;
-  document.getElementById('v-kop-org').innerText = tajuk;
+
+  // Kop surat
+  const org = document.getElementById('in-org').value;
+  document.getElementById('v-kop-org').innerText = org || 'NAMA ORGANISASI / JABATAN';
+
+  const dept = document.getElementById('in-dept').value;
+  const deptEl = document.getElementById('v-kop-dept');
+  deptEl.style.display = dept ? 'block' : 'none';
+  deptEl.innerText = dept;
+
+  const ref = document.getElementById('in-ref').value;
+  const refEl = document.getElementById('v-kop-ref');
+  refEl.style.display = ref ? 'block' : 'none';
+  refEl.innerText = 'Ruj: ' + ref;
+
   document.querySelectorAll('.v-auto-name').forEach(el => el.innerText = tajuk);
 
+  // Simple field map
   const map = {
-    'in-tarikh':'v-tarikh','in-masa':'v-masa','in-tempat':'v-tempat',
-    'in-penglibatan':'v-penglibatan',
+    'in-tarikh':'v-tarikh','in-tempoh':'v-tempoh','in-masa':'v-masa',
+    'in-tempat':'v-tempat','in-jmlh':'v-jmlh','in-penglibatan':'v-penglibatan',
     'in-n1':'v-n1','in-j1':'v-j1','in-n2':'v-n2',
     'in-j2':'v-j2','in-n3':'v-n3','in-j3':'v-j3'
   };
-  for (let i in map) {
-    const el = document.getElementById(map[i]);
-    if (el) el.innerText = document.getElementById(i).value || '—';
+  for(let i in map){
+    const el=document.getElementById(map[i]);
+    if(el) el.innerText=document.getElementById(i).value||'—';
   }
 
-  // Objektif
-  document.getElementById('v-obj').innerHTML = '';
-  document.querySelectorAll('#inputs-obj input').forEach(i => {
-    if (i.value) document.getElementById('v-obj').innerHTML += `<li style="margin-bottom:4px;">${i.value}</li>`;
+  // Latar belakang
+  const latar = document.getElementById('in-latar').value;
+  document.getElementById('v-latar').innerText = latar || '—';
+
+  // Objektif (ordered list)
+  const vObj = document.getElementById('v-obj');
+  vObj.innerHTML = '';
+  document.querySelectorAll('#inputs-obj input').forEach(i=>{
+    if(i.value) vObj.innerHTML+=`<li style="margin-bottom:4px;">${i.value}</li>`;
+  });
+
+  // Kaedah
+  const vKaedah = document.getElementById('v-kaedah');
+  vKaedah.innerHTML = '';
+  document.querySelectorAll('#inputs-kaedah input').forEach(i=>{
+    if(i.value) vKaedah.innerHTML+=`<li style="margin-bottom:3px;">${i.value}</li>`;
+  });
+
+  // Impak
+  const vImpak = document.getElementById('v-impak');
+  vImpak.innerHTML = '';
+  document.querySelectorAll('#inputs-impak input').forEach(i=>{
+    if(i.value) vImpak.innerHTML+=`<li style="margin-bottom:3px;">${i.value}</li>`;
   });
 
   // Fill 2-col tables
   const fill = (idIn, idV) => {
-    document.getElementById(idV).innerHTML = '';
-    document.querySelectorAll(`#inputs-${idIn} .row-2`).forEach(r => {
-      const ins = r.querySelectorAll('input');
-      if (ins[0].value || ins[1].value)
-        document.getElementById(idV).innerHTML += `<tr><td>${ins[0].value || '—'}</td><td>${ins[1].value || '—'}</td></tr>`;
+    document.getElementById(idV).innerHTML='';
+    document.querySelectorAll(`#inputs-${idIn} .row-2`).forEach(r=>{
+      const ins=r.querySelectorAll('input');
+      if(ins[0] && (ins[0].value||ins[1]?.value))
+        document.getElementById(idV).innerHTML+=`<tr><td>${ins[0].value||'—'}</td><td>${ins[1]?.value||'—'}</td></tr>`;
     });
   };
   fill('tentatif','v-tentatif'); fill('ajk','v-ajk');
 
-  // Sumber Dana
-  document.getElementById('v-sumber').innerHTML = '';
-  let tS = 0;
-  document.querySelectorAll('#inputs-sumber .row-2').forEach(r => {
-    const ins = r.querySelectorAll('input');
-    const val = parseFloat(ins[1].value) || 0;
-    if (ins[0].value || ins[1].value) {
-      document.getElementById('v-sumber').innerHTML += `<tr><td>${ins[0].value}</td><td>${val.toFixed(2)}</td></tr>`;
-      tS += val;
+  // Logistik
+  const vLog = document.getElementById('v-logistik');
+  vLog.innerHTML = '';
+  let logBil = 1;
+  document.querySelectorAll('#inputs-logistik .row-2').forEach(r=>{
+    const inp = r.querySelector('input');
+    const sel = r.querySelector('select');
+    if(inp && inp.value){
+      const statusColor = sel.value==='Sedia Ada'?'color:#1a7a3a':sel.value==='Perlu Sewa'||sel.value==='Perlu Beli'?'color:#b45309':'color:#1a1a1a';
+      vLog.innerHTML+=`<tr><td class="no-col">${logBil++}</td><td>${inp.value}</td><td style="font-size:9pt;${statusColor}">${sel.value}</td></tr>`;
     }
   });
-  document.getElementById('v-sumber-total').innerHTML =
-    `<tr class="total-row"><td><strong>JUMLAH KESELURUHAN</strong></td><td><strong>RM ${tS.toFixed(2)}</strong></td></tr>`;
+  if(logBil===1) vLog.innerHTML='<tr><td class="no-col">—</td><td>—</td><td>—</td></tr>';
+
+  // Sumber Dana
+  document.getElementById('v-sumber').innerHTML='';
+  let tS=0;
+  document.querySelectorAll('#inputs-sumber .row-2').forEach(r=>{
+    const ins=r.querySelectorAll('input');
+    const val=parseFloat(ins[1]?.value)||0;
+    if(ins[0]?.value||ins[1]?.value){
+      document.getElementById('v-sumber').innerHTML+=`<tr><td>${ins[0]?.value||'—'}</td><td>RM ${val.toFixed(2)}</td></tr>`;
+      tS+=val;
+    }
+  });
+  document.getElementById('v-sumber-total').innerHTML=
+    `<tr class="total-row"><td><strong>JUMLAH DANA</strong></td><td><strong>RM ${tS.toFixed(2)}</strong></td></tr>`;
 
   // Anggaran Belanja
-  document.getElementById('v-belanja').innerHTML = '';
-  let tB = 0;
-  document.querySelectorAll('#inputs-belanja .row-belanja').forEach(r => {
-    const ins = r.querySelectorAll('input');
-    const q = parseFloat(ins[1].value) || 0;
-    const p = parseFloat(ins[2].value) || 0;
-    const rowT = q * p;
-    if (ins[0].value) {
-      document.getElementById('v-belanja').innerHTML +=
-        `<tr><td>${ins[0].value}</td><td>${q}</td><td>${p.toFixed(2)}</td><td>${rowT.toFixed(2)}</td></tr>`;
-      tB += rowT;
+  document.getElementById('v-belanja').innerHTML='';
+  let tB=0; let bBil=1;
+  document.querySelectorAll('#inputs-belanja .row-belanja').forEach(r=>{
+    const ins=r.querySelectorAll('input');
+    const q=parseFloat(ins[1]?.value)||0;
+    const p=parseFloat(ins[2]?.value)||0;
+    const rowT=q*p;
+    if(ins[0]?.value){
+      document.getElementById('v-belanja').innerHTML+=
+        `<tr><td class="no-col">${bBil++}</td><td>${ins[0].value}</td><td>${q}</td><td>${p.toFixed(2)}</td><td>${rowT.toFixed(2)}</td></tr>`;
+      tB+=rowT;
     }
   });
-  document.getElementById('v-belanja-total').innerHTML =
-    `<tr class="total-row"><td colspan="3"><strong>JUMLAH KESELURUHAN</strong></td><td><strong>RM ${tB.toFixed(2)}</strong></td></tr>`;
+  document.getElementById('v-belanja-total').innerHTML=
+    `<tr class="total-row"><td colspan="4"><strong>JUMLAH PERBELANJAAN</strong></td><td><strong>RM ${tB.toFixed(2)}</strong></td></tr>`;
+
+  // Baki
+  const baki = tS - tB;
+  const bakiWrap = document.getElementById('v-baki-wrap');
+  const bakiEl = document.getElementById('v-baki');
+  if(tS > 0 || tB > 0) {
+    bakiWrap.style.display = 'block';
+    bakiEl.textContent = (baki >= 0 ? 'RM ' : '(RM ') + Math.abs(baki).toFixed(2) + (baki < 0 ? ')' : '');
+    bakiEl.style.color = baki >= 0 ? '#1a7a3a' : '#c00';
+  } else {
+    bakiWrap.style.display = 'none';
+  }
+
+  // Lampiran
+  const vLamp = document.getElementById('v-lampiran');
+  vLamp.innerHTML = '';
+  let hasLamp = false;
+  document.querySelectorAll('#inputs-lampiran input').forEach(i=>{
+    if(i.value){ vLamp.innerHTML+=`<li style="margin-bottom:3px;">${i.value}</li>`; hasLamp=true; }
+  });
+  document.getElementById('v-lampiran-section').style.display = hasLamp ? 'block' : 'none';
 }
 
 // ── SAVE / LOAD ──
 function showToast(msg) {
-  const t = document.createElement('div'); t.className = 'toast';
-  t.textContent = msg; document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2800);
+  const t=document.createElement('div'); t.className='toast';
+  t.textContent=msg; document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2800);
 }
 
 function exportData() {
-  const d = Array.from(document.querySelectorAll('.editor-side input, .editor-side textarea')).map(i => i.value);
-  // Also save dynamic rows count info
-  const rows = {
-    obj: document.querySelectorAll('#inputs-obj .row-obj').length,
-    tentatif: document.querySelectorAll('#inputs-tentatif .row-2').length,
-    ajk: document.querySelectorAll('#inputs-ajk .row-2').length,
-    sumber: document.querySelectorAll('#inputs-sumber .row-2').length,
-    belanja: document.querySelectorAll('#inputs-belanja .row-belanja').length,
+  const data = {
+    version: 2,
+    fields: {},
+    lists: {
+      obj: [], kaedah: [], tentatif: [], ajk: [],
+      logistik: [], sumber: [], belanja: [], impak: [], lampiran: []
+    }
   };
-  const blob = new Blob([JSON.stringify({d, rows})], {type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = `EZI_Paperwork_${new Date().toISOString().split('T')[0]}.json`; a.click();
+
+  // Static fields
+  ['in-org','in-dept','in-ref','in-tajuk','in-tarikh','in-tempoh','in-masa',
+   'in-tempat','in-jmlh','in-penglibatan','in-latar',
+   'in-n1','in-j1','in-n2','in-j2','in-n3','in-j3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) data.fields[id]=el.value;
+  });
+
+  // Single-input lists
+  ['obj','kaedah','impak','lampiran'].forEach(key=>{
+    document.querySelectorAll(`#inputs-${key} input`).forEach(i=>{
+      data.lists[key].push(i.value);
+    });
+  });
+
+  // Two-col lists
+  ['tentatif','ajk','sumber'].forEach(key=>{
+    document.querySelectorAll(`#inputs-${key} .row-2`).forEach(r=>{
+      const ins=r.querySelectorAll('input');
+      data.lists[key].push([ins[0]?.value||'', ins[1]?.value||'']);
+    });
+  });
+
+  // Logistik (input + select)
+  document.querySelectorAll('#inputs-logistik .row-2').forEach(r=>{
+    const inp=r.querySelector('input');
+    const sel=r.querySelector('select');
+    data.lists.logistik.push([inp?.value||'', sel?.value||'Perlu Sedia']);
+  });
+
+  // Belanja (3 inputs)
+  document.querySelectorAll('#inputs-belanja .row-belanja').forEach(r=>{
+    const ins=r.querySelectorAll('input');
+    data.lists.belanja.push([ins[0]?.value||'', ins[1]?.value||1, ins[2]?.value||0]);
+  });
+
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`EZI_BPP_${new Date().toISOString().split('T')[0]}.json`; a.click();
   showToast('✅ Data berjaya disimpan!');
 }
 
 function importData(e) {
-  const r = new FileReader();
-  r.onload = (x) => {
+  const r=new FileReader();
+  r.onload=(x)=>{
     try {
-      const parsed = JSON.parse(x.target.result);
-      const d = parsed.d || parsed; // support old format too
-      const ins = document.querySelectorAll('.editor-side input, .editor-side textarea');
-      d.forEach((v, i) => { if (ins[i]) ins[i].value = v; });
+      const d=JSON.parse(x.target.result);
+      if(d.version===2) {
+        // New format
+        Object.entries(d.fields||{}).forEach(([id,v])=>{
+          const el=document.getElementById(id); if(el) el.value=v;
+        });
+        // Clear all dynamic lists
+        ['obj','kaedah','tentatif','ajk','logistik','sumber','belanja','impak','lampiran'].forEach(k=>{
+          document.getElementById('inputs-'+k).innerHTML='';
+        });
+        (d.lists.obj||[]).forEach(v=>tambahObj(v));
+        (d.lists.kaedah||[]).forEach(v=>tambahKaedah(v));
+        (d.lists.tentatif||[]).forEach(([v1,v2])=>tambahDua('tentatif','Masa','Aktiviti',v1,v2));
+        (d.lists.ajk||[]).forEach(([v1,v2])=>tambahDua('ajk','Jawatan','Nama',v1,v2));
+        (d.lists.sumber||[]).forEach(([v1,v2])=>tambahDua('sumber','Punca Dana','0.00',v1,v2));
+        (d.lists.logistik||[]).forEach(([v1,v2])=>tambahLogistik(v1,v2));
+        (d.lists.belanja||[]).forEach(([v1,v2,v3])=>tambahBelanja(v1,v2,v3));
+        (d.lists.impak||[]).forEach(v=>tambahImpak(v));
+        (d.lists.lampiran||[]).forEach(v=>tambahLampiran(v));
+      } else {
+        // Legacy format fallback
+        const ins=document.querySelectorAll('.editor-side input, .editor-side textarea');
+        (d.d||d).forEach((v,i)=>{ if(ins[i]) ins[i].value=v; });
+      }
       kemaskini();
       showToast('✅ Data berjaya dimuatkan!');
-    } catch { showToast('⚠️ Fail tidak sah!'); }
+    } catch(err) { showToast('⚠️ Fail tidak sah!'); console.error(err); }
   };
   r.readAsText(e.target.files[0]);
+  e.target.value='';
 }
 
 // ── INIT ──
 window.onload = () => {
   tambahObj();
+  tambahKaedah();
   tambahDua('tentatif','Masa','Aktiviti');
   tambahDua('ajk','Jawatan','Nama');
-  tambahDua('sumber','Punca','0.00');
+  tambahLogistik();
+  tambahDua('sumber','Punca Dana','0.00');
   tambahBelanja();
+  tambahImpak();
+  tambahLampiran();
   kemaskini();
 };
 </script>
